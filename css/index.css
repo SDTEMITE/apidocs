@@ -110,46 +110,24 @@
         .docs-header .container {
             position: relative;
             z-index: 2;
-            perspective: 1000px;
-            transform-style: preserve-3d;
-            animation: containerFloat 8s ease-in-out infinite;
         }
         
-        /* Efectos 3D para el contenido del header */
+        /* Contenido del header optimizado para rendimiento */
         .docs-header h1 {
-            transform: translateZ(50px) rotateX(5deg);
+            color: white;
             text-shadow: 
-                0 0 20px rgba(255, 255, 255, 0.5),
-                0 0 40px rgba(242, 138, 26, 0.3),
-                0 0 60px rgba(255, 149, 0, 0.2);
-            animation: 
-                titleGlow 3s ease-in-out infinite alternate,
-                titleFloat 6s ease-in-out infinite;
-            background: linear-gradient(45deg, #ffffff, #FFD700, #ffffff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: 
-                titleGlow 3s ease-in-out infinite alternate,
-                titleFloat 6s ease-in-out infinite,
-                textShimmer 4s ease-in-out infinite;
+                0 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+            margin-bottom: 20px;
         }
         
         .docs-header p {
-            transform: translateZ(30px) rotateX(-2deg);
-            text-shadow: 
-                0 0 15px rgba(255, 255, 255, 0.3),
-                0 0 30px rgba(242, 138, 26, 0.2);
-            animation: subtitleFloat 8s ease-in-out infinite;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            font-size: 1.2em;
+            line-height: 1.6;
+            max-width: 800px;
         }
         .section-title {
             color: #F28A1A;
@@ -726,110 +704,38 @@
             }
         }
         
-        /* Animación 3D Container Float */
-        @keyframes containerFloat {
-            0%, 100% {
-                transform: translateY(0px) rotateX(0deg);
-            }
-            50% {
-                transform: translateY(-10px) rotateX(2deg);
-            }
-        }
+        /* Animaciones de texto eliminadas para mejor rendimiento */
         
-        /* Animación Título Glow */
-        @keyframes titleGlow {
-            0% {
-                text-shadow: 
-                    0 0 20px rgba(255, 255, 255, 0.5),
-                    0 0 40px rgba(242, 138, 26, 0.3),
-                    0 0 60px rgba(255, 149, 0, 0.2);
-            }
-            100% {
-                text-shadow: 
-                    0 0 30px rgba(255, 255, 255, 0.8),
-                    0 0 60px rgba(242, 138, 26, 0.5),
-                    0 0 90px rgba(255, 149, 0, 0.4);
-            }
-        }
-        
-        /* Animación Título Float */
-        @keyframes titleFloat {
-            0%, 100% {
-                transform: translateZ(50px) rotateX(5deg) translateY(0px);
-            }
-            50% {
-                transform: translateZ(50px) rotateX(5deg) translateY(-5px);
-            }
-        }
-        
-        /* Animación Text Shimmer */
-        @keyframes textShimmer {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-        
-        /* Animación Subtítulo Float */
-        @keyframes subtitleFloat {
-            0%, 100% {
-                transform: translateZ(30px) rotateX(-2deg) translateY(0px);
-                box-shadow: 
-                    0 8px 32px rgba(0, 0, 0, 0.1),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            }
-            50% {
-                transform: translateZ(30px) rotateX(-2deg) translateY(-3px);
-                box-shadow: 
-                    0 12px 40px rgba(0, 0, 0, 0.15),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            }
-        }
-        
-        /* Efectos de partículas modernas con CSS Grid */
+        /* Partículas simplificadas para mejor rendimiento */
         .docs-header .particles {
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            display: grid;
-            grid-template-columns: repeat(20, 1fr);
-            grid-template-rows: repeat(10, 1fr);
             pointer-events: none;
             z-index: 1;
+            opacity: 0.3;
         }
         
         .docs-header .particle {
-            width: var(--particle-size);
-            height: var(--particle-size);
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 50%;
-            animation: particleFloat 8s ease-in-out infinite;
-            animation-delay: calc(var(--delay) * 0.1s);
+            animation: particleFloat 12s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.2s);
         }
         
         @keyframes particleFloat {
             0%, 100% {
-                transform: translateY(0px) scale(1);
+                transform: translateY(0px);
                 opacity: 0.3;
             }
-            25% {
-                transform: translateY(-20px) scale(1.2);
-                opacity: 0.8;
-            }
             50% {
-                transform: translateY(-10px) scale(0.8);
-                opacity: 0.5;
-            }
-            75% {
-                transform: translateY(-30px) scale(1.1);
-                opacity: 0.9;
+                transform: translateY(-15px);
+                opacity: 0.8;
             }
         }
         
