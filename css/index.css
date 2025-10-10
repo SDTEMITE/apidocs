@@ -39,10 +39,7 @@
         
         .docs-header {
             background: 
-                linear-gradient(135deg, var(--header-primary) 0%, var(--header-secondary) 50%, var(--header-accent) 100%),
-                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.4) 0%, transparent 60%),
-                radial-gradient(circle at 80% 20%, rgba(255, 184, 77, 0.3) 0%, transparent 60%),
-                radial-gradient(circle at 40% 40%, rgba(242, 138, 26, 0.2) 0%, transparent 60%);
+                linear-gradient(135deg, var(--header-primary) 0%, var(--header-secondary) 50%, var(--header-accent) 100%);
             color: white;
             padding: 60px 0;
             position: relative;
@@ -69,9 +66,6 @@
             background: 
                 linear-gradient(45deg, 
                     rgba(255, 255, 255, var(--glass-opacity)) 0%, 
-                    rgba(255, 184, 77, 0.1) 25%,
-                    rgba(242, 138, 26, 0.2) 50%,
-                    rgba(255, 149, 0, 0.1) 75%,
                     rgba(255, 255, 255, var(--glass-opacity)) 100%);
             backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
@@ -96,9 +90,7 @@
             background: 
                 linear-gradient(90deg, 
                     rgba(255, 255, 255, 0.1) 0%,
-                    rgba(255, 184, 77, 0.2) 25%,
                     rgba(255, 255, 255, 0.15) 50%,
-                    rgba(255, 184, 77, 0.2) 75%,
                     rgba(255, 255, 255, 0.1) 100%);
             border-radius: 0 0 30px 30px;
             animation: waveMotion 4s ease-in-out infinite;
