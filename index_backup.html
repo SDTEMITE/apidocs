@@ -1,0 +1,2535 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Documentación de integración para documentos electrónicos">
+    <title>Integración API - Documentación DTEmite</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/railscasts.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    <link href="css/code-blocks.css" rel="stylesheet">
+    <style>
+        /* Fuentes modernas globales */
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        code, pre, .code-example pre {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Droid Sans Mono', monospace;
+        }
+        
+        .separa_p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .docs-nav {
+            background: linear-gradient(135deg, #6D2478 0%, #8B2A8B 100%) !important;
+            box-shadow: 0 2px 20px rgba(109, 36, 120, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .docs-header {
+            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            color: white;
+            padding: 60px 0;
+            position: relative;
+            overflow: hidden;
+            background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: overlay;
+        }
+        
+        .docs-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(242, 138, 26, 0.8) 0%, rgba(255, 149, 0, 0.8) 100%);
+            pointer-events: none;
+        }
+        
+        .docs-header .container {
+            position: relative;
+            z-index: 2;
+        }
+        .section-title {
+            color: #F28A1A;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .table-custom {
+            border: 2px solid #0b66a5;
+            margin: 20px 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(11, 102, 165, 0.1);
+        }
+        .table-custom th {
+            background: linear-gradient(135deg, #0b66a5 0%, #1e88e5 100%);
+            color: white;
+            font-weight: 600;
+            padding: 15px 12px;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            letter-spacing: 0.5px;
+        }
+        
+        .table-custom td {
+            padding: 12px;
+            vertical-align: top;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .table-custom tbody tr:nth-child(even) {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
+        }
+        
+        .table-custom tbody tr:hover {
+            background: linear-gradient(135deg, #e8f4f8 0%, #e3f2fd 100%);
+            transform: translateY(-1px);
+            transition: all 0.2s ease;
+        }
+        
+        .code-example {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-example::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #F28A1A, #FF9500);
+        }
+       
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                max-height: 35px;
+            }
+        }
+        
+        /* Botón Volver al Principio */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 22px;
+            cursor: pointer;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(242, 138, 26, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .back-to-top:hover {
+            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 32px rgba(242, 138, 26, 0.5);
+        }
+        
+        .back-to-top:active {
+            transform: translateY(0);
+        }
+        
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
+        }
+        
+        /* Panel de Pruebas */
+        .test-panel {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .test-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #F28A1A, #FF9500, #6D2478);
+        }
+        
+        .test-form {
+            margin-bottom: 20px;
+        }
+        
+        .test-form label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 14px;
+        }
+        
+        .test-form input, .test-form select, .test-form textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #ffffff;
+        }
+        
+        .test-form input:focus, .test-form select:focus, .test-form textarea:focus {
+            border-color: #F28A1A;
+            box-shadow: 0 0 0 3px rgba(242, 138, 26, 0.1);
+            outline: none;
+        }
+        
+        .test-form textarea {
+            height: 200px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .btn-test {
+            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-right: 12px;
+            margin-bottom: 12px;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(242, 138, 26, 0.3);
+        }
+        
+        .btn-test:hover {
+            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(242, 138, 26, 0.4);
+        }
+        
+        .btn-test:active {
+            transform: translateY(0);
+        }
+        
+        .btn-test:disabled {
+            background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .response-panel {
+            background: #ffffff;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+            min-height: 150px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .response-panel h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-weight: bold;
+            border-bottom: 2px solid #F28A1A;
+            padding-bottom: 8px;
+        }
+        
+        .response-panel pre {
+            background: #2d3748;
+            border: 1px solid #4a5568;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #ffffff;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-weight: 500;
+        }
+        
+        .response-success {
+            border-left: 4px solid #28a745;
+            background: #f8fff9;
+        }
+        
+        .response-error {
+            border-left: 4px solid #dc3545;
+            background: #fff8f8;
+        }
+        
+        .response-success h4 {
+            color: #28a745;
+        }
+        
+        .response-error h4 {
+            color: #dc3545;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #F28A1A;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Estilos para expandir/contraer bloques de código */
+        .code-block-container {
+            position: relative;
+        }
+        
+        .code-toggle-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(242, 138, 26, 0.3);
+        }
+        
+        .code-toggle-btn:hover {
+            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 4px 16px rgba(242, 138, 26, 0.4);
+        }
+        
+        .code-toggle-btn:active {
+            transform: translateY(0);
+        }
+        
+        .code-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .code-content.collapsed {
+            max-height: 100px;
+            position: relative;
+        }
+        
+        .code-content.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, #696868);
+            pointer-events: none;
+        }
+        
+        .code-content.expanded {
+            max-height: none;
+        }
+        
+        /* Estilos para expandir/contraer bloques de código */
+        .code-block-container {
+            position: relative;
+        }
+        
+        .code-toggle-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(242, 138, 26, 0.3);
+        }
+        
+        .code-toggle-btn:hover {
+            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 4px 16px rgba(242, 138, 26, 0.4);
+        }
+        
+        .code-toggle-btn:active {
+            transform: translateY(0);
+        }
+        
+        .code-content {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .code-content.collapsed {
+            max-height: 100px !important;
+            position: relative;
+        }
+        
+        .code-content.collapsed::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, #696868);
+            pointer-events: none;
+        }
+        
+        .code-content.expanded {
+            max-height: none !important;
+            overflow: visible;
+        }
+        
+        .code-example {
+            position: relative;
+        }
+        
+        .code-example pre {
+            margin: 0;
+        }
+        
+    </style>
+  </head>
+  <body>
+    <header class="navbar navbar-inverse navbar-fixed-top docs-nav" role="banner">
+      <div class="container">
+        <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".bs-navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="#" class="navbar-brand">
+            <img src="img/Marca_dtemite-07 (1).png" alt="DTEmite" style="height: 100px; width: auto; margin-top: -40px;">
+          </a>
+        </div>
+        <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
+          <ul class="nav navbar-nav">
+            <li><a href="#intro">Introducción</a></li>
+            <li><a href="#encabezado">Encabezado</a></li>
+            <li><a href="#detalles">Detalles</a></li>
+            <li><a href="#descuento">Descuento/Recargo</a></li>
+            <li><a href="#referencia">Referencias</a></li>
+            <li><a href="#ejemplos">Ejemplos</a></li>
+            <li><a href="#funcionalidades">Métodos</a></li>
+            <li><a href="#api_emision">API Emisión</a></li>
+            <li><a href="#panel_pruebas">Panel Pruebas</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+         
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <div class="docs-header" id="content">
+      <div class="container">
+        <h1>Documentación de integración para documentos electrónicos</h1>
+        <p>Guía completa para la integración con DTEmite - Sistema de gestión de documentos tributarios electrónicos</p>
+      </div>
+    </div>
+    <div class="banner">
+      <div class="container">
+        DTEmite v2.0 - 
+        <strong>
+          <a href="https://sistema.dtemite.cl" target="_blank">Acceder al sistema</a>
+        </strong>
+      </div>
+    </div>    
+    <div class="container docs-container">
+      <div class="row">
+        <div class="col-xs-3">
+          <div class="sidebar affix-top">
+            <ul id="sidebar" class="nav nav-stacked">
+              <li>
+                <a href="#intro">1. Introducción</a>
+              </li>
+              <li>
+                <a href="#encabezado">2. Encabezado del Documento</a>
+              </li>
+              <li>
+                <a href="#detalles">3. Detalles del Documento</a>
+              </li>
+              <li>
+                <a href="#descuento">4. Descuento/Recargo Global</a>
+              </li>
+              <li>
+                <a href="#referencia">5. Referencias del doc.</a>
+              </li>
+              <li>
+                <a href="#ejemplos">6. Ejemplos para orden de compra</a>
+              </li>
+              <li>
+                <a href="#campo_adicional">7. Campos adicionales</a>
+              </li>
+              <li>
+                <a href="#funcionalidades">8. Métodos y parámetros</a>
+              </li>
+              <li>
+                <a href="#api_emision">9. API Emisión Docs. Electrónicos</a>
+              </li>
+              <li>
+                <a href="#panel_pruebas">10. Panel de Pruebas</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-9" role="main">
+          <div class="panel docs-content">
+            <!-- INTRODUCCIÓN -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="intro">Introducción</h1>
+              </div>
+              <p class="separa_p" style="text-align: justify">
+                Este documento describe el formato y contenido que debe tener el archivo JSON
+                que cuenta con un único nodo raíz (DTE) dentro del cual contendrá la información
+                del documento a procesar utilizando la codificación ISO-8859-1 (ISO LATIN1).
+              </p>
+              
+              <h3 class="section-title">Formato</h3>
+              <p style="text-align: justify">
+                Dicho documento es utilizado para la integración en procesos de facturación
+                electrónica.
+              </p>
+              <p style="text-align: justify">
+                El formato JSON o XML posee los siguientes caracteres especiales,
+                los que deben ser reemplazados en la sección de siglas:
+              </p>
+              
+              <div class="table-responsive">
+                <table class="table table-striped table-custom" width="100%">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width:50%">CARACTER ESPECIAL</th>
+                      <th class="text-center">SIGLAS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>&lt;</td>
+                      <td>&amp;lt;</td>
+                    </tr>
+                    <tr>
+                      <td>&gt;</td>
+                      <td>&amp;gt;</td>
+                    </tr>
+                    <tr>
+                      <td>&amp;</td>
+                      <td>&amp;amp;</td>
+                    </tr>
+                    <tr>
+                      <td>"</td>
+                      <td>&amp;quot;</td>
+                    </tr>
+                    <tr>
+                      <td>'</td>
+                      <td>&amp;apos;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Prueba</h3>
+              <p class="separa_p" style="text-align: justify">
+                Cada uno de los campos del documento tiene una ubicación, tipo de dato y máximo
+                de caracteres definido, el cual siempre debe ser respetado para no tener
+                inconvenientes en la aprobación del servicio de impuestos internos.
+                <br>
+                Los nombres de cada nodo son "case sensitive" ó "sensible a mayúsculas",
+                quiere decir, se distinguen entre mayúsculas y minúsculas, por lo que deben ser creados
+                tal como se define el nombre de cada nodo en el presente documento.
+                <br>
+                Ejemplo: (Caratula) y no (caratula)
+              </p>
+            </div>
+            <!-- ENCABEZADO DEL DOCUMENTO -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="encabezado">Encabezado del Documento</h1>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "demo",
+    "rut": "11111111-1",
+    "usuario": "integracion",
+    "clave": "MW50M2dyNGMxMG4="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "33",
+        "Folio": "0",
+        "FchEmis": "2022-03-01",
+        "FchVenc": "2022-03-01"
+      },
+      "Emisor": {
+        "RUTEmisor": "11111111-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "90610",
+        "MntExe": "0",
+        "TasaIVA": "19",
+        "IVA": "17216",
+        "MntTotal": "107826"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "2",
+        "PrcItem": "45305",
+        "MontoItem": "90610"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;Encabezado&gt;
+  &lt;IdDoc&gt;
+    &lt;TipoDTE&gt;33&lt;/TipoDTE&gt;
+    &lt;Folio&gt;1&lt;/Folio&gt;
+    &lt;FchEmis&gt;2007-10-12&lt;/FchEmis&gt;
+    &lt;MntBruto&gt;0&lt;/MntBruto&gt;
+    &lt;FmaPago&gt;2&lt;/FmaPago&gt;
+    &lt;FchVenc&gt;2007-11-11&lt;/FchVenc&gt;
+  &lt;/IdDoc&gt;
+  &lt;Emisor&gt;
+    &lt;RUTEmisor&gt;1-9&lt;/RUTEmisor&gt;
+    &lt;RznSoc&gt;EMISOR DE PRUEBA&lt;/RznSoc&gt;
+    &lt;GiroEmis&gt;Giro del emisor de prueba&lt;/GiroEmis&gt;
+    &lt;Acteco&gt;519&lt;/Acteco&gt;
+    &lt;DirOrigen&gt;calle de prueba # 123456&lt;/DirOrigen&gt;
+    &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+    &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+    &lt;UUID&gt;922378a7-7493-42c5-9df0-f2eeba68e3a1&lt;/UUID&gt;
+  &lt;/Emisor&gt;
+  &lt;Receptor&gt;
+    &lt;RUTRecep&gt;2-8&lt;/RUTRecep&gt;
+    &lt;RznSocRecep&gt;RECEPTOR DE PRUEBA&lt;/RznSocRecep&gt;
+    &lt;GiroRecep&gt;Giro del receptor de prueba&lt;/GiroRecep&gt;
+    &lt;CorreoRecep&gt;&lt;/CorreoRecep&gt;
+    &lt;Contacto&gt;&lt;/Contacto&gt;
+    &lt;DirRecep&gt;Av. nueva # 654321&lt;/DirRecep&gt;
+    &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+    &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+  &lt;/Receptor&gt;
+  &lt;Totales&gt;
+    &lt;MntNeto&gt;177736&lt;/MntNeto&gt;
+    &lt;MntExe&gt;0&lt;/MntExe&gt;
+    &lt;TasaIVA&gt;19&lt;/TasaIVA&gt;
+    &lt;IVA&gt;33770&lt;/IVA&gt;
+    &lt;MntTotal&gt;211506&lt;/MntTotal&gt;
+  &lt;/Totales&gt;
+&lt;/Encabezado&gt;</code></pre>
+              </div>
+              
+              <div style="text-align: justify">
+                <p><strong>MntBruto:</strong> Corresponde al indicador de los montos en las líneas de detalle
+                son "Brutos" o "Netos", solo para documentos sin impuestos adicionales.</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 15%;">VALOR</th>
+                      <th class="text-center" style="width: 85%;">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0 o 1</td>
+                      <td>Líneas de detalle en montos netos.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Líneas de detalle en montos brutos.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>IndMntNeto(Boletas):</strong> Corresponde al indicador de los montos en las líneas de detalle
+                son "Brutos" o "Netos", solo para documentos sin impuestos adicionales.</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 15%;">VALOR</th>
+                      <th class="text-center" style="width: 85%;">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0</td>
+                      <td>Líneas de detalle en montos brutos.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Líneas de detalle en montos netos.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>FmaPago:</strong> Corresponde al indicador de cómo se pagará el Documento Electrónico</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="15%">VALOR</th>
+                      <th class="text-center" width="85%">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Forma de Pago Contado.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Forma de Pago Crédito.</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Sin Costo (Entrega Gratuita). No tiene derecho a uso de crédito fiscal</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>Observación:</strong> Corresponde a la observación general del documento, Alfanumérico 1000 caracteres (Opcional).</p>
+                
+                <p><strong>TipoDTE:</strong> Es el N° del tipo de documento codificado por el Servicio de Impuestos Internos.</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="20%;">NÚMERO</th>
+                      <th class="text-center" width="80%;">DOCUMENTO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>33</td>
+                      <td>FACTURA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>FACTURA EXENTA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>BOLETA ELECTRÓNICA AFECTA</td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>BOLETA ELECTRÓNICA EXENTA</td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>LIQUIDACIÓN FACTURA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>FACTURA DE COMPRA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>GUÍA DE DESPACHO ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>NOTA DE DÉBITO ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>61</td>
+                      <td>NOTA DE CRÉDITO ELECTRÓNICA</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>Folio:</strong> Es el folio del documento, si el documento es de tipo manual (no electrónico) se debe especificar el N° del folio de este mismo tipo de documento, en caso contrario (electrónico), se asigna el N° del folio correspondiente al tipo de documento electrónico, este número debe coincidir con el folio siguiente almacenado, ya que se asignará automáticamente de acuerdo a la autorización de folios disponible para el tipo de documento antes mencionado.</p>
+                
+                <p><strong>FchEmis:</strong> Es la fecha de emisión del documento electrónico, el formato de la fecha es "AAAA-MM-DD" (año, mes, día), por ejemplo: Si la fecha del documento es 30 de marzo de 2017, entonces la fecha será 2017-03-30.</p>
+                
+                <p><strong>FchVenc:</strong> Es la fecha de vencimiento del documento, el formato de la fecha es similar a la fecha de emisión, en este caso, "AAAA-MM-DD" (año, mes, día).</p>
+                
+                <h3 class="section-title">Etiqueta (IdDoc)</h3>
+                <p style="text-align: justify">Este nodo contiene la información que identifica el documento.</p>
+                
+                <p><strong>TipoDespacho:</strong> (Sólo para Guías de despacho) Indica si el documento acompaña bienes y el despacho es por cuenta del vendedor o del comprador. No se incluye si el documento no acompaña bienes o se trata de una Factura o Nota correspondiente a la prestación de servicios. Sus valores pueden ser:</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="20%;">VALOR</th>
+                      <th class="text-center" width="80%;">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Despacho por cuenta del receptor del documento (cliente o vendedor en caso de Facturas de compra).</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Despacho por cuenta del emisor a instalaciones del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Despacho por cuenta del emisor a otras instalaciones (Ejemplo: entrega en Obra).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>IndTraslado:</strong> (Sólo para Guías de despacho) Indica si el traslado de mercadería es por Venta (valor 1) o por otros motivos que no corresponden a venta (valores mayores a 1).</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="20%;">VALOR</th>
+                      <th class="text-center" width="80%;">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0</td>
+                      <td>Sin traslado.</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>Operación constituye venta.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Ventas por efectuar.</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Consignaciones.</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Entrega gratuita.</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Traslados internos.</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Otros traslados.</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>Guía de devolución.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>SucursalId:</strong> Campo opcional solo para identificar a que sucursal corresponde el documento.</p>
+                <p><strong>Vendedor:</strong> Campo opcional solo para identificar a que vendedor corresponde el documento.</p>
+                
+                <h3 class="section-title">Etiqueta (Emisor)</h3>
+                <p style="text-align: justify">Nodo que contiene la información de la empresa que emite el documento.</p>
+                
+                <p style="text-align: justify"><strong>RUTEmisor:</strong> Corresponde al RUT del Emisor del documento (con guión, dígito verificador y sin separador de miles). Ejemplo: 86789999-1.</p>
+                
+                <p style="text-align: justify"><strong>RznSoc:</strong> Corresponde a la Razón Social o Nombre correspondiente al emisor del documento, con un límite de 100 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>GiroEmis:</strong> Corresponde al giro del negocio del Emisor del documento, con un límite de 80 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>Acteco:</strong> Código de una de las actividades económicas del emisor del documento, registrada en el SII, de tipo numérico y con un largo máximo de 4 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>DirOrigen:</strong> Datos correspondientes a dirección desde donde se despachan bienes o de la sucursal que emite el documento (si no hay despacho de bienes), con un límite de 60 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>CmnaOrigen:</strong> Corresponde a la comuna asociada a la DirOrigen, con un límite de 20 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>CiudadOrigen:</strong> Corresponde a la ciudad asociada a la DirOrigen y CmnaOrigen, con un límite de 20 caracteres.</p>
+                
+                <p style="text-align: justify"><strong>UUID:</strong> Corresponde al identificador único del documento. Este identificador debe ser almacenado por el Integrador (cliente) y en DTEmite. Alfanumérico 36 caracteres (Obligatorio)</p>
+                
+                <h3 class="section-title">Etiqueta (Receptor)</h3>
+                <p style="text-align: justify">Nodo que contiene la información del cliente, quien recibe el documento.</p>
+                
+                <p style="text-align: justify"><strong>RUTRecep:</strong> Corresponde al RUT del Cliente, con valor desde 100.000 hasta 99 millones, guión y dígito verificador (sin separador de miles), por ejemplo: 11555888-K</p>
+                
+                <p style="text-align: justify"><strong>RznSocRecep:</strong> Corresponde a la Razón Social o Nombre correspondiente al Cliente, con un límite de 100 caracteres, por ejemplo: Empresa de Internet S.A.</p>
+                
+                <p style="text-align: justify"><strong>GiroRecep:</strong> Corresponde al giro del negocio del Cliente, con un límite de 40 caracteres, por ejemplo: Empresa de Internet S.A.</p>
+                
+                <p style="text-align: justify"><strong>Contacto:</strong> Campo opcional para información de contacto del receptor.</p>
+                
+                <p style="text-align: justify"><strong>DirRecep:</strong> Corresponde a la dirección legal del Cliente (registrada en el SII), con un límite de 60 caracteres, no se especifica la comuna ni la ciudad, por ejemplo: Gran Avenida Nº9988 Italia #7788 Las torres 765</p>
+                
+                <p style="text-align: justify"><strong>CorreoRecep:</strong> Corresponde al nodo para indicar el correo donde enviar el documento emitido.</p>
+                
+                <p style="text-align: justify"><strong>CmnaRecep:</strong> Corresponde a la comuna legal del Cliente (registrada en el SII), con un límite de 20 caracteres, por ejemplo: Providencia Santiago</p>
+                
+                <p style="text-align: justify"><strong>CiudadRecep:</strong> Corresponde a la ciudad legal del Cliente (registrada en el SII), con un límite de 20 caracteres, por ejemplo: Arica Santiago</p>
+                
+                <h3 class="section-title">Etiqueta (Totales)</h3>
+                <p style="text-align: justify">Corresponde a los montos totales del documento.</p>
+                
+                <p style="text-align: justify"><strong>MntNeto:</strong> Es el valor neto del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:</p>
+                
+                <table class="table table-striped table-custom" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="background: #0b66a5;color: #FFFFFF">ITEM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>MntNeto = SUM (Valor) – ValorDesctoTot + ValorRecgoTot</td>
+                    </tr>
+                    <tr>
+                      <td>SUM: sumatoria de los campos.</td>
+                    </tr>
+                    <tr>
+                      <td>Valor: corresponde al valor de los Ítems (MontoItem) afectos.</td>
+                    </tr>
+                    <tr>
+                      <td>ValorDesctoTot: sumatoria de descuentos globales (DscRcgGlobal).</td>
+                    </tr>
+                    <tr>
+                      <td>ValorRecgoTot: sumatoria de recargos globales (DscRcgGlobal).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p style="text-align: justify"><strong>MntExe:</strong> Es el valor exento del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:</p>
+                
+                <table class="table table-striped table-custom" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="background: #0b66a5;color: #FFFFFF">ITEM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>MntExe = SUM (ValorExento)</td>
+                    </tr>
+                    <tr>
+                      <td>SUM: sumatoria de los campos.</td>
+                    </tr>
+                    <tr>
+                      <td>ValorExento: corresponde al valor de los Ítems (MontoItem) no afectos (Líneas de detalle IndEx > 0).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p style="text-align: justify"><strong>TasaIVA:</strong> Corresponde a la tasa de impuesto al valor agregado (IVA), este valor debe ser expresado en porcentaje, por ejemplo:</p>
+                
+                <table class="table table-striped table-custom" style="width: 50%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="background: #0b66a5;color: #FFFFFF">ITEM</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-center">19.50</td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">18</td>
+                    </tr>
+                    <tr>
+                      <td class="text-center">19</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p style="text-align: justify"><strong>IVA:</strong> Es el valor IVA del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:</p>
+                <p style="margin-left: 60px;">IVA = MntNeto * (TasaIVA / 100)</p>
+                
+                <p style="text-align: justify"><strong>MntTotal:</strong> Es el valor Total o Bruto del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:</p>
+                <p style="margin-left: 60px;">Total = MntNeto + MntExe + IVA</p>
+                
+                <p style="text-align: justify"><strong>ImptoReten:</strong> Se pueden incluir 20 repeticiones de pares código – valor. Incluye los dos campos siguientes:</p>
+                <p style="margin-left: 60px;"><strong>TipoImp:</strong> Código del impuesto o retención de acuerdo a la codificación detallada en tabla de códigos.</p>
+                <p style="margin-left: 60px;"><strong>TasaImp:</strong> Se debe indicar la tasa de Impuesto adicional o retención. En el caso de impuesto específicos se puede omitir.</p>
+                <p style="margin-left: 60px;"><strong>MontoImp:</strong> Valor del impuesto o retención asociado al código indicado anteriormente.</p>
+                
+                <p style="text-align: justify"><strong>Comisiones:</strong></p>
+                <p style="margin-left: 60px;"><strong>ValComNeto:</strong> Suma de detalle de Valores de Comisiones y Otros Cargos.</p>
+                <p style="margin-left: 60px;"><strong>ValComExe:</strong> Suma de detalles de valores de comisiones y otros cargos no afectos o exentos.</p>
+                <p style="margin-left: 60px;"><strong>ValComIVA:</strong> Suma de detalle de IVA de Valor de Comisiones y Otros Cargos.</p>
+            </div>
+            <!-- DETALLES DEL DOCUMENTO -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="detalles">Detalles del Documento</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Corresponde a las líneas de detalle que posee un documento tributario,
+                con un máximo de 60 líneas de detalle.
+              </p>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">"Detalle": [
+  {
+    "NroLinDet": "1",
+    "CdgItem": {
+      "TpoCodigo": "INT1",
+      "VlrCodigo": "WWW"
+    },
+    "NmbItem": "Descripción de producto WWW",
+    "DscItem": "Serie ABC",
+    "QtyItem": "1",
+    "UnmdItem": "M3",
+    "PrcItem": "6000",
+    "MontoItem": "6000"
+  },
+  {
+    "NroLinDet": "2",
+    "CdgItem": {
+      "TpoCodigo": "INT1",
+      "VlrCodigo": "XXX"
+    },
+    "NmbItem": "Descripción de producto XXX",
+    "QtyItem": "1",
+    "UnmdItem": "M3",
+    "PrcItem": "4000",
+    "MontoItem": "4000"
+  }
+]</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;Detalle&gt;
+  &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+  &lt;CdgItem&gt;
+    &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+    &lt;VlrCodigo&gt;AAA&lt;/VlrCodigo&gt;
+  &lt;/CdgItem&gt;
+  &lt;NmbItem&gt;Producto AAA&lt;/NmbItem&gt;
+  &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+  &lt;PrcItem&gt;28080&lt;/PrcItem&gt;
+  &lt;DescuentoPct&gt;15&lt;/DescuentoPct&gt;
+  &lt;DescuentoMonto&gt;4212&lt;/DescuentoMonto&gt;
+  &lt;MontoItem&gt;23868&lt;/MontoItem&gt;
+&lt;/Detalle&gt;
+&lt;Detalle&gt;
+  &lt;NroLinDet&gt;2&lt;/NroLinDet&gt;
+  &lt;CdgItem&gt;
+    &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+    &lt;VlrCodigo&gt;BBB&lt;/VlrCodigo&gt;
+  &lt;/CdgItem&gt;
+  &lt;NmbItem&gt;Producto BBB&lt;/NmbItem&gt;
+  &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+  &lt;PrcItem&gt;28080&lt;/PrcItem&gt;
+  &lt;CodImpAdic&gt;19&lt;/CodImpAdic&gt;
+  &lt;DescuentoPct&gt;15&lt;/DescuentoPct&gt;
+  &lt;DescuentoMonto&gt;4212&lt;/DescuentoMonto&gt;
+  &lt;MontoItem&gt;23868&lt;/MontoItem&gt;
+&lt;/Detalle&gt;</code></pre>
+              </div>
+              
+              <div style="text-align: justify">
+                <p><strong>NroLinDet:</strong> Es el número de ítem de detalle del documento, de 1 a 60.</p>
+                <p><strong>UnmItem:</strong> Es la unidad de medida del producto, máximo 50 caracteres.</p>
+                <p><strong>CdgItem:</strong> Subnodo que contiene los ítems TpoCodigo y VlrCodigo que permiten identificar el código del producto.</p>
+                <p><strong>TpoCodigo:</strong> Indica el tipo de codificación utilizada, los valores a utilizar son: EAN13, PLU, DUN14, INT1, INT2, EAN128, etc. (Sin Validación).</p>
+                <p><strong>CodBodega:</strong> Código de la bodega perteneciente al producto para controlar stock, solamente si cuenta con módulo Inventario.</p>
+                <p><strong>VlrCodigo:</strong> Código del producto de acuerdo al tipo de codificación en el campo anterior, con un máximo de 35 caracteres, por ejemplo: 7801620016111 PARL300WTTS</p>
+                <p><strong>NmbItem:</strong> Es la descripción del producto antes indicado, con un máximo de 80 caracteres, por ejemplo: Mueble de computador café oscuro. Mouse óptico Microsoft USB/PS2</p>
+                <p><strong>QtyItem:</strong> Es la cantidad del ítem, su valor debe ser hasta 12 dígitos y 6 decimales, por ejemplo: 250, 41.5</p>
+                <p><strong>PrcItem:</strong> Es el precio unitario del ítem (expresado en pesos), su valor debe ser hasta 12 dígitos y 6 decimales, por ejemplo: 1000.43, 1536</p>
+                <p><strong>DescuentoPct:</strong> Es el porcentaje de descuento del ítem (cuando corresponda), si el ítem no posee descuento se debe asignar 0 (cero).</p>
+                <p><strong>CodImpAdic:</strong> Indica el código del impuesto.</p>
+                <p><strong>DescuentoMonto:</strong> Es el valor de descuento del ítem (cuando corresponda), si el ítem no posee descuento se debe asignar 0 (cero).</p>
+                <p><strong>RecargoPct:</strong> Es el porcentaje de recargo del ítem (cuando corresponda), si el ítem no posee recargo se debe asignar 0 (cero).</p>
+                <p><strong>RecargoMonto:</strong> Es el valor de recargo del ítem (cuando corresponda), si el ítem no posee recargo se debe asignar 0 (cero).</p>
+                
+                <p><strong>IndExe:</strong> Ítem opcional, solo es necesario si se desea indicar que la línea es exenta de IVA. Es de tipo numérico con un largo máximo de 1 carácter y su valor debe corresponder con la tabla siguiente:</p>
+                
+                <table class="table table-striped table-custom" style="width: 100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 15%;">ITEM</th>
+                      <th class="text-center">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>No afecto o exento de IVA.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Producto o servicio no es facturable.</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Garantía de depósito por envases (Cervezas, Jugos, Aguas Minerales, Bebidas Analcohólicas u otros autorizados por Resolución especial).</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Ítem No Venta. (Para facturas y guías de despacho (ésta última con Indicador Tipo de Traslado de Bienes igual a 1) y este ítem no será facturado.</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>Ítem a rebajar. Para guías de despacho NO VENTA que rebajan guía anterior. En el área de referencias se debe indicar la guía anterior.</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>Producto o servicio no facturable negativo.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>MontoItem:</strong> Es el valor del ítem, debe ser cero cuando el documento sea una Nota de Crédito tipo "fe de erratas" (ver campo código de referencia), puede ser cero cuando el documento sea una Guía de Despacho NO VENTA (según campo indicador de tipo de traslado de bienes del Encabezado), su valor se calcula de la siguiente forma:</p>
+                <p style="margin-left: 60px;">Valor = (PrcItem * QtyItem) – DescuentoMonto + RecargoMonto</p>
+            </div>
+              
+              <h3 class="section-title">Comisiones</h3>
+              <p style="text-align: justify">Este nodo contiene la información de las comisiones de los productos.</p>
+              
+              <div style="text-align: justify">
+                <p><strong>NroLinCom:</strong> Número de comisión u otro cargo. De 1 a 20.</p>
+                <p><strong>TipoMovim:</strong> C (comisión) u O (otros cargos).</p>
+                <p><strong>Glosa:</strong> Especificación de la comisión u otro cargo.</p>
+                <p><strong>TasaComision:</strong> Valor porcentual de la comisión u otro cargo, en 2 enteros y 2 decimales.</p>
+                <p><strong>ValComNeto:</strong> Valor neto de la comisión u otro cargo.</p>
+                <p><strong>ValComExe:</strong> Valor exento de la comisión u otro cargo.</p>
+                <p><strong>ValComIVA:</strong> Valor IVA de la comisión u otro cargo.</p>
+          </div>
+        </div>
+            
+            <!-- DESCUENTO/RECARGO GLOBAL -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="descuento">Descuento/Recargo Global</h1>
+      </div>
+              
+              <p style="text-align: justify">
+                Corresponde a los descuentos o recargos globales que se aplican al documento,
+                con un máximo de 20 líneas.
+              </p>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">"DscRcgGlobal": [
+  {
+    "NroLinDR": "1",
+    "TpoMov": "D",
+    "TpoValor": "%",
+    "ValorDR": "10"
+  }
+]</code></pre>
+    </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;DscRcgGlobal&gt;
+  &lt;NroLinDR&gt;1&lt;/NroLinDR&gt;
+  &lt;TpoMov&gt;D&lt;/TpoMov&gt;
+  &lt;TpoValor&gt;%&lt;/TpoValor&gt;
+  &lt;ValorDR&gt;10&lt;/ValorDR&gt;
+&lt;/DscRcgGlobal&gt;</code></pre>
+              </div>
+              
+              <div style="text-align: justify">
+                <p><strong>NroLinDR:</strong> Número de descuento o recargo, secuencial de 1 a 20.</p>
+                
+                <p><strong>TpoMov:</strong> Indica el tipo de movimiento, texto 1 carácter, Ejemplo: D: Descuento R: Recargo</p>
+                
+                <p><strong>GlosaDR:</strong> Especificación del descuento o recargo, de tipo alfanumérico con un largo máximo de 45 caracteres.</p>
+                
+                <p><strong>TpoValor:</strong> Indica si el valor asociado al descuento es de tipo porcentaje (%) o es un monto ($), valor alfanumérico de 1 carácter y sus valores admitidos son: %: Porcentaje $: Monto</p>
+                
+                <p><strong>Valor:</strong> Valor del descuento o recargo en 16 enteros y 2 decimales.</p>
+                
+                <p><strong>IndExeDR:</strong> Campo opcional para indicar si el descuento/recargo es exento.</p>
+              </div>
+            </div>
+            
+            <!-- REFERENCIAS DEL DOCUMENTO -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="referencia">Referencias del documento</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Corresponde a las líneas de referencia que posee un documento tributario,
+                con un máximo de 20 líneas.
+                <br>
+                Cuando se realiza una NOTA DE CRÉDITO o NOTA DE DÉBITO debe contener una
+                referencia a un documento que está modificando. Por ejemplo:
+                si una NOTA DE CRÉDITO anula una FACTURA se debe crear una línea de referencia
+                indicando el tipo de documento, el folio, la fecha del documento referenciado,
+                código y la razón de la referencia.
+              </p>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">"Referencia": [
+  {
+    "NroLinRef": "1",
+    "TpoDocRef": "33",
+    "FolioRef": "123",
+    "FchRef": "2007-08-03",
+    "CodRef": "1",
+    "RazonRef": "152445596-6655215"
+  }
+]</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;Referencia&gt;
+  &lt;NroLinRef&gt;1&lt;/NroLinRef&gt;
+  &lt;TpoDocRef&gt;33&lt;/TpoDocRef&gt;
+  &lt;FolioRef&gt;123&lt;/FolioRef&gt;
+  &lt;FchRef&gt;2007-08-03&lt;/FchRef&gt;
+  &lt;CodRef&gt;1&lt;/CodRef&gt;
+  &lt;RazonRef&gt;Anula documento&lt;/RazonRef&gt;
+&lt;/Referencia&gt;</code></pre>
+              </div>
+              
+              <div style="text-align: justify">
+                <p><strong>NroLineaRef:</strong> Es el número de referencia del documento, de 1 a 20.</p>
+                
+                <p><strong>TpoDocRef:</strong> Es el N° del tipo de documento al que se hace referencia, este número está codificado por el Servicio de Impuestos Internos.</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="20%;">NÚMERO</th>
+                      <th class="text-center" width="80%;">DOCUMENTO</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>33</td>
+                      <td>FACTURA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>34</td>
+                      <td>FACTURA EXENTA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>39</td>
+                      <td>BOLETA ELECTRÓNICA AFECTA</td>
+                    </tr>
+                    <tr>
+                      <td>41</td>
+                      <td>BOLETA ELECTRÓNICA EXENTA</td>
+                    </tr>
+                    <tr>
+                      <td>43</td>
+                      <td>LIQUIDACIÓN FACTURA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>46</td>
+                      <td>FACTURA DE COMPRA ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>52</td>
+                      <td>GUÍA DE DESPACHO ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>56</td>
+                      <td>NOTA DE DÉBITO ELECTRÓNICA</td>
+                    </tr>
+                    <tr>
+                      <td>61</td>
+                      <td>NOTA DE CRÉDITO ELECTRÓNICA</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>FolioRef:</strong> Es el folio del documento referenciado, indica el número del documento que se alterará.</p>
+                
+                <p><strong>FechaRef:</strong> Es la fecha de emisión del documento al que se hace referencia, el formato de la fecha es "AAAA-MM-DD" (año, mes, día), por ejemplo: Si la fecha del documento referenciado es 14 de enero de 2005, entonces la fecha será 2005-01-14.</p>
+                
+                <p><strong>CodRef:</strong> Indica los distintos casos de referencia, los cuales pueden ser:</p>
+                
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" width="20%;">NÚMERO</th>
+                      <th class="text-center" width="80%;">DETALLE</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Anula Documento de Referencia.</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Corrige Texto Documento de referencia.</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Corrige Montos.</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Anulación Masiva de documentos.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p><strong>RazonRef:</strong> Explicitar razón. Ejemplo una Nota de Crédito que hace referencia a una factura, indica "descuento por pronto pago", "error en precio" o "anula factura", etc. El campo tiene un largo máximo de 90 caracteres.</p>
+              </div>
+            </div>
+            
+            <!-- EJEMPLOS PARA ORDEN DE COMPRA -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="ejemplos">Ejemplo para Orden de Compra</h1>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">"Referencia": [
+  {
+    "NroLinRef": "1",
+    "TpoDocRef": "801",
+    "FolioRef": "4505421654",
+    "FchRef": "2011-08-01",
+    "CodRef": "0",
+    "RazonRef": "ORDEN DE COMPRA"
+  }
+]</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;Referencia&gt;
+  &lt;NroLinRef&gt;1&lt;/NroLinRef&gt;
+  &lt;TpoDocRef&gt;801&lt;/TpoDocRef&gt;
+  &lt;FolioRef&gt;4505421654&lt;/FolioRef&gt;
+  &lt;FchRef&gt;2011-08-01&lt;/FchRef&gt;
+  &lt;CodRef&gt;0&lt;/CodRef&gt;
+  &lt;RazonRef&gt;ORDEN DE COMPRA&lt;/RazonRef&gt;
+&lt;/Referencia&gt;</code></pre>
+              </div>
+            </div>
+            
+            <!-- CAMPOS ADICIONALES -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="campo_adicional">Campos adicionales para agregar a un doc. impreso</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                La aplicación que leerá estos archivos cuenta con la posibilidad de poder leer 10 campos "adicionales".
+                Estos campos adicionales pueden usarse para agregar información al ejemplar impreso del documento, por ejemplo, nombre del vendedor, teléfono, condición de pago, etc.
+                Solo el campo adicional 10 (A10) tiene un valor definido y corresponde al cuadro de observaciones que se imprime en el ejemplar impreso.
+                La inclusión de estos en el documento JSON es opcional.
+              </p>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON:</h4>
+                <pre><code class="lang-json">"Adicional": {
+  "NodosA": [
+    {
+      "valor": "5331706"
+    },
+    {
+      "valor": "5331706"
+    }
+  ]
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo XML:</h4>
+                <pre><code class="lang-xml">&lt;Adicional&gt;
+  &lt;NodosA&gt;
+    &lt;valor&gt;5331706&lt;/valor&gt;
+    &lt;valor&gt;5331706&lt;/valor&gt;
+  &lt;/NodosA&gt;
+&lt;/Adicional&gt;</code></pre>
+              </div>
+            </div>
+            
+            <!-- MÉTODOS Y PARÁMETROS -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="funcionalidades">Métodos y parámetros</h1>
+              </div>
+              
+              <h3 class="section-title">Protocolos y estándares REST</h3>
+              <p class="text-justify">
+                Se describe la funcionalidad, parámetros y métodos que componen nuestro servicio disponible para la integración a la solución de gestión de documentos tributarios electrónicos DTEmite. Este servicio está orientado a nuestros clientes que utilizan un aplicativo externo que NO tienen la opción de emisión de documentos electrónicos. Nuestro web service utiliza los protocolos y estándares REST.
+                <br>
+                Endpoint: https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento
+              </p>
+              
+              <h3 class="section-title">Métodos REST:</h3>
+              <table class="table table-striped table-custom" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 33%;">Nombre método</th>
+                    <th class="text-center" style="width: 33%;">Parámetro de entrada</th>
+                    <th class="text-center" style="width: 30%;">Parámetro de salida</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>{endpoint}</strong><br>Encargado de integrar los documentos</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-json</strong>
+                    </td>
+                    <td>
+                      String (JSON respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - PDF (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>{endpoint}/Pdf</strong><br>Retorna PDF de documento específico</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (JSON respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - PDF (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>{endpoint}/Xml</strong><br>Retorna XML de documento específico</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - XML (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <p>Los campos marcados con (*) son entregados por DTEmite.</p>
+              
+              <h3 class="section-title">Ejemplo REST:</h3>
+              
+              <div class="code-example">
+                <h4>Ejemplo de información de Consumo:</h4>
+                <p><strong>HEADERS:</strong> Content-Type: application/json</p>
+                <p><strong>METHOD:</strong> POST</p>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "demo",
+    "rut": "11111111-1",
+    "usuario": "integracion",
+    "clave": "MW50M2dyNGMxMG4="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "33",
+        "Folio": "1",
+        "FchEmis": "2008-09-01",
+        "FchVenc": "2008-09-20"
+      },
+      "Emisor": {
+        "RUTEmisor": "6-K",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "90610",
+        "MntExe": "0",
+        "TasaIVA": "19",
+        "IVA": "17216",
+        "MntTotal": "107826"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "2",
+        "PrcItem": "45305",
+        "MontoItem": "90610"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Protocolos y estándares SOAP</h3>
+              <p class="text-justify">
+                Se describe la funcionalidad, parámetros y métodos que componen nuestro servicio disponible para la integración a la solución de gestión de documentos tributarios electrónicos DTEmite. Este servicio está orientado a nuestros clientes que utilizan un aplicativo externo que NO tienen la opción de emisión de documentos electrónicos. Nuestro web service utiliza los protocolos y estándares SOAP.
+                <br>
+                Dirección WSDL:
+                <a href="http://api.dtemite.cl:8089/WSDTEIntegrado/WSDTEInt?wsdl" target="_blank">
+                  http://api.dtemite.cl:8089/WSDTEIntegrado/WSDTEInt?wsdl</a>
+              </p>
+              
+              <h3 class="section-title">Métodos SOAP:</h3>
+              <table class="table table-striped table-custom" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 33%;">Nombre método</th>
+                    <th class="text-center" style="width: 33%;">Parámetro de entrada</th>
+                    <th class="text-center" style="width: 30%;">Parámetro de salida</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Emision</strong><br>Encargado de integrar los documentos</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut usuario</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-xml</strong>
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - PDF (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>ObtenerPDF</strong><br>Retorna PDF de documento específico</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut usuario</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - PDF (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>ObtenerXml</strong><br>Retorna XML de documento específico</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut usuario</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - XML (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>ObtenerTrazabilidad</strong><br>Retorna trazabilidad del documento</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut usuario</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (JSON respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - Estados con la trazabilidad del documento
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>ObtenerPDFCredible</strong><br>Retorna PDF creíble del documento</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut usuario</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-tipodte</strong> (string)<br>
+                      <strong>-foliodte</strong> (string)
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Folio DTE<br>
+                      - Tipo DTE<br>
+                      - PDF (corresponde a un arreglo de bytes codificado en base64).
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>get_DTEcompra</strong><br>Retorna documentos de compra</td>
+                    <td>
+                      <strong>-Sistema</strong> (string)*<br>
+                      <strong>-rut</strong> (string)<br>
+                      <strong>-usuario</strong> (string)*<br>
+                      <strong>-clave</strong> (string codificado en base64)*<br>
+                      <strong>-fechaDesde</strong> (string aaaa-mm-dd)<br>
+                      <strong>-fechaHasta</strong> (string aaaa-mm-dd)
+                    </td>
+                    <td>
+                      String (XML respuesta) donde indica:<br>
+                      - Tipo DTE<br>
+                      - Folio DTE<br>
+                      - Fecha Emisión DTE<br>
+                      - Fecha Vcto DTE<br>
+                      - Rut Proveedor<br>
+                      - Num OC DTE<br>
+                      - Monto Total DTE<br>
+                      - Referencia DTE<br>
+                      - XML DTE (Base64)<br>
+                      - Flag Con o Sin XML
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <p>Los campos marcados con (*) son entregados por DTEmite.</p>
+              
+              <h3 class="section-title">Ejemplos de uso:</h3>
+              
+              <div class="code-example">
+                <h4>Ejemplo 1 - Sistema básico:</h4>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  }
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo 2 - Con documento específico:</h4>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "tipodte": "33",
+    "foliodte": "136"
+  }
+}</code></pre>
+              </div>
+            </div>
+            
+            <!-- API EMISIÓN DOCUMENTOS ELECTRÓNICOS -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="api_emision">API Emisión Documentos Electrónicos</h1>
+              </div>
+              
+             
+              <h3 class="section-title">Ambiente de Prueba</h3>
+              <p style="text-align: justify">
+                <strong>Credenciales de integración:</strong> Cada cliente tendrá distintas credenciales de integración. 
+                Estas credenciales van incorporadas en el JSON.
+              </p>
+              
+              <div class="code-example">
+                <h4>Credenciales de Prueba:</h4>
+                <ul>
+                  <li><strong>Rut:</strong> 29282726-1</li>
+                  <li><strong>Sistema:</strong> webbasico</li>
+                  <li><strong>Usuario:</strong> integrado_webbasico</li>
+                  <li><strong>Clave B64:</strong> d2ViYmFzaWNvMjAyMQ==</li>
+                </ul>
+              </div>
+              
+              <h3 class="section-title">Portal Web</h3>
+              <p style="text-align: justify">
+                Aquí puede revisar los documentos generados:
+              </p>
+              <ul>
+                <li><strong>Link:</strong> <a href="https://pro.dtemite.cl/Login/webbasico" target="_blank">https://pro.dtemite.cl/Login/webbasico</a></li>
+                <li><strong>Usuario:</strong> demo</li>
+                <li><strong>Clave:</strong> demo123</li>
+              </ul>
+              
+              <h3 class="section-title">API REST</h3>
+              <p style="text-align: justify">
+                <strong>EndPoint:</strong> 
+                <code>https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</code>
+              </p>
+              
+              <h3 class="section-title">Ejemplos de Archivos JSON</h3>
+              
+              <h4>1. Factura Electrónica</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "33",
+        "Folio": "0",
+        "MntBruto": "2",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-26"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10000",
+        "MntExe": "0",
+        "IVA": "1900",
+        "MntTotal": "11900"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "11900",
+        "MontoItem": "11900"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h4>2. Nota de Crédito</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "61",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-20"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecpt": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10034",
+        "MntExe": "0",
+        "IVA": "1906",
+        "MntTotal": "11940"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "10034",
+        "MontoItem": "10034"
+      }
+    ],
+    "Referencia": [
+      {
+        "NroLinRef": "1",
+        "TpoDocRef": "30",
+        "FolioRef": "41139",
+        "FchRef": "2007-06-29",
+        "CodRef": "1",
+        "RazonRef": "Anula Documento Ref"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h4>3. Boleta Electrónica</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "39",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-26"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10000",
+        "MntExe": "0",
+        "IVA": "1900",
+        "MntTotal": "11900"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "11900",
+        "MontoItem": "11900"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Ejemplo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API REST, puede utilizar Postman con la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</li>
+                <li><strong>Headers:</strong> Content-Type: application/json</li>
+                <li><strong>Body:</strong> Utilice cualquiera de los ejemplos JSON proporcionados arriba</li>
+              </ul>
+            </div>
+            
+            <!-- PANEL DE PRUEBAS DE INTEGRACIÓN -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="panel_pruebas">Panel de Pruebas de Integración</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Utiliza este panel para probar las APIs REST y SOAP de DTEmite directamente desde el navegador. 
+                Puedes enviar documentos de prueba y ver las respuestas en tiempo real.
+              </p>
+              
+              <div class="test-panel">
+                <h3 class="section-title">Configuración de Credenciales</h3>
+                <div class="test-form">
+                  <label for="apiType">Tipo de API:</label>
+                  <select id="apiType">
+                    <option value="rest">REST</option>
+                    <option value="soap">SOAP</option>
+                  </select>
+                  
+                  <div id="soapMethodsPanel" style="display: none;">
+                    <label for="soapMethod">Método SOAP:</label>
+                    <select id="soapMethod">
+                      <option value="Emision">Emision - Integrar documentos</option>
+                      <option value="ObtenerPDF">ObtenerPDF - Obtener PDF específico</option>
+                      <option value="ObtenerXml">ObtenerXml - Obtener XML específico</option>
+                      <option value="ObtenerTrazabilidad">ObtenerTrazabilidad - Estado del documento</option>
+                      <option value="ObtenerPDFCredible">ObtenerPDFCredible - PDF Credible</option>
+                      <option value="get_DTEcompra">get_DTEcompra - DTE de compra por fechas</option>
+                    </select>
+                    
+                    <div id="soapParamsPanel" style="display: none;">
+                      <label for="tipodte">Tipo DTE:</label>
+                      <input type="text" id="tipodte" value="33" placeholder="33">
+                      
+                      <label for="foliodte">Folio DTE:</label>
+                      <input type="text" id="foliodte" value="1" placeholder="1">
+                      
+                      <label for="fechaDesde">Fecha Desde:</label>
+                      <input type="date" id="fechaDesde" value="2024-01-01">
+                      
+                      <label for="fechaHasta">Fecha Hasta:</label>
+                      <input type="date" id="fechaHasta" value="2024-12-31">
+                    </div>
+                  </div>
+                  
+                  <label for="endpoint">Endpoint:</label>
+                  <input type="text" id="endpoint" value="https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento">
+                  
+                  <label for="rut">RUT:</label>
+                  <input type="text" id="rut" value="29282726-1">
+                  
+                  <label for="sistema">Sistema:</label>
+                  <input type="text" id="sistema" value="webbasico">
+                  
+                  <label for="usuario">Usuario:</label>
+                  <input type="text" id="usuario" value="integrado_webbasico">
+                  
+                  <label for="clave">Clave (Base64):</label>
+                  <input type="text" id="clave" value="d2ViYmFzaWNvMjAyMQ==">
+                </div>
+                
+                <h3 class="section-title">Plantillas de Documentos</h3>
+                <div class="test-form">
+                  <label for="documentTemplate">Seleccionar Plantilla:</label>
+                  <select id="documentTemplate">
+                    <option value="factura">Factura Electrónica</option>
+                    <option value="nota_credito">Nota de Crédito</option>
+                    <option value="boleta">Boleta Electrónica</option>
+                    <option value="custom">Personalizado</option>
+                  </select>
+                  
+                  <label for="jsonData">JSON del Documento:</label>
+                  <textarea id="jsonData" placeholder="Pega aquí el JSON del documento..."></textarea>
+                  
+                  <button class="btn-test" onclick="loadTemplate()">Cargar Plantilla</button>
+                  <button class="btn-test" onclick="clearForm()">Limpiar</button>
+                  <button class="btn-test" onclick="sendRequest()" id="sendBtn">Enviar Petición</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                  <div class="spinner"></div>
+                  <p>Enviando petición...</p>
+                </div>
+                
+                <div class="response-panel" id="responsePanel" style="display: none;">
+                  <h4>Respuesta de la API:</h4>
+                  <pre id="responseContent"></pre>
+                </div>
+              </div>
+    
+              
+              <h3 class="section-title">Plantillas REST (JSON)</h3>
+              
+              <div class="code-example">
+                <h4>1. Factura Electrónica</h4>
+                <button class="btn-test" onclick="loadFacturaTemplate()">Cargar Plantilla</button>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "33",
+        "Folio": "0",
+        "MntBruto": "2",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-26"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10000",
+        "MntExe": "0",
+        "IVA": "1900",
+        "MntTotal": "11900"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "11900",
+        "MontoItem": "11900"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>2. Nota de Crédito</h4>
+                <button class="btn-test" onclick="loadNotaCreditoTemplate()">Cargar Plantilla</button>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "61",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-20"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecpt": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10034",
+        "MntExe": "0",
+        "IVA": "1906",
+        "MntTotal": "11940"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "10034",
+        "MontoItem": "10034"
+      }
+    ],
+    "Referencia": [
+      {
+        "NroLinRef": "1",
+        "TpoDocRef": "30",
+        "FolioRef": "41139",
+        "FchRef": "2007-06-29",
+        "CodRef": "1",
+        "RazonRef": "Anula Documento Ref"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>3. Boleta Electrónica</h4>
+                <button class="btn-test" onclick="loadBoletaTemplate()">Cargar Plantilla</button>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "39",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-26"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "10000",
+        "MntExe": "0",
+        "IVA": "1900",
+        "MntTotal": "11900"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "WWW"
+        },
+        "NmbItem": "Descripción de producto WWW",
+        "QtyItem": "1",
+        "PrcItem": "11900",
+        "MontoItem": "11900"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Plantillas SOAP (XML)</h3>
+              
+              <div class="code-example">
+                <h4>1. SOAP - Emision (Integrar documentos)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_emision')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;xml&gt;&lt;Documento&gt;
+  &lt;Encabezado&gt;
+    &lt;IdDoc&gt;
+      &lt;TipoDTE&gt;33&lt;/TipoDTE&gt;
+      &lt;Folio&gt;0&lt;/Folio&gt;
+      &lt;MntBruto&gt;2&lt;/MntBruto&gt;
+      &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
+      &lt;FchVenc&gt;2024-01-26&lt;/FchVenc&gt;
+    &lt;/IdDoc&gt;
+    &lt;Emisor&gt;
+      &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
+      &lt;RznSocEmisor&gt;EMPRESA DE PRUEBA&lt;/RznSocEmisor&gt;
+      &lt;GiroEmisor&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmisor&gt;
+      &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
+      &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+      &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+    &lt;/Emisor&gt;
+    &lt;Receptor&gt;
+      &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
+      &lt;CdgIntRecep&gt;1000215-220&lt;/CdgIntRecep&gt;
+      &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
+      &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
+      &lt;Contacto&gt;correo@prueba.cl&lt;/Contacto&gt;
+      &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
+      &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+      &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+    &lt;/Receptor&gt;
+    &lt;Totales&gt;
+      &lt;MntNeto&gt;10000&lt;/MntNeto&gt;
+      &lt;MntExe&gt;0&lt;/MntExe&gt;
+      &lt;IVA&gt;1900&lt;/IVA&gt;
+      &lt;MntTotal&gt;11900&lt;/MntTotal&gt;
+    &lt;/Totales&gt;
+  &lt;/Encabezado&gt;
+  &lt;Detalle&gt;
+    &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+    &lt;CdgItem&gt;
+      &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+      &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
+    &lt;/CdgItem&gt;
+    &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
+    &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+    &lt;PrcItem&gt;11900&lt;/PrcItem&gt;
+    &lt;MontoItem&gt;11900&lt;/MontoItem&gt;
+  &lt;/Detalle&gt;
+&lt;/Documento&gt;&lt;/xml&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>2. SOAP - ObtenerPDF (Obtener PDF específico)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_obtener_pdf')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;tipodte&gt;33&lt;/tipodte&gt;
+&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>3. SOAP - ObtenerXml (Obtener XML específico)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_obtener_xml')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;tipodte&gt;33&lt;/tipodte&gt;
+&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>4. SOAP - ObtenerTrazabilidad (Estado del documento)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_obtener_trazabilidad')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;tipodte&gt;33&lt;/tipodte&gt;
+&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>5. SOAP - ObtenerPDFCredible (PDF Credible)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_obtener_pdf_credible')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;tipodte&gt;33&lt;/tipodte&gt;
+&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>6. SOAP - get_DTEcompra (DTE de compra por fechas)</h4>
+                <button class="btn-test" onclick="loadTemplate('soap_get_dte_compra')">Cargar Plantilla</button>
+                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
+&lt;rut&gt;29282726-1&lt;/rut&gt;
+&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+&lt;fechaDesde&gt;2024-01-01&lt;/fechaDesde&gt;
+&lt;fechaHasta&gt;2024-12-31&lt;/fechaHasta&gt;</code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botón Volver al Principio -->
+    <button class="back-to-top" id="backToTop" title="Volver al principio">
+      ↑
+    </button>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/highlight.pack.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/panel-pruebas.js"></script>
+    
+    <script>
+      // Botón Volver al Principio
+      $(document).ready(function() {
+        // Mostrar/ocultar botón según scroll
+        $(window).scroll(function() {
+          if ($(this).scrollTop() > 300) {
+            $('#backToTop').fadeIn();
+          } else {
+            $('#backToTop').fadeOut();
+          }
+        });
+        
+        // Scroll suave al hacer clic
+        $('#backToTop').click(function() {
+          $('html, body').animate({
+            scrollTop: 0
+          }, 800);
+          return false;
+        });
+        
+        // FUNCIONALIDAD DE EXPANDIR/CONTRAR BLOQUES DE CÓDIGO
+        function initCodeBlocks() {
+          console.log('🚀 Inicializando bloques de código...');
+          
+          $('.code-example').each(function(index) {
+            var $codeExample = $(this);
+            var $pre = $codeExample.find('pre');
+            
+            // Solo procesar si tiene contenido pre y no está ya configurado
+            if ($pre.length > 0 && !$codeExample.hasClass('code-block-initialized')) {
+              console.log('⚙️ Configurando bloque', index);
+              
+              // Marcar como inicializado
+              $codeExample.addClass('code-block-initialized');
+              
+              // Envolver el contenido del pre en un div
+              var $codeContent = $('<div class="code-content collapsed"></div>');
+              $pre.contents().wrapAll($codeContent);
+              
+              // Agregar botón de toggle
+              var $toggleBtn = $('<button class="code-toggle-btn" title="Expandir código">+</button>');
+              $codeExample.append($toggleBtn);
+              
+              console.log('✅ Bloque', index, 'configurado');
+            }
+          });
+          
+          // Agregar event listeners para los botones
+          $('.code-toggle-btn').off('click').on('click', function(e) {
+            e.preventDefault();
+            console.log('🖱️ Botón clickeado');
+            
+            var $btn = $(this);
+            var $codeExample = $btn.closest('.code-example');
+            var $codeContent = $codeExample.find('.code-content');
+            
+            if ($codeContent.hasClass('collapsed')) {
+              console.log('📤 Expandiendo...');
+              $codeContent.removeClass('collapsed').addClass('expanded');
+              $btn.html('−').attr('title', 'Contraer código');
+            } else {
+              console.log('📥 Contrayendo...');
+              $codeContent.removeClass('expanded').addClass('collapsed');
+              $btn.html('+').attr('title', 'Expandir código');
+            }
+          });
+          
+          console.log('🎉 Inicialización completada');
+        }
+        
+        // Ejecutar inicialización
+        initCodeBlocks();
+        
+        // DIAGNÓSTICO Y PRUEBA
+        setTimeout(function() {
+          console.log('🔍 DIAGNÓSTICO:');
+          console.log('📊 Bloques .code-example:', $('.code-example').length);
+          console.log('🔘 Botones .code-toggle-btn:', $('.code-toggle-btn').length);
+          console.log('📦 Contenedores .code-block-container:', $('.code-block-container').length);
+          console.log('📄 Contenidos .code-content:', $('.code-content').length);
+          
+          // Intentar crear botones manualmente si no existen
+          if ($('.code-toggle-btn').length === 0) {
+            console.log('🚨 NO HAY BOTONES - CREANDO MANUALMENTE...');
+            
+            $('.code-example').each(function(index) {
+              var $codeExample = $(this);
+              var $pre = $codeExample.find('pre');
+              
+              if ($pre.length > 0 && !$codeExample.hasClass('code-block-initialized')) {
+                console.log('⚙️ Creando bloque', index);
+                
+                $codeExample.addClass('code-block-initialized');
+                
+                var $codeContent = $('<div class="code-content collapsed"></div>');
+                $pre.contents().wrapAll($codeContent);
+                
+                var $toggleBtn = $('<button class="code-toggle-btn" title="Expandir código">+</button>');
+                $codeExample.append($toggleBtn);
+                
+                console.log('✅ Bloque', index, 'creado manualmente');
+              }
+            });
+            
+            // Re-agregar event listeners
+            $('.code-toggle-btn').off('click').on('click', function(e) {
+              e.preventDefault();
+              console.log('🖱️ Botón clickeado (manual)');
+              
+              var $btn = $(this);
+              var $codeExample = $btn.closest('.code-example');
+              var $codeContent = $codeExample.find('.code-content');
+              
+              if ($codeContent.hasClass('collapsed')) {
+                console.log('📤 Expandiendo (manual)...');
+                $codeContent.removeClass('collapsed').addClass('expanded');
+                $btn.html('−').attr('title', 'Contraer código');
+              } else {
+                console.log('📥 Contrayendo (manual)...');
+                $codeContent.removeClass('expanded').addClass('collapsed');
+                $btn.html('+').attr('title', 'Expandir código');
+              }
+            });
+            
+            console.log('🎉 CREACIÓN MANUAL COMPLETADA');
+            console.log('🔘 Botones después de creación manual:', $('.code-toggle-btn').length);
+          }
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,895 @@
+
+Documentación de integración para documentos electrónicos
+Introducción
+Este documento describe el formato y contenido que debe tener el archivo JSON que cuenta con un único nodo raíz (DTE) dentro del cual contendrá la información del documento a procesar utilizando la codificación ISO-8859-1 (ISO LATIN1).
+
+Formato
+Dicho documento es utilizado para la integración en procesos de facturación electrónica.
+
+-El formato JSON o XML posee los siguientes caracteres especiales, los que deben ser reemplazados en la sección de siglas:
+
+CARACTER ESPECIAL	SIGLAS
+<	& lt
+>	& gt;
+&	& amp;
+"	& quot;
+'	& apos ;
+Prueba
+-Cada uno de los campos del documento tiene una ubicación, tipo de dato y máximo de caracteres definido, el cual siempre debe ser respetado para no tener inconvenientes en la aprobación del servicio de impuestos internos.
+-Los nombres de cada nodo son “case sensitive” ó “sensible a mayúsuculas”, quiere decir, se distinguen entre mayúsculas y minúsculas, por lo que deben ser creados tal como se define el nombre de cada nodo en el presente documento.
+Ejemplo: (Caratula) y no (caratula)
+
+Encabezado del Documento
+Ejemplo Json
+Ejemplo XML
+                    
+                      <Encabezado>
+                            <IdDoc>
+                                <TipoDTE>33</TipoDTE>
+                                <Folio>1</Folio>
+                                <FchEmis>2007-10-12</FchEmis>
+                                <MntBruto>0</MntBruto>
+                                <FmaPago>2</FmaPago>
+                                <FchVenc>2007-11-11</FchVenc>
+                            </IdDoc>
+                            <Emisor>
+                                <RUTEmisor>1-9</RUTEmisor>
+                                <RznSoc>EMISOR DE PRUEBA</RznSoc>
+                                <GiroEmis>Giro del emisor de prueba</GiroEmis>
+                                <Acteco>519</Acteco>
+                                <DirOrigen>calle de prueba # 123456</DirOrigen>
+                                <CmnaOrigen>PROVIDENCIA</CmnaOrigen>
+                                <CiudadOrigen>SANTIAGO</CiudadOrigen>
+                                <UUID>922378a7-7493-42c5-9df0-f2eeba68e3a1</UUID>
+                            </Emisor>
+                            <Receptor>
+                                <RUTRecep>2-8</RUTRecep>
+                                <RznSocRecep>RECEPTOR DE PRUEBA</RznSocRecep>
+                                <GiroRecep>Giro del receptor de prueba</GiroRecep>
+                                <CorreoRecep></CorreoRecep>
+                                <Contacto></Contacto>
+                                <DirRecep>Av. nueva # 654321</DirRecep>
+                                <CmnaRecep>SANTIAGO</CmnaRecep>
+                                <CiudadRecep>SANTIAGO</CiudadRecep>
+                            </Receptor>
+                            <Totales>
+                                <MntNeto>177736</MntNeto>
+                                <MntExe>0</MntExe>
+                                <TasaIVA>19</TasaIVA>
+                                <IVA>33770</IVA>
+                                <MntTotal>211506</MntTotal>
+                                </Totales>
+                      </Encabezado>
+                
+
+MntBruto: Corresponde al indicador de los montos en las líneas de detalle son “Brutos” o “Netos”, solo para documentos sin impuestos adicionales.
+VALOR	DETALLE
+0 o 1	Lineas de detalle en montos netos.
+2	Lineas de detalle en montos brutos.
+IndMntNeto(Boletas): Corresponde al indicador de los montos en las líneas de detalle son “Brutos” o “Netos”, solo para documentos sin impuestos adicionales.
+VALOR	DETALLE
+0	Lineas de detalle en montos brutos.
+2	Lineas de detalle en montos netos.
+FmaPago: Corresponde al indicador de cómo se pagará el Documento Electrónico
+
+VALOR	DETALLE
+1	Forma de Pago Contado.
+2	Forma de Pago Credito.
+3	Sin Costo (Entrega Gratuita). No tiene derecho a uso de crédito fiscal
+Observación: Corresponde a la observación general del documento, Alfanumérico 1000 caracteres(Opcional).
+
+TipoDTE: Es el N° del tipo de documento codificado por el Servicio de Impuestos Internos.
+
+NÚMERO	DOCUMENTO
+33	FACTURA ELECTRÓNICA
+34	FACTURA EXENTA ELECTRÓNICA
+39	BOLETA ELECTRÓNICA AFECTA
+41	BOLETA ELECTRÓNICA EXENTA
+43	LIQUIDACIÓN FACTURA ELECTRÓNICA
+46	FACTURA DE COMPRA ELCTRÓNICA
+52	GUÍA DE DESPACHO ELECTRÓNICA
+56	NOTA DE DÉBITO ELECTRÓNICA
+61	NOTA DE CRÉDITO ELECTRÓNICA
+
+Folio: Es el folio del documento, si el documento es de tipo manual (no electrónico) se debe especificar el N° del folio de este mismo tipo de documento, en caso contrario (electrónico), se asigna el N° del folio correspondiente al tipo de documento electrónico, este número debe coincidir con el folio siguiente almacenado, ya que se asignará automáticamente de acuerdo a la autorización de folios disponible para el tipo de documento antes mencionado.
+
+FchEmis: Es la fecha de emisión del documento electrónico, el formato de la fecha es “AAAA-MM-DD” (año, mes, día), por ejemplo:
+Si la fecha del documento es 30 de marzo de 2017, entonces la fecha será 2017-03-30.
+
+FchVenc: Es la fecha de vencimiento del documento, el formato de la fecha es similar a la fecha de emisión, en este caso, “AAAA-MM-DD” (año, mes, día).
+
+
+Etiqueta (IdDoc)
+Este nodo contiene la información que identifica el documento.
+TipoDespacho: (Sólo para Guías de despacho) Indica si el documento acompaña bienes y el despacho es por cuenta del vendedor o del comprador.
+No se incluye si el documento no acompaña bienes o se trata de una Factura o Nota correspondiente a la prestación de servicios.
+Sus valores pueden ser:
+
+VALOR	DETALLE
+1	Despacho por cuanta del receptor del documento (cliente o vendedor en caso de Facturas de compra).
+2	Despacho por cuenta del emisor a instalaciones del cliente.
+3	Despacho por cuenta del emisor a otras instalaciones (Ejemplo: entrega en Obra).
+
+IndTraslado: (Sólo para Guías de despacho) Indica si el traslado de mercadería es por Venta (valor 1) o por otros motivos que no corresponden a venta (valores mayores a 1).
+
+VALOR	DETALLE
+0	Sin traslado.
+1	Operacion constituye venta.
+2	Ventas por efectuar.
+3	Consignaciones.
+4	Entrega gratuita.
+5	Traslados internos.
+6	Otros traslados.
+7	Guia de devolución.
+
+SucursalId: Campo opcional solo para identificar a que sucursal corresponde el documento.
+
+
+Vendedor: Campo opcional solo para identificar a que vendedor corresponde el documento.
+
+Etiqueta (Emisor)
+Nodo que contiene la información del emisor del documento.
+
+RUTEmisor: Corresponde al RUT del Emisor del documento (con guión, digito verificador y sin separador de miles). Ejemplo: 86789999-1.
+RznSoc: Corresponde a la Razón Social o Nombre correspondiente al emisor del documento, con un límite de 100 caracteres.
+GiroEmis: Corresponde al giro del negocio del Emisor del documento, con un límite de 80 caracteres.
+Acteco: Código de una de las actividades económicas del emisor del documento, registrada en el SII, de tipo numérico y con un largo máximo de 4 caracteres.
+DirOrigen: Datos correspondientes a dirección desde donde se despachan bienes o de la sucursal que emite el documento (si no hay despacho de bienes), con un límite de 60 caracteres.
+CmnaOrigen: Corresponde a la comuna asociada a la DirOrigen, con un límite de 20 caracteres.
+CiudadOrigen: Corresponde a la ciudad asociada a la DirOrigen y CmnaOrigen, con un límite de 20 caracteres.
+UUID: Corresponde al identificador único del documento. Este identificador debe ser almacenado por el Integrador (cliente) y en DTEmite. Alfanumérico 36 caracteres(Obligatorio)
+
+Etiqueta (Receptor)
+Nodo que contiene la información del cliente, quien recibe el documento.
+
+RUTRecep: Corresponde al RUT del Cliente, con valor desde 100.000 hasta 99 millones, guión y digito verificador (sin separador de miles), por ejemplo: 11555888-K
+RznSocRecep: Corresponde a la Razón Social o Nombre correspondiente al Cliente, con un límite de 100 caracteres, por ejemplo: Empresa de Internet S.A.
+GiroRecep: Corresponde al giro del negocio del Cliente, con un límite de 40 caracteres, por ejemplo: Empresa de Internet S.A.
+DirRecep: Corresponde a la dirección legal del Cliente (registrada en el SII), con un límite de 60 caracteres, no se especifica la comuna ni la ciudad, por ejemplo: Gran Avenida Nº9988 Italia #7788 Las torres 765
+CorreoRecep: Corresponde al nodo para indicar el correo donde enviar el documento emitido.
+CmnaRecep: Corresponde a la comuna legal del Cliente (registrada en el SII), con un límite de 20 caracteres, por ejemplo: Providencia Santiago
+CiudadRecep: Corresponde a la ciudad legal del Cliente (registrada en el SII), con un límite de 20 caracteres, por ejemplo: Arica Santiago
+Etiqueta (Totales):
+Corresponde a los montos totales del documento.
+MntNeto: Es el valor neto del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:
+ITEM
+MntNeto = SUM (Valor) – ValorDesctoTot + ValorRecgoTot
+SUM: sumatoria de los campos.
+Valor: corresponde al valor de los Ítems (MontoItem) afectos.
+ValorDesctoTot: sumatoria de descuentos globales (DscRcgGlobal).
+ValorRecgoTot: sumatoria de recargos globales (DscRcgGlobal).
+MntExe: Es el valor exento del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:
+ITEM
+MntExe = SUM (ValorExento)
+SUM: sumatoria de los campos.
+ValorExento: corresponde al valor de los Ítems (MontoItem) no afectos (Líneas de detalle IndEx > 0).
+TasaIVA: Corresponde a la tasa de impuesto al valor agrgado (IVA), este valor debe ser expresado en porcentaje, por ejemplo:
+ITEM
+19.50
+18
+19
+IVA: Es el valor IVA del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:
+IVA = MntNeto * (TasaIVA / 100)
+MntTotal: Es el valor Total o Bruto del documento, su valor debe estar entre 0 y 999.999.999.999.999, y se calcula de la siguiente forma:
+ITEM Total = MntNeto + MntExe + IVA
+ImptoReten: Se pueden incluir 20 repeticiones de pares código – valor. Incluye los dos campos siguientes:
+TipoImp: Código del impuesto o retención de acuerdo a la codificación detallada en tabla de códigos.
+TasaImp: Se debe indicar la tasa de Impuesto adicional o retención. En el caso de impuesto específicos se puede omitir.
+MontoImp: Valor del impuesto o retención asociado al código indicado anteriormente.
+Comisiones:
+ValComNeto: Suma de detalle de Valores de Comisiones y Otros Cargos.
+ValComExe: Suma de detalles de valores de comisiones y otros cargos no afectos o exentos.
+ValComIVA: Suma de detalle de IVA de Valor de Comisiones y Otros Cargos.
+Detalles del Documento
+Corresponde a las líneas de detalle que posee un documento tributario, con un máximo de 60 líneas de detalle.
+
+Ejemplo Json
+Ejemplo XML
+                    <Detalle>
+                        <NroLinDet>1</NroLinDet>
+                        <CdgItem>
+                            <TpoCodigo>INT1</TpoCodigo>
+                            <VlrCodigo>AAA</VlrCodigo>
+                        </CdgItem>
+                        <NmbItem>Producto AAA</NmbItem>
+                        <QtyItem>1</QtyItem>
+                        <PrcItem>28080</PrcItem>
+                        <DescuentoPct>15</DescuentoPct>
+                        <DescuentoMonto>4212</DescuentoMonto>
+                        <MontoItem>23868</MontoItem>
+                    </Detalle>
+                    <Detalle>
+                        <NroLinDet>2</NroLinDet>
+                        <CdgItem>
+                            <TpoCodigo>INT1</TpoCodigo>
+                            <VlrCodigo>BBB</VlrCodigo>
+                        </CdgItem>
+                        <NmbItem>Producto BBB</NmbItem>
+                        <QtyItem>1</QtyItem>
+                        <PrcItem>28080</PrcItem>
+                        <CodImpAdic>19</CodImpAdic>
+                        <DescuentoPct>15</DescuentoPct>
+                        <DescuentoMonto>4212</DescuentoMonto>
+                        <MontoItem>23868</MontoItem>
+                    </Detalle>
+
+                
+
+NroLinDet: Es el número de ítem de detalle del documento, de 1 a 60.
+
+UnmItem: Es la unidad de medida del producto, máximo 50 caracteres.
+
+CdgItem: Subnodo que contiene los ítems TpoCodigo y VlrCodigo que permiten identificar el código del producto.
+
+TpoCodigo: Indica el tipo de codificación utilizada,los valores a utilizar son: EAN13, PLU, DUN14,INT1, INT2, EAN128, etc.(Sin Validación).
+
+CodBodega: Código de la bodega perteneciente al producto para controla stock, solamente si cuenta con modulo Inventario.
+
+VlrCodigo: Código del producto de acuerdo al tipo de codificación en el campo anterior, con un maximo de 35 caracteres, por ejemplo: 7801620016111 PARL300WTTS
+
+NmbItem: Es la descripción del producto antes indicado,con un máximo de 80 caracteres, por ejemplo: Mueble de computador café oscuro. Mouse óptico Microsoft USB/PS2
+
+QtyItem: Es la cantidad del ítem, su valor debe ser hasta 12 dígitos y 6 decimales, por ejemplo: 250, 41.5
+
+PrcItem:Es el precio unitario del ítem (expresado en pesos), su valor debe ser hasta 12 dígitos y 6 decimales, por ejemplo 1000.43 1536
+
+DescuentoPct:Es el porcentaje de descuento del ítem (cuando corresponda), si el ítem no posee descuento se debe asignar 0 (cero).
+
+CodImpAdic:Indica el código del impuesto.
+
+DescuentoMonto: Es el valor de descuento del ítem (cuando corresponda), si el ítem no posee descuento se debe asignar 0 (cero).
+
+RecargoPct: Es el porcentaje de recargo del ítem (cuando corresponda), si el ítem no posee recargo se debe asignar 0 (cero).
+
+RecargoMonto: Es el valor de recargo del ítem (cuando corresponda), si el ítem no posee recargo se debe asignar 0 (cero).
+
+IndExe:Ítem opcional,solo es necesario si se desea indicar que la línea es exenta de IVA. Es de tipo numérico con un largo máximo de 1 carácter y su valor debe corresponder con la tabla siguiente:
+
+ITEM	DETALLE
+1	No afecto o exento de IVA.
+2	Producto o servicio no es facturable.
+3	Garantía de depósito por envases (Cervezas, Jugos, Aguas Minerales, Bebidas Analcohólicas u otros autorizados por Resolución especial).
+4	Ítem No Venta. (Para facturas y guías de despacho (ésta última con Indicador Tipo de Traslado de Bienes igual a 1) y este ítem no será facturado.
+5	Ítem a rebajar. Para guías de despacho NO VENTA que rebajan guía anterior. En el área de referencias se debe indicar la guía anterior.
+6	Producto o servicio no facturable negativo.
+
+MontoItem: Es el valor del ítem, debe ser cero cuando el documento sea una Nota de Crédito tipo “fe de erratas” (ver campo código de referencia), puede ser cero cuando el documento sea una Guía de Despacho NO VENTA (según campo indicador de tipo de traslado de bienes del Encabezado), su valor se calcula de la siguiente forma: Valor = (PrcItem * QtyItem) – DescuentoMonto + RecargoMont
+
+
+Comisiones
+Este nodo contiene la información de las comisiones de los productos.
+NroLinCom: Número de comisión u otro cargo. De 1 a 20.
+TipoMovim: C (comisión) u O (otros cargos).
+Glosa: Especificación de la comisión u otro cargo.
+TasaComision: Valor porcentual de la comisión u otro cargo, en 2 enteros y 2 decimales.
+ValComNeto: Valor Neto de la comisión/otro cargo.
+ValComExe: Valor Exento de la comisión/otro cargo.
+ValComIVA: Valor del IVA de la comisión/otros cargos.
+
+Ejemplo Json
+Ejemplo XML
+                    "Comisiones":{
+                          "NroLinCom": "1",
+                          "TipoMovim": "0",
+                          "Glosa": "Dif.Precio",
+                          "TasaComision": "0.0",
+                          "ValComNeto": "381777",
+                          "ValComExe": "0",
+                          "ValComIVA": "72538"
+                        }
+                
+Descuento/Recargo Global
+Nodo opcional que contiene la información de descuentos o recargos aplicados globalmente al documento.
+
+Ejemplo Json
+Ejemplo XML
+                    "DscRcgGlobal": {
+                          "NroLinDR": "1",
+                          "TpoMov": "D",
+                          "GlosaDR": "Cobro de ventas o servicios previo",
+                          "TpoValor": "$",
+                          "ValorDR": "2000",
+                          "IndExeDR": "2"
+                        }
+
+                
+
+NroLinDR:Numero de descuento o recargo, secuencial de 1 a 20.
+
+TpoMov:Indica el tipo de movimiento, texto 1 carácter, Ejemplo: D: Descuento R: Recargo
+
+GlosaDR:Especificación del descuento o recargo, de tipo alfanumérico con un largo máximo de 45 caracteres.
+
+TpoValor:Indica si el valor asociado al descuento es de tipo porcentaje (%) o es un monto ($), valor alfanumérico de 1 carácter y sus valores admitidos son: %: Porcentaje $: Monto
+
+Valor:Valor del descuento o recargo en 16 enteros y 2 decimales.
+
+Referencias del documento
+Corresponde a las líneas de referencia que posee un documento tributario, con un máximo de 20 líneas.
+Cuando se realiza una NOTA DE CRÉDITO o NOTA DE DÉBITO debe contener una referencia a un documento que está modificando. Por ejemplo: si una NOTA DE CRÉDITO anula una FACTURA se debe crear una línea de referencia indicando el tipo de documento, el folio, la fecha del documento referenciado, código y la razón de la referencia.
+
+Ejemplo Json
+Ejemplo XML
+                   "Referencia": [
+                      {
+                        "NroLinRef": "1",
+                        "TpoDocRef": "33",
+                        "FolioRef": "123",
+                        "FchRef": "2007-08-03",
+                        "CodRef": "1",
+                        "RazonRef": "152445596-6655215"
+                      }
+                ]
+                
+Ejemplo para Orden de Compra
+Ejemplo Json
+Ejemplo XML
+                    "Referencia": [
+                      {
+                        "NroLinRef": "1",
+                        "TpoDocRef": "801",
+                        "FolioRef": "4505421654",
+                        "FchRef": "2011-08-01",
+                        "CodRef": "0",
+                        "RazonRef": "ORDEN DE COMPRA"
+                      }
+                ]
+                
+
+NroLineaRef:Es el número de referencia del documento, de 1 a 20.
+
+TpoDocRef:: Es el N° del tipo de documento al que se hace referencia, este número está codificado por el Servicio de Impuestos Internos.
+
+NÚMERO	DOCUMENTO
+33	FACTURA ELECTRÓNICA
+34	FACTURA EXENTA ELECTRÓNICA
+39	BOLETA ELECTRÓNICA AFECTA
+41	BOLETA ELECTRÓNICA EXENTA
+43	LIQUIDACIÓN FACTURA ELECTRÓNICA
+46	FACTURA DE COMPRA ELCTRÓNICA
+52	GUÍA DE DESPACHO ELECTRÓNICA
+56	NOTA DE DÉBITO ELECTRÓNICA
+61	NOTA DE CRÉDITO ELECTRÓNICA
+
+FolioRef:Es el folio del documento referenciado, indica el número del documento que se alterará.
+
+FechaRef:Es la fecha de emisión del documento al que se hace referencia, el formato de la fecha es “AAAA-MM-DD” (año, mes, día), por ejemplo: Si la fecha del documento referenciado es 14 de enero de 2005, entonces la fecha será 2005-01-14.
+
+CodRef:Indica los distintos casos de referencia, los cuales pueden ser:
+
+ITEM
+A) Nota de Crédito que elimina documento de referencia en forma completa (Factura de venta, Nota de débito, o Factura de compra).
+B) Nota de crédito que corrige un texto del documento de referencia.
+C) Nota de Débito que elimina una Nota de Crédito en la referencia en forma completa.
+D) Notas de crédito o débito que corrigen montos de otro documento.
+Casos a) b) y c) deben tener un único documento de referencia, es decir una sola línea de referencia. Sus valores pueden ser:
+NÚMERO	DETALLE
+1	Anula Documento de Referencia.
+2	Corrige Texto Documento de referencia.
+3	Corrige Montos.
+4	Anulación Masiva de documentos.
+
+RazonRef:Explicitar razón. Ejemplo una Nota de Crédito que hacer referencia a una factura, indica "descuento por pronto pago", "error en precio" o “anula factura”, etc. El campo tiene un largo máximo de 90 caracteres.
+
+Campos Adicionales para Agregar a un Documento Impreso
+La aplicación que leerá estos archivos cuenta con la posibilidad de poder leer 10 campos “adicionales”.
+Estos campos adicionales pueden usarse para agregar información al ejemplar impreso del documento, por ejemplo, nombre del vendedor, teléfono, condición de pago, etc.
+Solo el campo adicional 10 (A10) tiene un valor definido y corresponde al cuadro de observaciones que se imprime en el ejemplar impreso.
+La inclusión de estos en el documento JSON es opcional.
+
+Ejemplo Json
+Ejemplo XML
+                    "Adicional": {
+                        "NodosA": [
+                          {
+                            "valor": "5331706"
+                          },
+                          {
+                            "valor": "5331706"
+                          }
+                        ]
+                      }
+                
+Ejemplo Completo de un Documento Tributario
+Caso 1: Factura electrónica
+Ejemplo Json
+Ejemplo XML
+                    {
+                      "Documento": {
+                        "Encabezado": {
+                          "IdDoc": {
+                            "TipoDTE": "33",
+                            "Folio": "1",
+                            "FchEmis": "2008-09-01",
+                            "FchVenc": "2008-09-20"
+                          },
+                          "Emisor": {
+                            "RUTEmisor": "99584510-5",
+                            "RznSocEmisor": "EMPRESA DE PRUEBA",
+                            "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                            "DirOrigen": "Avenida del Software #11001101",
+                            "CmnaOrigen": "PROVIDENCIA",
+                            "CiudadOrigen": "SANTIAGO"
+                          },
+                          "Receptor": {
+                            "RUTRecep": "76399744-8",
+                            "CdgIntRecep": "1000215-220",
+                            "RznSocRecep": "CLIENTE DE PRUEBA",
+                            "CorreoRecpt": "prueba@dtemite.cl"
+                            "DirRecep": "CALLE A 50",
+                            "CmnaRecep": "SANTIAGO",
+                            "CiudadRecep": "SANTIAGO"
+                          },
+                          "Totales": {
+                            "MntNeto": "90610",
+                            "MntExe": "0",
+                            "TasaIVA": "19",
+                            "IVA": "17216",
+                            "MntTotal": "107826"
+                          }
+                        },
+                        "Detalle": [
+                          {
+                            "NroLinDet": "1",
+                            "CdgItem": {
+                              "TpoCodigo": "INT1",
+                              "VlrCodigo": "WWW"
+                            },
+                            "NmbItem": "Descripción de producto WWW",
+                            "QtyItem": "2",
+                            "PrcItem": "45305",
+                            "MontoItem": "90610"
+                          }
+                        ]
+                      }
+                    }
+                
+
+Caso 2: Documento al que se le aplica un descuento del 15% en línea de detalle 1.
+Ejemplo Json
+Ejemplo XML
+                    {
+                      "Documento": {
+                        "Encabezado": {
+                          "IdDoc": {
+                            "TipoDTE": "52",
+                            "Folio": "5",
+                            "FchEmis": "2008-09-01",
+                            "FchVenc": "2008-09-20"
+                          },
+                          "Emisor": {
+                            "RUTEmisor": "99584510-5",
+                            "RznSocEmisor": "EMPRESA DE PRUEBA",
+                            "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                            "DirOrigen": "Avenida del Software #11001101",
+                            "CmnaOrigen": "PROVIDENCIA",
+                            "CiudadOrigen": "SANTIAGO"
+                          },
+                          "Receptor": {
+                            "RUTRecep": "76399744-8",
+                            "CdgIntRecep": "1000215-220",
+                            "RznSocRecep": "CLIENTE DE PRUEBA",
+                            "CorreoRecpt": "prueba@dtemite.cl",
+                            "DirRecep": "CALLE A 50",
+                            "CmnaRecep": "SANTIAGO",
+                            "CiudadRecep": "SANTIAGO"
+                          },
+                          "Totales": {
+                            "MntNeto": "41803",
+                            "MntExe": "0",
+                            "TasaIVA": "19",
+                            "IVA": "7943",
+                            "MntTotal": "49746"
+                          }
+                        },
+                        "Detalle": [
+                          {
+                            "NroLinDet": "1",
+                            "CdgItem": {
+                              "TpoCodigo": "INT1",
+                              "VlrCodigo": "WWW"
+                            },
+                            "NmbItem": "Descripción de producto WWW",
+                            "QtyItem": "1",
+                            "PrcItem": "45650",
+                            "DescuentoPct": "15",
+                            "DescuentoMonto": "6848",
+                            "MontoItem": "38803"
+                          },
+                          {
+                            "NroLinDet": "2",
+                            "CdgItem": {
+                              "TpoCodigo": "INT1",
+                              "VlrCodigo": "WWW"
+                            },
+                            "NmbItem": "Descripción de producto WWW",
+                            "QtyItem": "2",
+                            "PrcItem": "3000",
+                            "MontoItem": "3000"
+                          }     ]
+                      }
+                    }
+
+                
+
+Caso 3: Documento Boleta Electrónica..
+Ejemplo Json
+Ejemplo XML
+                    {
+                        "Sistema": {
+                            "nombre": "webbasico",
+                            "rut": "29282726-1",
+                            "usuario": "integrado_webbasico",
+                            "clave": "d2ViYmFzaWNvMjAyMQ=="
+                        },
+                        "Documento": {
+                            "Encabezado": {
+                                "IdDoc": {
+                                "TipoDTE": "39",
+                                "Folio": "0",
+                                "FchEmis": "2022-10-20",
+                                "FchVenc": "2022-04-26"
+                                },
+                                "Emisor": {
+                                    "RUTEmisor": "29282726-1",
+                                    "RznSocEmisor": "EMPRESA DE PRUEBA",
+                                    "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                                    "DirOrigen": "Avenida del Software #11001101",
+                                    "CmnaOrigen": "PROVIDENCIA",
+                                    "CiudadOrigen": "SANTIAGO"
+                                },
+                                "Receptor": {
+                                    "RUTRecep": "76399744-8",
+                                    "CdgIntRecep": "1000215-220",
+                                    "RznSocRecep": "CLIENTE DE PRUEBA",
+                                    "CorreoRecep": "prueba@dtemite.cl",
+                                    "DirRecep": "CALLE A 50",
+                                    "CmnaRecep": "SANTIAGO",
+                                    "CiudadRecep": "SANTIAGO"
+                                },
+                                "Totales": {
+                                    "MntNeto": "10000",
+                                    "MntExe": "0",
+                                    "IVA": "1900",
+                                    "MntTotal": "11900"
+                                }
+                            },
+                            "Detalle": [
+                                {
+                                "NroLinDet": "1",
+                                "CdgItem": {
+                                    "TpoCodigo": "INT1",
+                                    "VlrCodigo": "WWW"
+                                },
+                                "NmbItem": "Descripción de producto WWW",
+                                "QtyItem": "1",
+                                "PrcItem": "11900",
+                                "MontoItem": "11900"
+                                }
+                            ]
+                        }
+
+                    }
+                
+
+Caso 4: Nota de crédito anulando documento (uso de referencias)
+Ejemplo Json
+Ejemplo XML
+                    {
+                        "Sistema": {
+                            "nombre": "webbasico",
+                            "rut": "29282726-1",
+                            "usuario": "integrado_webbasico",
+                            "clave": "d2ViYmFzaWNvMjAyMQ=="
+                        },
+                      "Documento": {
+                        "Encabezado": {
+                          "IdDoc": {
+                            "TipoDTE": "61",
+                            "Folio": "0",
+                            "FchEmis": "2022-10-20",
+                            "FchVenc": "2008-09-20"
+                          },
+                          "Emisor": {
+                            "RUTEmisor": "29282726-1",
+                            "RznSocEmisor": "EMPRESA DE PRUEBA",
+                            "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                            "DirOrigen": "Avenida del Software #11001101",
+                            "CmnaOrigen": "PROVIDENCIA",
+                            "CiudadOrigen": "SANTIAGO"
+                          },
+                          "Receptor": {
+                            "RUTRecep": "76399744-8",
+                            "CdgIntRecep": "1000215-220",
+                            "RznSocRecep": "CLIENTE DE PRUEBA",
+                            "CorreoRecpt": "prueba@dtemite.cl",
+                            "DirRecep": "CALLE A 50",
+                            "CmnaRecep": "SANTIAGO",
+                            "CiudadRecep": "SANTIAGO"
+                          },
+                          "Totales": {
+                            "MntNeto": "10034",
+                            "MntExe": "0",
+                            "IVA": "1906",
+                            "MntTotal": "11940"
+                          }
+                        },
+                        "Detalle": [
+                          {
+                            "NroLinDet": "1",
+                            "CdgItem": {
+                              "TpoCodigo": "INT1",
+                              "VlrCodigo": "WWW"
+                            },
+                            "NmbItem": "Descripción de producto WWW",
+                            "QtyItem": "1",
+                            "PrcItem": "10034",
+                            "MontoItem": "10034"
+                          }
+                        ],
+                        "Referencia": [
+                          {
+                            "NroLinRef": "1",
+                                "TpoDocRef":"30",
+                                "FolioRef":"41139",
+                                "FchRef":"2007-06-29",
+                            "CodRef": "1",
+                            "RazonRef": "Anula Documento Ref"
+                          }
+                        ]
+                      }
+                    }
+
+
+
+                
+
+Caso 5: Guía de Despacho (Uso indicadores despacho y traslado)
+Ejemplo Json
+Ejemplo XML
+                    {
+                      "Documento": {
+                        "Encabezado": {
+                          "IdDoc": {
+                            "TipoDTE": "52",
+                            "Folio": "5",
+                            "FchEmis": "2008-09-01",
+                            "FchVenc": "2008-09-20",
+                            "TipoDespacho": "1",
+                            "IndTraslado": "1",
+                            "": "1"
+                          },
+                          "Emisor": {
+                            "RUTEmisor": "99584510-5",
+                            "RznSocEmisor": "EMPRESA DE PRUEBA",
+                            "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                            "DirOrigen": "Avenida del Software #11001101",
+                            "CmnaOrigen": "PROVIDENCIA",
+                            "CiudadOrigen": "SANTIAGO"
+                          },
+                          "Receptor": {
+                            "RUTRecep": "76399744-8",
+                            "CdgIntRecep": "1000215-220",
+                            "RznSocRecep": "CLIENTE DE PRUEBA",
+                            "CorreoRecep": "prueba@dtemite.cl",
+                            "DirRecep": "CALLE A 50",
+                            "CmnaRecep": "SANTIAGO",
+                            "CiudadRecep": "SANTIAGO"
+                          },
+                          "Totales": {
+                            "MntNeto": "8830",
+                            "MntExe": "0",
+                            "IVA": "1678",
+                            "MntTotal": "10508"
+                          }
+                        },
+                        "Detalle": [
+                          {
+                            "NroLinDet": "1",
+                            "CdgItem": {
+                              "TpoCodigo": "INT1",
+                              "VlrCodigo": "WWW"
+                            },
+                            "NmbItem": "Descripción de producto WWW",
+                            "QtyItem": "1",
+                            "PrcItem": "10034",
+                            "MontoItem": "10034"
+                          }
+                        ]
+                      }
+                    }
+
+                
+
+
+Métodos y parámetros
+Protocolos y estándares REST
+Se describe la funcionalidad, parámetros y métodos que componen nuestro servicio disponible para la integración a la solución de gestión de documentos tributarios electrónicos DTEmite. Este servicio está orientado a nuestros clientes que utilizan un aplicativo externo que NO tienen la opción de emisión de documentos electrónicos. Nuestro web service utiliza los protocolos y estándares REST.
+Endpoint: https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento
+
+Métodos:
+Nombre método	Parámetro de entrada	Parámetro de salida
+{endpoint} encargado de integrar los documentos
+-Sistema (string)*
+-rut (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-json
+-verificar ejemplo 1 mas abajo	String (JSON respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- PDF (corresponde a un arreglo de bytes codificado en base64).
+{endpoint}/Pdf retorna pdf de documento específico.
+-Sistema (string)*
+-rut (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)
+-verificar ejemplo 2 mas abajo	String (JSON respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- PDF (corresponde a un arreglo de bytes codificado en base64).
+{endpoint}/Xml retorna XML de documento específico.
+-Sistema (string)*
+-rut (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)
+-verificar ejemplo 3 mas abajo	String (XML respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- XML (corresponde a un arreglo de bytes codificado en base64).
+Los campos marcados con (*) son entregados por DTEmite.
+
+Ejemplo 1:
+
+Ejemplo 1
+Ejemplo 2
+Ejemplo 3
+                                {
+                                    "Sistema": {
+                                    "nombre": "webbasico",
+                                    "rut": "29282726-1",
+                                    "usuario": "integrado_webbasico",
+                                    "clave": "d2ViYmFzaWNvMjAyMQ=="
+                                }
+                    
+Protocolos y estándares SOAP
+Se describe la funcionalidad, parámetros y métodos que componen nuestro servicio disponible para la integración a la solución de gestión de documentos tributarios electrónicos DTEmite. Este servicio está orientado a nuestros clientes que utilizan un aplicativo externo que NO tienen la opción de emisión de documentos electrónicos. Nuestro web service utiliza los protocolos y estándares SOAP.
+Dirección WSDL: http://api.dtemite.cl:8089/WSDTEIntegrado/WSDTEInt?wsdl
+
+Métodos:
+Nombre método	Parámetro de entrada	Parámetro de salida
+Emision encargado de integrar los documentos
+-Sistema (string)*
+-rut usuario (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-xml	String (XML respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- PDF (corresponde a un arreglo de bytes codificado en base64).
+ObtenerPDF retorna pdf de documento específico.
+-Sistema (string)*
+-rut usuario (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)	String (XML respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- PDF (corresponde a un arreglo de bytes codificado en base64).
+ObtenerXml retorna XML de documento específico.
+-Sistema (string)*
+-rut usuario (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)	String (XML respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- XML (corresponde a un arreglo de bytes codificado en base64).
+ObtenerTrazabilidad
+-Sistema (string)*
+-rut usuario (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)	String (JSON respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- Estados con la trazabilidad del documento
+ObtenerPDFCredible
+-Sistema (string)*
+-rut usuario (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-tipodte (string)
+-foliodte (string)	String (XML respuesta) donde indica:
+- Folio DTE
+- Tipo DTE
+- PDF (corresponde a un arreglo de bytes codificado en base64).
+get_DTEcompra
+-Sistema (string)*
+-rut (string)
+-usuario (string)*
+-clave (string codificado en base64)*
+-fechaDesde string aaaa-mm-dd)
+-fechaHasta (string aaaa-mm-dd)	String (XML respuesta) donde indica:
+- Tipo DTE
+- Folio DTE
+- Fecha Emision DTE
+- Fecha Vcto DTE
+- Rut Proveedor
+- Num OC DTE
+- Monto Total DTE
+- Referencia DTE
+- XML DTE (Base64)
+- Flag Con o Sin XM
+Los campos marcados con (*) son entregados por DTEmite.
+
+Ejemplos de emisión
+Ejemplo REST
+Ejemplo SOAP
+Ejemplo de información de Consumo
+HEADERS: Content-Type: application/json	METHOD: POST
+                                {
+                                 "Sistema": {
+                                     "nombre": "demo",
+                                     "rut": "11111111-1",
+                                     "usuario": "integracion",
+                                     "clave": "MW50M2dyNGMxMG4="
+                                 },
+                                 "Documento": {
+                                     "Encabezado": {
+                                        "IdDoc": {
+                                           "TipoDTE": "33",
+                                           "Folio": "1",
+                                           "FchEmis": "2008-09-01",
+                                           "FchVenc": "2008-09-20"
+                                 },
+                                 "Emisor": {
+                                     "RUTEmisor": "6-K",
+                                     "RznSocEmisor": "EMPRESA DE PRUEBA",
+                                     "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                                     "DirOrigen": "Avenida del Software #11001101",
+                                     "CmnaOrigen": "PROVIDENCIA",
+                                     "CiudadOrigen": "SANTIAGO"
+                                 },
+                                 "Receptor": {
+                                     "RUTRecep": "76399744-8",
+                                     "CdgIntRecep": "1000215-220",
+                                     "RznSocRecep": "CLIENTE DE PRUEBA",
+                                     "CorreoRecep": "prueba@dtemite.cl",
+                                     "DirRecep": "CALLE A 50",
+                                     "CmnaRecep": "SANTIAGO",
+                                     "CiudadRecep": "SANTIAGO"
+                                 },
+                                 "Totales": {
+                                     "MntNeto": "90610",
+                                     "MntExe": "0",
+                                     "TasaIVA": "19",
+                                     "IVA": "17216",
+                                     "MntTotal": "107826"
+                                 }
+                                 },
+                                 "Detalle": [
+                                 {
+                                 "NroLinDet": "1",
+                                 "CdgItem": {
+                                    "TpoCodigo": "INT1",
+                                    "VlrCodigo": "WWW"
+                                 },
+                                 "NmbItem": "Descripción de producto WWW",
+                                 "QtyItem": "2",
+                                 "PrcItem": "45305",
+                                 "MontoItem": "90610"
+                                 }
+                                ]
+                               }
+                              }
+                        
+Muchas Gracias
+2021 DTEmite
