@@ -24,19 +24,42 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
+        /* CSS Custom Properties para efectos modernos */
+        :root {
+            --header-primary: #F28A1A;
+            --header-secondary: #FF9500;
+            --header-accent: #FFB84D;
+            --header-dark: #E67E00;
+            --header-light: #FFD700;
+            --wave-offset: 0px;
+            --morph-shape: 0%;
+            --glass-opacity: 0.1;
+            --particle-size: 2px;
+        }
+        
         .docs-header {
-            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            background: 
+                linear-gradient(135deg, var(--header-primary) 0%, var(--header-secondary) 50%, var(--header-accent) 100%),
+                radial-gradient(circle at 20% 80%, rgba(255, 215, 0, 0.4) 0%, transparent 60%),
+                radial-gradient(circle at 80% 20%, rgba(255, 184, 77, 0.3) 0%, transparent 60%),
+                radial-gradient(circle at 40% 40%, rgba(242, 138, 26, 0.2) 0%, transparent 60%);
             color: white;
-            padding: 80px 0;
+            padding: 60px 0;
             position: relative;
             overflow: hidden;
             background-image: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
             background-size: cover;
             background-position: center;
-            background-blend-mode: overlay;
-            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+            background-blend-mode: overlay, overlay, overlay, overlay;
+            box-shadow: 
+                inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                0 0 100px rgba(242, 138, 26, 0.3);
+            animation: 
+                headerGlow 8s ease-in-out infinite alternate,
+                backgroundShift 20s linear infinite;
         }
         
+        /* Efecto Glassmorphism con backdrop-filter */
         .docs-header::before {
             content: '';
             position: absolute;
@@ -44,13 +67,89 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(45deg, rgba(242, 138, 26, 0.8) 0%, rgba(255, 149, 0, 0.8) 100%);
+            background: 
+                linear-gradient(45deg, 
+                    rgba(255, 255, 255, var(--glass-opacity)) 0%, 
+                    rgba(255, 184, 77, 0.1) 25%,
+                    rgba(242, 138, 26, 0.2) 50%,
+                    rgba(255, 149, 0, 0.1) 75%,
+                    rgba(255, 255, 255, var(--glass-opacity)) 100%);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
             pointer-events: none;
+            animation: glassMorph 6s ease-in-out infinite;
+            mask: 
+                radial-gradient(circle at 30% 20%, rgba(0,0,0,0.8) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0,0,0,0.6) 0%, transparent 50%);
+            -webkit-mask: 
+                radial-gradient(circle at 30% 20%, rgba(0,0,0,0.8) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(0,0,0,0.6) 0%, transparent 50%);
+        }
+        
+        /* Efecto Wave moderno sin espacios en blanco */
+        .docs-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: 
+                linear-gradient(90deg, 
+                    rgba(255, 255, 255, 0.1) 0%,
+                    rgba(255, 184, 77, 0.2) 25%,
+                    rgba(255, 255, 255, 0.15) 50%,
+                    rgba(255, 184, 77, 0.2) 75%,
+                    rgba(255, 255, 255, 0.1) 100%);
+            border-radius: 0 0 30px 30px;
+            animation: waveMotion 4s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 1;
         }
         
         .docs-header .container {
             position: relative;
             z-index: 2;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: containerFloat 8s ease-in-out infinite;
+        }
+        
+        /* Efectos 3D para el contenido del header */
+        .docs-header h1 {
+            transform: translateZ(50px) rotateX(5deg);
+            text-shadow: 
+                0 0 20px rgba(255, 255, 255, 0.5),
+                0 0 40px rgba(242, 138, 26, 0.3),
+                0 0 60px rgba(255, 149, 0, 0.2);
+            animation: 
+                titleGlow 3s ease-in-out infinite alternate,
+                titleFloat 6s ease-in-out infinite;
+            background: linear-gradient(45deg, #ffffff, #FFD700, #ffffff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: 
+                titleGlow 3s ease-in-out infinite alternate,
+                titleFloat 6s ease-in-out infinite,
+                textShimmer 4s ease-in-out infinite;
+        }
+        
+        .docs-header p {
+            transform: translateZ(30px) rotateX(-2deg);
+            text-shadow: 
+                0 0 15px rgba(255, 255, 255, 0.3),
+                0 0 30px rgba(242, 138, 26, 0.2);
+            animation: subtitleFloat 8s ease-in-out infinite;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
         }
         .section-title {
             color: #F28A1A;
@@ -539,5 +638,237 @@
         
         .code-example pre {
             margin: 0;
+        }
+        
+        /* ===== ANIMACIONES MODERNAS PARA EL HEADER ===== */
+        
+        /* Animación de morphing suave sin clip-path */
+        @keyframes headerMorph {
+            0%, 100% {
+                transform: scale(1) rotate(0deg);
+            }
+            25% {
+                transform: scale(1.01) rotate(0.5deg);
+            }
+            50% {
+                transform: scale(1.005) rotate(-0.3deg);
+            }
+            75% {
+                transform: scale(1.015) rotate(0.8deg);
+            }
+        }
+        
+        /* Animación de brillo dinámico */
+        @keyframes headerGlow {
+            0% {
+                box-shadow: 
+                    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                    0 0 100px rgba(242, 138, 26, 0.3);
+            }
+            100% {
+                box-shadow: 
+                    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+                    0 0 150px rgba(242, 138, 26, 0.5),
+                    0 0 200px rgba(255, 149, 0, 0.3);
+            }
+        }
+        
+        /* Animación de fondo dinámico */
+        @keyframes backgroundShift {
+            0% {
+                background-position: 0% 0%, 100% 100%, 50% 50%, center center;
+            }
+            25% {
+                background-position: 20% 20%, 80% 80%, 70% 30%, center center;
+            }
+            50% {
+                background-position: 80% 80%, 20% 20%, 30% 70%, center center;
+            }
+            75% {
+                background-position: 60% 40%, 40% 60%, 90% 10%, center center;
+            }
+            100% {
+                background-position: 0% 0%, 100% 100%, 50% 50%, center center;
+            }
+        }
+        
+        /* Animación Glassmorphism */
+        @keyframes glassMorph {
+            0%, 100% {
+                --glass-opacity: 0.1;
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
+            }
+            50% {
+                --glass-opacity: 0.2;
+                backdrop-filter: blur(25px) saturate(200%);
+                -webkit-backdrop-filter: blur(25px) saturate(200%);
+            }
+        }
+        
+        /* Animación Wave Motion suave */
+        @keyframes waveMotion {
+            0%, 100% {
+                transform: translateY(0px) scaleY(1);
+                opacity: 0.8;
+            }
+            25% {
+                transform: translateY(-5px) scaleY(1.1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: translateY(-10px) scaleY(1.2);
+                opacity: 1;
+            }
+            75% {
+                transform: translateY(-3px) scaleY(1.05);
+                opacity: 0.85;
+            }
+        }
+        
+        /* Animación 3D Container Float */
+        @keyframes containerFloat {
+            0%, 100% {
+                transform: translateY(0px) rotateX(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotateX(2deg);
+            }
+        }
+        
+        /* Animación Título Glow */
+        @keyframes titleGlow {
+            0% {
+                text-shadow: 
+                    0 0 20px rgba(255, 255, 255, 0.5),
+                    0 0 40px rgba(242, 138, 26, 0.3),
+                    0 0 60px rgba(255, 149, 0, 0.2);
+            }
+            100% {
+                text-shadow: 
+                    0 0 30px rgba(255, 255, 255, 0.8),
+                    0 0 60px rgba(242, 138, 26, 0.5),
+                    0 0 90px rgba(255, 149, 0, 0.4);
+            }
+        }
+        
+        /* Animación Título Float */
+        @keyframes titleFloat {
+            0%, 100% {
+                transform: translateZ(50px) rotateX(5deg) translateY(0px);
+            }
+            50% {
+                transform: translateZ(50px) rotateX(5deg) translateY(-5px);
+            }
+        }
+        
+        /* Animación Text Shimmer */
+        @keyframes textShimmer {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        /* Animación Subtítulo Float */
+        @keyframes subtitleFloat {
+            0%, 100% {
+                transform: translateZ(30px) rotateX(-2deg) translateY(0px);
+                box-shadow: 
+                    0 8px 32px rgba(0, 0, 0, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            }
+            50% {
+                transform: translateZ(30px) rotateX(-2deg) translateY(-3px);
+                box-shadow: 
+                    0 12px 40px rgba(0, 0, 0, 0.15),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            }
+        }
+        
+        /* Efectos de partículas modernas con CSS Grid */
+        .docs-header .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: grid;
+            grid-template-columns: repeat(20, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .docs-header .particle {
+            width: var(--particle-size);
+            height: var(--particle-size);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(0px) scale(1);
+                opacity: 0.3;
+            }
+            25% {
+                transform: translateY(-20px) scale(1.2);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-10px) scale(0.8);
+                opacity: 0.5;
+            }
+            75% {
+                transform: translateY(-30px) scale(1.1);
+                opacity: 0.9;
+            }
+        }
+        
+        /* Responsive para efectos modernos */
+        @media (max-width: 768px) {
+            .docs-header {
+                padding: 60px 0;
+                animation-duration: 10s, 6s, 15s;
+            }
+            
+            .docs-header h1 {
+                transform: translateZ(30px) rotateX(3deg);
+                font-size: 2.5rem;
+            }
+            
+            .docs-header p {
+                transform: translateZ(20px) rotateX(-1deg);
+                padding: 15px;
+                font-size: 1.1rem;
+            }
+            
+            .docs-header .container {
+                perspective: 500px;
+            }
+        }
+        
+        /* Optimización para dispositivos con menos potencia */
+        @media (prefers-reduced-motion: reduce) {
+            .docs-header,
+            .docs-header::before,
+            .docs-header::after,
+            .docs-header .container,
+            .docs-header h1,
+            .docs-header p {
+                animation: none;
+            }
+            
+            .docs-header {
+                background: linear-gradient(135deg, var(--header-primary) 0%, var(--header-secondary) 100%);
+            }
         }
         
