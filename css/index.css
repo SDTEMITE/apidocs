@@ -26,7 +26,7 @@
         
         /* CSS Custom Properties para efectos modernos */
         :root {
-            --header-primary: #F28A1A;
+            --header-primary: #de007e;
             --header-secondary: #FF9500;
             --header-accent: #FFB84D;
             --header-dark: #E67E00;
@@ -122,7 +122,7 @@
             max-width: 800px;
         }
         .section-title {
-            color: #F28A1A;
+            color: #de007e;
             font-weight: 600;
             position: relative;
             padding-bottom: 12px;
@@ -195,7 +195,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #F28A1A, #FF9500);
+            background: linear-gradient(90deg, #de007e, #FF9500);
             border-radius: 16px 16px 0 0;
         }
        
@@ -212,7 +212,7 @@
             right: 32px;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -220,15 +220,15 @@
             cursor: pointer;
             display: none;
             z-index: 1000;
-            box-shadow: 0 6px 24px rgba(242, 138, 26, 0.4);
+            box-shadow: 0 6px 24px rgba(222, 0, 126, 0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
         }
         
         .back-to-top:hover {
-            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
             transform: translateY(-4px) scale(1.05);
-            box-shadow: 0 12px 40px rgba(242, 138, 26, 0.5);
+            box-shadow: 0 12px 40px rgba(222, 0, 126, 0.5);
         }
         
         .back-to-top:active {
@@ -270,7 +270,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, #F28A1A, #FF9500, #6D2478);
+            background: linear-gradient(90deg, #de007e, #FF9500, #6D2478);
             border-radius: 20px 20px 0 0;
         }
         
@@ -300,8 +300,8 @@
         }
         
         .test-form input:focus, .test-form select:focus, .test-form textarea:focus {
-            border-color: #F28A1A;
-            box-shadow: 0 0 0 4px rgba(242, 138, 26, 0.12);
+            border-color: #de007e;
+            box-shadow: 0 0 0 4px rgba(222, 0, 126, 0.12);
             outline: none;
             transform: translateY(-1px);
         }
@@ -315,7 +315,7 @@
         }
         
         .btn-test {
-            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -326,14 +326,14 @@
             font-weight: 600;
             font-size: 14px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(242, 138, 26, 0.3);
+            box-shadow: 0 4px 12px rgba(222, 0, 126, 0.3);
             letter-spacing: 0.02em;
         }
         
         .btn-test:hover {
-            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
             transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(242, 138, 26, 0.4);
+            box-shadow: 0 8px 24px rgba(222, 0, 126, 0.4);
         }
         
         .btn-test:active {
@@ -366,7 +366,7 @@
             color: #495057;
             margin-bottom: 18px;
             font-weight: 700;
-            border-bottom: 3px solid #F28A1A;
+            border-bottom: 3px solid #de007e;
             padding-bottom: 10px;
             letter-spacing: 0.02em;
         }
@@ -413,13 +413,13 @@
         
         .spinner {
             border: 4px solid #f3f3f3;
-            border-top: 4px solid #F28A1A;
+            border-top: 4px solid #de007e;
             border-radius: 50%;
             width: 44px;
             height: 44px;
             animation: spin 1s linear infinite;
             margin: 0 auto;
-            box-shadow: 0 2px 8px rgba(242, 138, 26, 0.2);
+            box-shadow: 0 2px 8px rgba(222, 0, 126, 0.2);
         }
         
         @keyframes spin {
@@ -489,7 +489,7 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -502,13 +502,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(242, 138, 26, 0.3);
+            box-shadow: 0 2px 8px rgba(222, 0, 126, 0.3);
         }
         
         .code-toggle-btn:hover {
-            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
             transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 4px 16px rgba(242, 138, 26, 0.4);
+            box-shadow: 0 4px 16px rgba(222, 0, 126, 0.4);
         }
         
         .code-toggle-btn:active {
@@ -549,7 +549,7 @@
             position: absolute;
             top: 16px;
             right: 16px;
-            background: linear-gradient(135deg, #F28A1A 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -562,14 +562,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(242, 138, 26, 0.3);
+            box-shadow: 0 4px 12px rgba(222, 0, 126, 0.3);
             font-weight: 600;
         }
         
         .code-toggle-btn:hover {
-            background: linear-gradient(135deg, #e67e00 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
             transform: translateY(-2px) scale(1.1);
-            box-shadow: 0 6px 20px rgba(242, 138, 26, 0.4);
+            box-shadow: 0 6px 20px rgba(222, 0, 126, 0.4);
         }
         
         .code-toggle-btn:active {
