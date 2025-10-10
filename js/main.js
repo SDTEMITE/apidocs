@@ -9,6 +9,12 @@
  */
 $(function() {
 
+  // Agregar función de easing personalizada para scroll más suave
+  $.easing.easeInOutCubic = function (x, t, b, c, d) {
+    if ((t/=d/2) < 1) return c/2*t*t*t + b;
+    return c/2*((t-=2)*t*t + 2) + b;
+  };
+
   // IE10 viewport hack for Surface/desktop Windows 8 bug
   //
   // See Getting Started docs for more information
@@ -69,6 +75,33 @@ $(function() {
 
   $('.docs-container [href=#]').click(function(e) {
     e.preventDefault()
+  });
+
+  // Scroll suave mejorado para navegación del menú
+  $('.sidebar a[href^="#"], .navbar-nav a[href^="#"]').click(function(e) {
+    e.preventDefault();
+    
+    var target = $(this).attr('href');
+    var targetElement = $(target);
+    
+    if (targetElement.length) {
+      var targetOffset = targetElement.offset().top - 80; // Offset para el header fijo
+      
+      // Scroll suave con velocidad más lenta y curva de animación personalizada
+      $('html, body').animate({
+        scrollTop: targetOffset
+      }, {
+        duration: 1200, // Duración aumentada de 800ms a 1200ms
+        easing: 'easeInOutCubic', // Curva de animación más suave
+        queue: false // Permitir múltiples animaciones simultáneas
+      });
+      
+      // Agregar efecto visual durante el scroll
+      $(this).addClass('scrolling');
+      setTimeout(() => {
+        $(this).removeClass('scrolling');
+      }, 1200);
+    }
   });
 
 
