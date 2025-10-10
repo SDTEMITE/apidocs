@@ -52,8 +52,8 @@
             background-blend-mode: overlay, overlay, overlay;
             box-shadow: 
                 inset 0 -1px 0 rgba(255, 255, 255, 0.1);
-            /* animation: 
-                headerGlow 8s ease-in-out infinite alternate; */
+            animation: 
+                headerGlow 8s ease-in-out infinite alternate;
         }
         
         /* Efecto Glassmorphism con backdrop-filter */
@@ -94,7 +94,7 @@
                     rgba(255, 255, 255, 0.15) 50%,
                     rgba(255, 255, 255, 0.1) 100%);
             border-radius: 0 0 30px 30px;
-            /* animation: waveMotion 4s ease-in-out infinite; */
+            animation: waveMotion 4s ease-in-out infinite;
             pointer-events: none;
             z-index: 1;
         }
@@ -634,7 +634,7 @@
                 box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.1);
             }
             100% {
-                box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2);
+                box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.15);
             }
         }
         
