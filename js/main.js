@@ -27,11 +27,44 @@ $(function() {
 
   $body.scrollspy({
     target: '.sidebar',
-    offset: 20
+    offset: 80
   });
 
   $window.on('load', function() {
     $body.scrollspy('refresh')
+  });
+
+  // Mejorar el scrollspy para detectar secciones específicas
+  $window.on('scroll', function() {
+    var scrollTop = $window.scrollTop();
+    var windowHeight = $window.height();
+    var documentHeight = $(document).height();
+    
+    // Encontrar la sección actual basada en docs-heading
+    var currentSection = null;
+    var sections = $('.docs-heading.section-title');
+    
+    sections.each(function() {
+      var section = $(this);
+      var sectionTop = section.offset().top - 100; // Offset para activación temprana
+      
+      if (scrollTop >= sectionTop) {
+        currentSection = section.attr('id');
+      }
+    });
+    
+    // Actualizar el menú activo
+    if (currentSection) {
+      $('.sidebar .nav li').removeClass('active');
+      $('.sidebar .nav li a[href="#' + currentSection + '"]').parent().addClass('active');
+    }
+    
+    // Calcular progreso de lectura
+    var scrollProgress = (scrollTop / (documentHeight - windowHeight)) * 100;
+    $('.sidebar::before').css('height', scrollProgress + '%');
+    
+    // Actualizar indicador de progreso
+    $('.sidebar').css('--scroll-progress', scrollProgress + '%');
   });
 
   $('.docs-container [href=#]').click(function(e) {

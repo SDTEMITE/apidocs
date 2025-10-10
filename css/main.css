@@ -146,12 +146,34 @@ body {
 .sidebar .nav>.active:hover>a,
 .sidebar .nav>.active:focus>a {
     font-weight: 700;
+    background-color: rgba(86, 61, 124, 0.1);
+    border-left-color: #563d7c;
+    color: #563d7c;
+    transform: translateX(3px);
+    transition: all 0.3s ease;
 }
 /* nested active links */
 .sidebar .nav .nav>.active>a, 
 .sidebar .nav .nav>.active:hover>a,
 .sidebar .nav .nav>.active:focus>a {
     font-weight: 500;
+}
+
+/* Indicador de progreso en el sidebar */
+.sidebar {
+    position: relative;
+}
+
+.sidebar::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 3px;
+    height: var(--scroll-progress, 0%);
+    background: linear-gradient(to bottom, #563d7c, #8B2A8B);
+    transition: height 0.3s ease;
+    z-index: 1;
 }
 
 /* hide inactive nested list */
