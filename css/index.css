@@ -27,7 +27,7 @@
         /* CSS Custom Properties para efectos modernos */
         :root {
             --header-primary: #de007e;
-            --header-secondary: #FF9500;
+            --header-secondary: #97095a;
             --header-accent: #FFB84D;
             --header-dark: #E67E00;
             --header-light: #FFD700;
@@ -195,7 +195,7 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, #de007e, #FF9500);
+            background: linear-gradient(90deg, #de007e, #97095a);
             border-radius: 16px 16px 0 0;
         }
        
@@ -212,7 +212,7 @@
             right: 32px;
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -226,7 +226,7 @@
         }
         
         .back-to-top:hover {
-            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #97095a 100%);
             transform: translateY(-4px) scale(1.05);
             box-shadow: 0 12px 40px rgba(222, 0, 126, 0.5);
         }
@@ -270,7 +270,7 @@
             left: 0;
             right: 0;
             height: 5px;
-            background: linear-gradient(90deg, #de007e, #FF9500, #6D2478);
+            background: linear-gradient(90deg, #de007e, #97095a, #6D2478);
             border-radius: 20px 20px 0 0;
         }
         
@@ -315,7 +315,7 @@
         }
         
         .btn-test {
-            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
             color: white;
             border: none;
             padding: 14px 28px;
@@ -331,7 +331,7 @@
         }
         
         .btn-test:hover {
-            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #97095a 100%);
             transform: translateY(-3px);
             box-shadow: 0 8px 24px rgba(222, 0, 126, 0.4);
         }
@@ -489,7 +489,7 @@
             position: absolute;
             top: 12px;
             right: 12px;
-            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -506,7 +506,7 @@
         }
         
         .code-toggle-btn:hover {
-            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #97095a 100%);
             transform: translateY(-2px) scale(1.1);
             box-shadow: 0 4px 16px rgba(222, 0, 126, 0.4);
         }
@@ -549,7 +549,7 @@
             position: absolute;
             top: 16px;
             right: 16px;
-            background: linear-gradient(135deg, #de007e 0%, #FF9500 100%);
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
             color: white;
             border: none;
             border-radius: 50%;
@@ -567,7 +567,7 @@
         }
         
         .code-toggle-btn:hover {
-            background: linear-gradient(135deg, #b8005a 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #b8005a 0%, #97095a 100%);
             transform: translateY(-2px) scale(1.1);
             box-shadow: 0 6px 20px rgba(222, 0, 126, 0.4);
         }
