@@ -859,7 +859,7 @@ function updateShippingCode(method) {
     
     // Resaltar sintaxis si está disponible
     if (typeof hljs !== 'undefined') {
-      hljs.highlightElement(codeDisplay);
+      hljs.highlightBlock(codeDisplay);
     }
   }
 }

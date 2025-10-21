@@ -1559,394 +1559,35 @@
               </div>
               
               <p style="text-align: justify">
-                Utiliza este panel para probar las APIs REST y SOAP de DTEmite directamente desde el navegador. 
-                Puedes enviar documentos de prueba y ver las respuestas en tiempo real.
+                Utiliza el <strong>Panel de Pruebas de Envío</strong> haciendo clic en el botón flotante ⚙️ para probar las APIs REST y SOAP de DTEmite directamente desde el navegador. 
+                Puedes enviar documentos de prueba, ver ejemplos de código en diferentes lenguajes de programación y ver las respuestas en tiempo real.
               </p>
               
-              <div class="test-panel">
-                <h3 class="section-title">Configuración de Credenciales</h3>
-                <div class="test-form">
-                  <label for="apiType">Tipo de API:</label>
-                  <select id="apiType">
-                    <option value="rest">REST</option>
-                    <option value="soap">SOAP</option>
-                  </select>
-                  
-                  <div id="soapMethodsPanel" style="display: none;">
-                    <label for="soapMethod">Método SOAP:</label>
-                    <select id="soapMethod">
-                      <option value="Emision">Emision - Integrar documentos</option>
-                      <option value="ObtenerPDF">ObtenerPDF - Obtener PDF específico</option>
-                      <option value="ObtenerXml">ObtenerXml - Obtener XML específico</option>
-                      <option value="ObtenerTrazabilidad">ObtenerTrazabilidad - Estado del documento</option>
-                      <option value="ObtenerPDFCredible">ObtenerPDFCredible - PDF Credible</option>
-                      <option value="get_DTEcompra">get_DTEcompra - DTE de compra por fechas</option>
-                    </select>
-                    
-                    <div id="soapParamsPanel" style="display: none;">
-                      <label for="tipodte">Tipo DTE:</label>
-                      <input type="text" id="tipodte" value="33" placeholder="33">
-                      
-                      <label for="foliodte">Folio DTE:</label>
-                      <input type="text" id="foliodte" value="1" placeholder="1">
-                      
-                      <label for="fechaDesde">Fecha Desde:</label>
-                      <input type="date" id="fechaDesde" value="2024-01-01">
-                      
-                      <label for="fechaHasta">Fecha Hasta:</label>
-                      <input type="date" id="fechaHasta" value="2024-12-31">
-                    </div>
-                  </div>
-                  
-                  <label for="endpoint">Endpoint:</label>
-                  <input type="text" id="endpoint" value="https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento">
-                  
-                  <label for="rut">RUT:</label>
-                  <input type="text" id="rut" value="29282726-1">
-                  
-                  <label for="sistema">Sistema:</label>
-                  <input type="text" id="sistema" value="webbasico">
-                  
-                  <label for="usuario">Usuario:</label>
-                  <input type="text" id="usuario" value="integrado_webbasico">
-                  
-                  <label for="clave">Clave (Base64):</label>
-                  <input type="text" id="clave" value="d2ViYmFzaWNvMjAyMQ==">
-                </div>
-                
-                <h3 class="section-title">Plantillas de Documentos</h3>
-                <div class="test-form">
-                  <label for="documentTemplate">Seleccionar Plantilla:</label>
-                  <select id="documentTemplate">
-                    <option value="factura">Factura Electrónica</option>
-                    <option value="nota_credito">Nota de Crédito</option>
-                    <option value="boleta">Boleta Electrónica</option>
-                    <option value="custom">Personalizado</option>
-                  </select>
-                  
-                  <label for="jsonData">JSON del Documento:</label>
-                  <textarea id="jsonData" placeholder="Pega aquí el JSON del documento..."></textarea>
-                  
-                  <button class="btn-test" onclick="loadTemplate()">Cargar Plantilla</button>
-                  <button class="btn-test" onclick="clearForm()">Limpiar</button>
-                  <button class="btn-test" onclick="sendRequest()" id="sendBtn">Enviar Petición</button>
-                </div>
-                
-                <div class="loading" id="loading">
-                  <div class="spinner"></div>
-                  <p>Enviando petición...</p>
-                </div>
-                
-                <div class="response-panel" id="responsePanel" style="display: none;">
-                  <h4>Respuesta de la API:</h4>
-                  <pre id="responseContent"></pre>
-                </div>
-              </div>
-    
-              
-              <h3 class="section-title">Plantillas REST (JSON)</h3>
-              
-              <div class="code-example">
-                <h4>1. Factura Electrónica</h4>
-                <button class="btn-test" onclick="loadFacturaTemplate()">Cargar Plantilla</button>
-                <pre><code class="lang-json">{
-  "Sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "integrado_webbasico",
-    "clave": "d2ViYmFzaWNvMjAyMQ=="
-  },
-  "Documento": {
-    "Encabezado": {
-      "IdDoc": {
-        "TipoDTE": "33",
-        "Folio": "0",
-        "MntBruto": "2",
-        "FchEmis": "2024-01-20",
-        "FchVenc": "2024-01-26"
-      },
-      "Emisor": {
-        "RUTEmisor": "29282726-1",
-        "RznSocEmisor": "EMPRESA DE PRUEBA",
-        "GiroEmisor": "DESARROLLO DE SISTEMAS",
-        "DirOrigen": "Avenida del Software #11001101",
-        "CmnaOrigen": "PROVIDENCIA",
-        "CiudadOrigen": "SANTIAGO"
-      },
-      "Receptor": {
-        "RUTRecep": "76399744-8",
-        "CdgIntRecep": "1000215-220",
-        "RznSocRecep": "CLIENTE DE PRUEBA",
-        "CorreoRecep": "prueba@dtemite.cl",
-        "Contacto": "correo@prueba.cl",
-        "DirRecep": "CALLE A 50",
-        "CmnaRecep": "SANTIAGO",
-        "CiudadRecep": "SANTIAGO"
-      },
-      "Totales": {
-        "MntNeto": "10000",
-        "MntExe": "0",
-        "IVA": "1900",
-        "MntTotal": "11900"
-      }
-    },
-    "Detalle": [
-      {
-        "NroLinDet": "1",
-        "CdgItem": {
-          "TpoCodigo": "INT1",
-          "VlrCodigo": "WWW"
-        },
-        "NmbItem": "Descripción de producto WWW",
-        "QtyItem": "1",
-        "PrcItem": "11900",
-        "MontoItem": "11900"
-      }
-    ]
-  }
-}</code></pre>
+              <div class="alert alert-info" style="margin: 20px 0; padding: 15px; border-radius: 8px; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-left: 4px solid #2196f3;">
+                <h4 style="margin-top: 0; color: #1976d2;">🚀 Acceso al Panel de Pruebas</h4>
+                <p style="margin-bottom: 0; color: #424242;">
+                  <strong>Haz clic en el botón flotante ⚙️</strong> ubicado en la esquina inferior derecha de la pantalla para acceder al panel completo de pruebas de integración.
+                </p>
               </div>
               
-              <div class="code-example">
-                <h4>2. Nota de Crédito</h4>
-                <button class="btn-test" onclick="loadNotaCreditoTemplate()">Cargar Plantilla</button>
-                <pre><code class="lang-json">{
-  "Sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "integrado_webbasico",
-    "clave": "d2ViYmFzaWNvMjAyMQ=="
-  },
-  "Documento": {
-    "Encabezado": {
-      "IdDoc": {
-        "TipoDTE": "61",
-        "Folio": "0",
-        "FchEmis": "2024-01-20",
-        "FchVenc": "2024-01-20"
-      },
-      "Emisor": {
-        "RUTEmisor": "29282726-1",
-        "RznSocEmisor": "EMPRESA DE PRUEBA",
-        "GiroEmisor": "DESARROLLO DE SISTEMAS",
-        "DirOrigen": "Avenida del Software #11001101",
-        "CmnaOrigen": "PROVIDENCIA",
-        "CiudadOrigen": "SANTIAGO"
-      },
-      "Receptor": {
-        "RUTRecep": "76399744-8",
-        "CdgIntRecep": "1000215-220",
-        "RznSocRecep": "CLIENTE DE PRUEBA",
-        "CorreoRecpt": "prueba@dtemite.cl",
-        "Contacto": "correo@prueba.cl",
-        "DirRecep": "CALLE A 50",
-        "CmnaRecep": "SANTIAGO",
-        "CiudadRecep": "SANTIAGO"
-      },
-      "Totales": {
-        "MntNeto": "10034",
-        "MntExe": "0",
-        "IVA": "1906",
-        "MntTotal": "11940"
-      }
-    },
-    "Detalle": [
-      {
-        "NroLinDet": "1",
-        "CdgItem": {
-          "TpoCodigo": "INT1",
-          "VlrCodigo": "WWW"
-        },
-        "NmbItem": "Descripción de producto WWW",
-        "QtyItem": "1",
-        "PrcItem": "10034",
-        "MontoItem": "10034"
-      }
-    ],
-    "Referencia": [
-      {
-        "NroLinRef": "1",
-        "TpoDocRef": "30",
-        "FolioRef": "41139",
-        "FchRef": "2007-06-29",
-        "CodRef": "1",
-        "RazonRef": "Anula Documento Ref"
-      }
-    ]
-  }
-}</code></pre>
-              </div>
+              <h3 class="section-title">¿Qué incluye el Panel de Pruebas?</h3>
+              <ul style="text-align: justify; line-height: 1.8;">
+                <li><strong>📋 Ejemplos de Código:</strong> CURL, NodeJS, Python, PHP, Java, Go, Ruby y PowerShell</li>
+                <li><strong>🔧 Configuración de Credenciales:</strong> Campos preconfigurados con datos de prueba</li>
+                <li><strong>📄 Plantillas de Documentos:</strong> Factura Electrónica, Nota de Crédito, Boleta Electrónica</li>
+                <li><strong>🌐 APIs REST y SOAP:</strong> Prueba ambos protocolos desde la misma interfaz</li>
+                <li><strong>📊 Respuestas en Tiempo Real:</strong> Ve los resultados inmediatamente</li>
+                <li><strong>📖 Código Expandible:</strong> Visualiza y copia ejemplos de código fácilmente</li>
+              </ul>
               
-              <div class="code-example">
-                <h4>3. Boleta Electrónica</h4>
-                <button class="btn-test" onclick="loadBoletaTemplate()">Cargar Plantilla</button>
-                <pre><code class="lang-json">{
-  "Sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "integrado_webbasico",
-    "clave": "d2ViYmFzaWNvMjAyMQ=="
-  },
-  "Documento": {
-    "Encabezado": {
-      "IdDoc": {
-        "TipoDTE": "39",
-        "Folio": "0",
-        "FchEmis": "2024-01-20",
-        "FchVenc": "2024-01-26"
-      },
-      "Emisor": {
-        "RUTEmisor": "29282726-1",
-        "RznSocEmisor": "EMPRESA DE PRUEBA",
-        "GiroEmisor": "DESARROLLO DE SISTEMAS",
-        "DirOrigen": "Avenida del Software #11001101",
-        "CmnaOrigen": "PROVIDENCIA",
-        "CiudadOrigen": "SANTIAGO"
-      },
-      "Receptor": {
-        "RUTRecep": "76399744-8",
-        "CdgIntRecep": "1000215-220",
-        "RznSocRecep": "CLIENTE DE PRUEBA",
-        "CorreoRecep": "prueba@dtemite.cl",
-        "Contacto": "correo@prueba.cl",
-        "DirRecep": "CALLE A 50",
-        "CmnaRecep": "SANTIAGO",
-        "CiudadRecep": "SANTIAGO"
-      },
-      "Totales": {
-        "MntNeto": "10000",
-        "MntExe": "0",
-        "IVA": "1900",
-        "MntTotal": "11900"
-      }
-    },
-    "Detalle": [
-      {
-        "NroLinDet": "1",
-        "CdgItem": {
-          "TpoCodigo": "INT1",
-          "VlrCodigo": "WWW"
-        },
-        "NmbItem": "Descripción de producto WWW",
-        "QtyItem": "1",
-        "PrcItem": "11900",
-        "MontoItem": "11900"
-      }
-    ]
-  }
-}</code></pre>
-              </div>
-              
-              <h3 class="section-title">Plantillas SOAP (XML)</h3>
-              
-              <div class="code-example">
-                <h4>1. SOAP - Emision (Integrar documentos)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_emision')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;xml&gt;&lt;Documento&gt;
-  &lt;Encabezado&gt;
-    &lt;IdDoc&gt;
-      &lt;TipoDTE&gt;33&lt;/TipoDTE&gt;
-      &lt;Folio&gt;0&lt;/Folio&gt;
-      &lt;MntBruto&gt;2&lt;/MntBruto&gt;
-      &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
-      &lt;FchVenc&gt;2024-01-26&lt;/FchVenc&gt;
-    &lt;/IdDoc&gt;
-    &lt;Emisor&gt;
-      &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
-      &lt;RznSocEmisor&gt;EMPRESA DE PRUEBA&lt;/RznSocEmisor&gt;
-      &lt;GiroEmisor&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmisor&gt;
-      &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
-      &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
-      &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
-    &lt;/Emisor&gt;
-    &lt;Receptor&gt;
-      &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
-      &lt;CdgIntRecep&gt;1000215-220&lt;/CdgIntRecep&gt;
-      &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
-      &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
-      &lt;Contacto&gt;correo@prueba.cl&lt;/Contacto&gt;
-      &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
-      &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
-      &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
-    &lt;/Receptor&gt;
-    &lt;Totales&gt;
-      &lt;MntNeto&gt;10000&lt;/MntNeto&gt;
-      &lt;MntExe&gt;0&lt;/MntExe&gt;
-      &lt;IVA&gt;1900&lt;/IVA&gt;
-      &lt;MntTotal&gt;11900&lt;/MntTotal&gt;
-    &lt;/Totales&gt;
-  &lt;/Encabezado&gt;
-  &lt;Detalle&gt;
-    &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
-    &lt;CdgItem&gt;
-      &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
-      &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
-    &lt;/CdgItem&gt;
-    &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
-    &lt;QtyItem&gt;1&lt;/QtyItem&gt;
-    &lt;PrcItem&gt;11900&lt;/PrcItem&gt;
-    &lt;MontoItem&gt;11900&lt;/MontoItem&gt;
-  &lt;/Detalle&gt;
-&lt;/Documento&gt;&lt;/xml&gt;</code></pre>
-              </div>
-              
-              <div class="code-example">
-                <h4>2. SOAP - ObtenerPDF (Obtener PDF específico)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_obtener_pdf')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;tipodte&gt;33&lt;/tipodte&gt;
-&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
-              </div>
-              
-              <div class="code-example">
-                <h4>3. SOAP - ObtenerXml (Obtener XML específico)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_obtener_xml')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;tipodte&gt;33&lt;/tipodte&gt;
-&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
-              </div>
-              
-              <div class="code-example">
-                <h4>4. SOAP - ObtenerTrazabilidad (Estado del documento)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_obtener_trazabilidad')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;tipodte&gt;33&lt;/tipodte&gt;
-&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
-              </div>
-              
-              <div class="code-example">
-                <h4>5. SOAP - ObtenerPDFCredible (PDF Credible)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_obtener_pdf_credible')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;tipodte&gt;33&lt;/tipodte&gt;
-&lt;foliodte&gt;1&lt;/foliodte&gt;</code></pre>
-              </div>
-              
-              <div class="code-example">
-                <h4>6. SOAP - get_DTEcompra (DTE de compra por fechas)</h4>
-                <button class="btn-test" onclick="loadTemplate('soap_get_dte_compra')">Cargar Plantilla</button>
-                <pre><code class="lang-xml">&lt;sistema&gt;webbasico&lt;/sistema&gt;
-&lt;rut&gt;29282726-1&lt;/rut&gt;
-&lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
-&lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
-&lt;fechaDesde&gt;2024-01-01&lt;/fechaDesde&gt;
-&lt;fechaHasta&gt;2024-12-31&lt;/fechaHasta&gt;</code></pre>
+              <div class="alert alert-success" style="margin: 20px 0; padding: 15px; border-radius: 8px; background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); border-left: 4px solid #4caf50;">
+                <h4 style="margin-top: 0; color: #2e7d32;">💡 Consejos de Uso</h4>
+                <ul style="margin-bottom: 0; color: #424242;">
+                  <li>Las credenciales ya están configuradas con datos de prueba</li>
+                  <li>Puedes cambiar entre diferentes lenguajes de programación</li>
+                  <li>Usa las plantillas predefinidas o crea documentos personalizados</li>
+                  <li>El panel se mantiene abierto mientras navegas por la documentación</li>
+                </ul>
               </div>
             </div>
           </div>
@@ -1961,7 +1602,7 @@
     
     <!-- Botón Panel de Pruebas de Envío -->
     <button class="panel-envio-btn" id="panelEnvioBtn" title="Panel de Pruebas de Envío">
-      📦
+      ⚙️
     </button>
 
     <!-- Modal Panel de Pruebas de Envío -->
@@ -1975,7 +1616,7 @@
         <div class="modal-content">
           <!-- Selector de Métodos de Envío -->
           <div class="shipping-methods-container">
-            <h3>Selecciona un Método de Envío</h3>
+            <h3>Visualiza ejemplos de código en el lenguaje de programación que prefieras</h3>
             <div class="shipping-tabs">
               <button class="shipping-tab active" data-method="curl">
                 <span class="tab-icon">🌐</span>
