@@ -70,6 +70,1028 @@ const shippingCodeExamples = {
   }
 }'`,
 
+  // NodeJS submétodos
+  'nodejs_axios': `const axios = require('axios');
+
+const sendDTEmiteRequest = async () => {
+  try {
+    const documentData = {
+      Sistema: {
+        nombre: "webbasico",
+        rut: "29282726-1",
+        usuario: "integrado_webbasico",
+        clave: "d2ViYmFzaWNvMjAyMQ=="
+      },
+      Documento: {
+        Encabezado: {
+          IdDoc: {
+            TipoDTE: "33",
+            Folio: "0",
+            MntBruto: "2",
+            FchEmis: "2024-01-20",
+            FchVenc: "2024-01-26"
+          },
+          Emisor: {
+            RUTEmisor: "29282726-1",
+            RznSocEmisor: "EMPRESA DE PRUEBA",
+            GiroEmisor: "DESARROLLO DE SISTEMAS",
+            DirOrigen: "Avenida del Software #11001101",
+            CmnaOrigen: "PROVIDENCIA",
+            CiudadOrigen: "SANTIAGO"
+          },
+          Receptor: {
+            RUTRecep: "76399744-8",
+            CdgIntRecep: "1000215-220",
+            RznSocRecep: "CLIENTE DE PRUEBA",
+            CorreoRecep: "prueba@dtemite.cl",
+            DirRecep: "CALLE A 50",
+            CmnaRecep: "SANTIAGO",
+            CiudadRecep: "SANTIAGO"
+          },
+          Totales: {
+            MntNeto: "10000",
+            MntExe: "0",
+            IVA: "1900",
+            MntTotal: "11900"
+          }
+        },
+        Detalle: [
+          {
+            NroLinDet: "1",
+            CdgItem: {
+              TpoCodigo: "INT1",
+              VlrCodigo: "WWW"
+            },
+            NmbItem: "Descripción de producto WWW",
+            QtyItem: "1",
+            PrcItem: "11900",
+            MontoItem: "11900"
+          }
+        ]
+      }
+    };
+
+    const response = await axios.post(
+      'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento',
+      documentData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }
+    );
+    
+    console.log('Respuesta DTEmite:', response.data);
+  } catch (error) {
+    console.error('Error DTEmite:', error.response?.data || error.message);
+  }
+};
+
+sendDTEmiteRequest();`,
+
+  'nodejs_native': `const https = require('https');
+
+const sendDTEmiteRequest = () => {
+  const documentData = JSON.stringify({
+    Sistema: {
+      nombre: "webbasico",
+      rut: "29282726-1",
+      usuario: "integrado_webbasico",
+      clave: "d2ViYmFzaWNvMjAyMQ=="
+    },
+    Documento: {
+      Encabezado: {
+        IdDoc: {
+          TipoDTE: "33",
+          Folio: "0",
+          MntBruto: "2",
+          FchEmis: "2024-01-20",
+          FchVenc: "2024-01-26"
+        },
+        Emisor: {
+          RUTEmisor: "29282726-1",
+          RznSocEmisor: "EMPRESA DE PRUEBA",
+          GiroEmisor: "DESARROLLO DE SISTEMAS",
+          DirOrigen: "Avenida del Software #11001101",
+          CmnaOrigen: "PROVIDENCIA",
+          CiudadOrigen: "SANTIAGO"
+        },
+        Receptor: {
+          RUTRecep: "76399744-8",
+          CdgIntRecep: "1000215-220",
+          RznSocRecep: "CLIENTE DE PRUEBA",
+          CorreoRecep: "prueba@dtemite.cl",
+          DirRecep: "CALLE A 50",
+          CmnaRecep: "SANTIAGO",
+          CiudadRecep: "SANTIAGO"
+        },
+        Totales: {
+          MntNeto: "10000",
+          MntExe: "0",
+          IVA: "1900",
+          MntTotal: "11900"
+        }
+      },
+      Detalle: [
+        {
+          NroLinDet: "1",
+          CdgItem: {
+            TpoCodigo: "INT1",
+            VlrCodigo: "WWW"
+          },
+          NmbItem: "Descripción de producto WWW",
+          QtyItem: "1",
+          PrcItem: "11900",
+          MontoItem: "11900"
+        }
+      ]
+    }
+  });
+
+  const options = {
+    hostname: 'sistema.dtemite.cl',
+    path: '/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Content-Length': Buffer.byteLength(documentData)
+    }
+  };
+
+  const req = https.request(options, (res) => {
+    let data = '';
+    res.on('data', (chunk) => {
+      data += chunk;
+    });
+    res.on('end', () => {
+      console.log('Respuesta DTEmite:', JSON.parse(data));
+    });
+  });
+
+  req.on('error', (error) => {
+    console.error('Error DTEmite:', error);
+  });
+
+  req.write(documentData);
+  req.end();
+};
+
+sendDTEmiteRequest();`,
+
+  'nodejs_request': `const request = require('request');
+
+const sendDTEmiteRequest = () => {
+  const documentData = {
+    Sistema: {
+      nombre: "webbasico",
+      rut: "29282726-1",
+      usuario: "integrado_webbasico",
+      clave: "d2ViYmFzaWNvMjAyMQ=="
+    },
+    Documento: {
+      Encabezado: {
+        IdDoc: {
+          TipoDTE: "33",
+          Folio: "0",
+          MntBruto: "2",
+          FchEmis: "2024-01-20",
+          FchVenc: "2024-01-26"
+        },
+        Emisor: {
+          RUTEmisor: "29282726-1",
+          RznSocEmisor: "EMPRESA DE PRUEBA",
+          GiroEmisor: "DESARROLLO DE SISTEMAS",
+          DirOrigen: "Avenida del Software #11001101",
+          CmnaOrigen: "PROVIDENCIA",
+          CiudadOrigen: "SANTIAGO"
+        },
+        Receptor: {
+          RUTRecep: "76399744-8",
+          CdgIntRecep: "1000215-220",
+          RznSocRecep: "CLIENTE DE PRUEBA",
+          CorreoRecep: "prueba@dtemite.cl",
+          DirRecep: "CALLE A 50",
+          CmnaRecep: "SANTIAGO",
+          CiudadRecep: "SANTIAGO"
+        },
+        Totales: {
+          MntNeto: "10000",
+          MntExe: "0",
+          IVA: "1900",
+          MntTotal: "11900"
+        }
+      },
+      Detalle: [
+        {
+          NroLinDet: "1",
+          CdgItem: {
+            TpoCodigo: "INT1",
+            VlrCodigo: "WWW"
+          },
+          NmbItem: "Descripción de producto WWW",
+          QtyItem: "1",
+          PrcItem: "11900",
+          MontoItem: "11900"
+        }
+      ]
+    }
+  };
+
+  const options = {
+    url: 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    },
+    json: documentData
+  };
+
+  request(options, (error, response, body) => {
+    if (error) {
+      console.error('Error DTEmite:', error);
+    } else {
+      console.log('Respuesta DTEmite:', body);
+    }
+  });
+};
+
+sendDTEmiteRequest();`,
+
+  'nodejs_unirest': `const unirest = require('unirest');
+
+const sendDTEmiteRequest = () => {
+  unirest.post('https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento')
+    .headers({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+    .send({
+      Sistema: {
+        nombre: "webbasico",
+        rut: "29282726-1",
+        usuario: "integrado_webbasico",
+        clave: "d2ViYmFzaWNvMjAyMQ=="
+      },
+      Documento: {
+        Encabezado: {
+          IdDoc: {
+            TipoDTE: "33",
+            Folio: "0",
+            MntBruto: "2",
+            FchEmis: "2024-01-20",
+            FchVenc: "2024-01-26"
+          },
+          Emisor: {
+            RUTEmisor: "29282726-1",
+            RznSocEmisor: "EMPRESA DE PRUEBA",
+            GiroEmisor: "DESARROLLO DE SISTEMAS",
+            DirOrigen: "Avenida del Software #11001101",
+            CmnaOrigen: "PROVIDENCIA",
+            CiudadOrigen: "SANTIAGO"
+          },
+          Receptor: {
+            RUTRecep: "76399744-8",
+            CdgIntRecep: "1000215-220",
+            RznSocRecep: "CLIENTE DE PRUEBA",
+            CorreoRecep: "prueba@dtemite.cl",
+            DirRecep: "CALLE A 50",
+            CmnaRecep: "SANTIAGO",
+            CiudadRecep: "SANTIAGO"
+          },
+          Totales: {
+            MntNeto: "10000",
+            MntExe: "0",
+            IVA: "1900",
+            MntTotal: "11900"
+          }
+        },
+        Detalle: [
+          {
+            NroLinDet: "1",
+            CdgItem: {
+              TpoCodigo: "INT1",
+              VlrCodigo: "WWW"
+            },
+            NmbItem: "Descripción de producto WWW",
+            QtyItem: "1",
+            PrcItem: "11900",
+            MontoItem: "11900"
+          }
+        ]
+      }
+    })
+    .end((response) => {
+      if (response.error) {
+        console.error('Error DTEmite:', response.error);
+      } else {
+        console.log('Respuesta DTEmite:', response.body);
+      }
+    });
+};
+
+sendDTEmiteRequest();`,
+
+  // Python submétodos
+  'python_requests': `import requests
+import json
+
+def send_dtemite_request():
+    url = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento'
+    
+    document_data = {
+        "Sistema": {
+            "nombre": "webbasico",
+            "rut": "29282726-1",
+            "usuario": "integrado_webbasico",
+            "clave": "d2ViYmFzaWNvMjAyMQ=="
+        },
+        "Documento": {
+            "Encabezado": {
+                "IdDoc": {
+                    "TipoDTE": "33",
+                    "Folio": "0",
+                    "MntBruto": "2",
+                    "FchEmis": "2024-01-20",
+                    "FchVenc": "2024-01-26"
+                },
+                "Emisor": {
+                    "RUTEmisor": "29282726-1",
+                    "RznSocEmisor": "EMPRESA DE PRUEBA",
+                    "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                    "DirOrigen": "Avenida del Software #11001101",
+                    "CmnaOrigen": "PROVIDENCIA",
+                    "CiudadOrigen": "SANTIAGO"
+                },
+                "Receptor": {
+                    "RUTRecep": "76399744-8",
+                    "CdgIntRecep": "1000215-220",
+                    "RznSocRecep": "CLIENTE DE PRUEBA",
+                    "CorreoRecep": "prueba@dtemite.cl",
+                    "DirRecep": "CALLE A 50",
+                    "CmnaRecep": "SANTIAGO",
+                    "CiudadRecep": "SANTIAGO"
+                },
+                "Totales": {
+                    "MntNeto": "10000",
+                    "MntExe": "0",
+                    "IVA": "1900",
+                    "MntTotal": "11900"
+                }
+            },
+            "Detalle": [
+                {
+                    "NroLinDet": "1",
+                    "CdgItem": {
+                        "TpoCodigo": "INT1",
+                        "VlrCodigo": "WWW"
+                    },
+                    "NmbItem": "Descripción de producto WWW",
+                    "QtyItem": "1",
+                    "PrcItem": "11900",
+                    "MontoItem": "11900"
+                }
+            ]
+        }
+    }
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+    
+    try:
+        response = requests.post(url, json=document_data, headers=headers)
+        response.raise_for_status()
+        print("Respuesta DTEmite:", response.json())
+    except requests.exceptions.RequestException as e:
+        print("Error DTEmite:", e)
+
+send_dtemite_request()`,
+
+  'python_http': `import http.client
+import json
+
+def send_dtemite_request():
+    conn = http.client.HTTPSConnection("sistema.dtemite.cl")
+    
+    document_data = {
+        "Sistema": {
+            "nombre": "webbasico",
+            "rut": "29282726-1",
+            "usuario": "integrado_webbasico",
+            "clave": "d2ViYmFzaWNvMjAyMQ=="
+        },
+        "Documento": {
+            "Encabezado": {
+                "IdDoc": {
+                    "TipoDTE": "33",
+                    "Folio": "0",
+                    "MntBruto": "2",
+                    "FchEmis": "2024-01-20",
+                    "FchVenc": "2024-01-26"
+                },
+                "Emisor": {
+                    "RUTEmisor": "29282726-1",
+                    "RznSocEmisor": "EMPRESA DE PRUEBA",
+                    "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                    "DirOrigen": "Avenida del Software #11001101",
+                    "CmnaOrigen": "PROVIDENCIA",
+                    "CiudadOrigen": "SANTIAGO"
+                },
+                "Receptor": {
+                    "RUTRecep": "76399744-8",
+                    "CdgIntRecep": "1000215-220",
+                    "RznSocRecep": "CLIENTE DE PRUEBA",
+                    "CorreoRecep": "prueba@dtemite.cl",
+                    "DirRecep": "CALLE A 50",
+                    "CmnaRecep": "SANTIAGO",
+                    "CiudadRecep": "SANTIAGO"
+                },
+                "Totales": {
+                    "MntNeto": "10000",
+                    "MntExe": "0",
+                    "IVA": "1900",
+                    "MntTotal": "11900"
+                }
+            },
+            "Detalle": [
+                {
+                    "NroLinDet": "1",
+                    "CdgItem": {
+                        "TpoCodigo": "INT1",
+                        "VlrCodigo": "WWW"
+                    },
+                    "NmbItem": "Descripción de producto WWW",
+                    "QtyItem": "1",
+                    "PrcItem": "11900",
+                    "MontoItem": "11900"
+                }
+            ]
+        }
+    }
+    
+    headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
+    
+    try:
+        conn.request("POST", "/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento", 
+                    json.dumps(document_data), headers)
+        response = conn.getresponse()
+        data = response.read()
+        print("Respuesta DTEmite:", json.loads(data.decode('utf-8')))
+    except Exception as e:
+        print("Error DTEmite:", e)
+    finally:
+        conn.close()
+
+send_dtemite_request()`,
+
+  // PHP submétodos
+  'php_curl': `<?php
+function sendDTEmiteRequest() {
+    $url = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento';
+    
+    $documentData = [
+        'Sistema' => [
+            'nombre' => 'webbasico',
+            'rut' => '29282726-1',
+            'usuario' => 'integrado_webbasico',
+            'clave' => 'd2ViYmFzaWNvMjAyMQ=='
+        ],
+        'Documento' => [
+            'Encabezado' => [
+                'IdDoc' => [
+                    'TipoDTE' => '33',
+                    'Folio' => '0',
+                    'MntBruto' => '2',
+                    'FchEmis' => '2024-01-20',
+                    'FchVenc' => '2024-01-26'
+                ],
+                'Emisor' => [
+                    'RUTEmisor' => '29282726-1',
+                    'RznSocEmisor' => 'EMPRESA DE PRUEBA',
+                    'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
+                    'DirOrigen' => 'Avenida del Software #11001101',
+                    'CmnaOrigen' => 'PROVIDENCIA',
+                    'CiudadOrigen' => 'SANTIAGO'
+                ],
+                'Receptor' => [
+                    'RUTRecep' => '76399744-8',
+                    'CdgIntRecep' => '1000215-220',
+                    'RznSocRecep' => 'CLIENTE DE PRUEBA',
+                    'CorreoRecep' => 'prueba@dtemite.cl',
+                    'DirRecep' => 'CALLE A 50',
+                    'CmnaRecep' => 'SANTIAGO',
+                    'CiudadRecep' => 'SANTIAGO'
+                ],
+                'Totales' => [
+                    'MntNeto' => '10000',
+                    'MntExe' => '0',
+                    'IVA' => '1900',
+                    'MntTotal' => '11900'
+                ]
+            ],
+            'Detalle' => [
+                [
+                    'NroLinDet' => '1',
+                    'CdgItem' => [
+                        'TpoCodigo' => 'INT1',
+                        'VlrCodigo' => 'WWW'
+                    ],
+                    'NmbItem' => 'Descripción de producto WWW',
+                    'QtyItem' => '1',
+                    'PrcItem' => '11900',
+                    'MontoItem' => '11900'
+                ]
+            ]
+        ]
+    ];
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($documentData));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Accept: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    
+    if (curl_error($ch)) {
+        echo "Error DTEmite: " . curl_error($ch);
+    } else {
+        echo "Respuesta DTEmite: " . $response;
+    }
+    
+    curl_close($ch);
+}
+
+sendDTEmiteRequest();
+?>`,
+
+  'php_guzzle': `<?php
+require_once 'vendor/autoload.php';
+
+use GuzzleHttp\\Client;
+use GuzzleHttp\\Exception\\RequestException;
+
+function sendDTEmiteRequest() {
+    $client = new Client();
+    
+    $documentData = [
+        'Sistema' => [
+            'nombre' => 'webbasico',
+            'rut' => '29282726-1',
+            'usuario' => 'integrado_webbasico',
+            'clave' => 'd2ViYmFzaWNvMjAyMQ=='
+        ],
+        'Documento' => [
+            'Encabezado' => [
+                'IdDoc' => [
+                    'TipoDTE' => '33',
+                    'Folio' => '0',
+                    'MntBruto' => '2',
+                    'FchEmis' => '2024-01-20',
+                    'FchVenc' => '2024-01-26'
+                ],
+                'Emisor' => [
+                    'RUTEmisor' => '29282726-1',
+                    'RznSocEmisor' => 'EMPRESA DE PRUEBA',
+                    'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
+                    'DirOrigen' => 'Avenida del Software #11001101',
+                    'CmnaOrigen' => 'PROVIDENCIA',
+                    'CiudadOrigen' => 'SANTIAGO'
+                ],
+                'Receptor' => [
+                    'RUTRecep' => '76399744-8',
+                    'CdgIntRecep' => '1000215-220',
+                    'RznSocRecep' => 'CLIENTE DE PRUEBA',
+                    'CorreoRecep' => 'prueba@dtemite.cl',
+                    'DirRecep' => 'CALLE A 50',
+                    'CmnaRecep' => 'SANTIAGO',
+                    'CiudadRecep' => 'SANTIAGO'
+                ],
+                'Totales' => [
+                    'MntNeto' => '10000',
+                    'MntExe' => '0',
+                    'IVA' => '1900',
+                    'MntTotal' => '11900'
+                ]
+            ],
+            'Detalle' => [
+                [
+                    'NroLinDet' => '1',
+                    'CdgItem' => [
+                        'TpoCodigo' => 'INT1',
+                        'VlrCodigo' => 'WWW'
+                    ],
+                    'NmbItem' => 'Descripción de producto WWW',
+                    'QtyItem' => '1',
+                    'PrcItem' => '11900',
+                    'MontoItem' => '11900'
+                ]
+            ]
+        ]
+    ];
+    
+    try {
+        $response = $client->post('https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento', [
+            'json' => $documentData,
+            'headers' => [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json'
+            ]
+        ]);
+        
+        echo "Respuesta DTEmite: " . $response->getBody();
+    } catch (RequestException $e) {
+        echo "Error DTEmite: " . $e->getMessage();
+    }
+}
+
+sendDTEmiteRequest();
+?>`,
+
+  'php_http_request2': `<?php
+require_once 'HTTP/Request2.php';
+
+function sendDTEmiteRequest() {
+    $request = new HTTP_Request2();
+    $request->setUrl('https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento');
+    $request->setMethod(HTTP_Request2::METHOD_POST);
+    
+    $documentData = [
+        'Sistema' => [
+            'nombre' => 'webbasico',
+            'rut' => '29282726-1',
+            'usuario' => 'integrado_webbasico',
+            'clave' => 'd2ViYmFzaWNvMjAyMQ=='
+        ],
+        'Documento' => [
+            'Encabezado' => [
+                'IdDoc' => [
+                    'TipoDTE' => '33',
+                    'Folio' => '0',
+                    'MntBruto' => '2',
+                    'FchEmis' => '2024-01-20',
+                    'FchVenc' => '2024-01-26'
+                ],
+                'Emisor' => [
+                    'RUTEmisor' => '29282726-1',
+                    'RznSocEmisor' => 'EMPRESA DE PRUEBA',
+                    'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
+                    'DirOrigen' => 'Avenida del Software #11001101',
+                    'CmnaOrigen' => 'PROVIDENCIA',
+                    'CiudadOrigen' => 'SANTIAGO'
+                ],
+                'Receptor' => [
+                    'RUTRecep' => '76399744-8',
+                    'CdgIntRecep' => '1000215-220',
+                    'RznSocRecep' => 'CLIENTE DE PRUEBA',
+                    'CorreoRecep' => 'prueba@dtemite.cl',
+                    'DirRecep' => 'CALLE A 50',
+                    'CmnaRecep' => 'SANTIAGO',
+                    'CiudadRecep' => 'SANTIAGO'
+                ],
+                'Totales' => [
+                    'MntNeto' => '10000',
+                    'MntExe' => '0',
+                    'IVA' => '1900',
+                    'MntTotal' => '11900'
+                ]
+            ],
+            'Detalle' => [
+                [
+                    'NroLinDet' => '1',
+                    'CdgItem' => [
+                        'TpoCodigo' => 'INT1',
+                        'VlrCodigo' => 'WWW'
+                    ],
+                    'NmbItem' => 'Descripción de producto WWW',
+                    'QtyItem' => '1',
+                    'PrcItem' => '11900',
+                    'MontoItem' => '11900'
+                ]
+            ]
+        ]
+    ];
+    
+    $request->setHeader([
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json'
+    ]);
+    
+    $request->setBody(json_encode($documentData));
+    
+    try {
+        $response = $request->send();
+        echo "Respuesta DTEmite: " . $response->getBody();
+    } catch (HTTP_Request2_Exception $e) {
+        echo "Error DTEmite: " . $e->getMessage();
+    }
+}
+
+sendDTEmiteRequest();
+?>`,
+
+  'php_pecl_http': `<?php
+function sendDTEmiteRequest() {
+    $documentData = [
+        'Sistema' => [
+            'nombre' => 'webbasico',
+            'rut' => '29282726-1',
+            'usuario' => 'integrado_webbasico',
+            'clave' => 'd2ViYmFzaWNvMjAyMQ=='
+        ],
+        'Documento' => [
+            'Encabezado' => [
+                'IdDoc' => [
+                    'TipoDTE' => '33',
+                    'Folio' => '0',
+                    'MntBruto' => '2',
+                    'FchEmis' => '2024-01-20',
+                    'FchVenc' => '2024-01-26'
+                ],
+                'Emisor' => [
+                    'RUTEmisor' => '29282726-1',
+                    'RznSocEmisor' => 'EMPRESA DE PRUEBA',
+                    'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
+                    'DirOrigen' => 'Avenida del Software #11001101',
+                    'CmnaOrigen' => 'PROVIDENCIA',
+                    'CiudadOrigen' => 'SANTIAGO'
+                ],
+                'Receptor' => [
+                    'RUTRecep' => '76399744-8',
+                    'CdgIntRecep' => '1000215-220',
+                    'RznSocRecep' => 'CLIENTE DE PRUEBA',
+                    'CorreoRecep' => 'prueba@dtemite.cl',
+                    'DirRecep' => 'CALLE A 50',
+                    'CmnaRecep' => 'SANTIAGO',
+                    'CiudadRecep' => 'SANTIAGO'
+                ],
+                'Totales' => [
+                    'MntNeto' => '10000',
+                    'MntExe' => '0',
+                    'IVA' => '1900',
+                    'MntTotal' => '11900'
+                ]
+            ],
+            'Detalle' => [
+                [
+                    'NroLinDet' => '1',
+                    'CdgItem' => [
+                        'TpoCodigo' => 'INT1',
+                        'VlrCodigo' => 'WWW'
+                    ],
+                    'NmbItem' => 'Descripción de producto WWW',
+                    'QtyItem' => '1',
+                    'PrcItem' => '11900',
+                    'MontoItem' => '11900'
+                ]
+            ]
+        ]
+    ];
+    
+    $request = new HttpRequest('https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento', HttpRequest::METH_POST);
+    $request->setHeaders([
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json'
+    ]);
+    $request->setBody(json_encode($documentData));
+    
+    try {
+        $response = $request->send();
+        echo "Respuesta DTEmite: " . $response->getBody();
+    } catch (HttpException $e) {
+        echo "Error DTEmite: " . $e->getMessage();
+    }
+}
+
+sendDTEmiteRequest();
+?>`,
+
+  // Java submétodos
+  'java_okhttp': `import okhttp3.*;
+import com.google.gson.Gson;
+import java.io.IOException;
+
+public class DTEmiteClient {
+    private static final String URL = "https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento";
+    
+    public static void main(String[] args) {
+        sendDTEmiteRequest();
+    }
+    
+    public static void sendDTEmiteRequest() {
+        OkHttpClient client = new OkHttpClient();
+        Gson gson = new Gson();
+        
+        DocumentData documentData = new DocumentData();
+        
+        RequestBody body = RequestBody.create(
+            gson.toJson(documentData),
+            MediaType.parse("application/json")
+        );
+        
+        Request request = new Request.Builder()
+            .url(URL)
+            .post(body)
+            .addHeader("Content-Type", "application/json")
+            .addHeader("Accept", "application/json")
+            .build();
+        
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful()) {
+                System.out.println("Respuesta DTEmite: " + response.body().string());
+            } else {
+                System.out.println("Error DTEmite: " + response.code() + " - " + response.message());
+            }
+        } catch (IOException e) {
+            System.out.println("Error DTEmite: " + e.getMessage());
+        }
+    }
+    
+    static class DocumentData {
+        Sistema sistema = new Sistema();
+        Documento documento = new Documento();
+    }
+    
+    static class Sistema {
+        String nombre = "webbasico";
+        String rut = "29282726-1";
+        String usuario = "integrado_webbasico";
+        String clave = "d2ViYmFzaWNvMjAyMQ==";
+    }
+    
+    static class Documento {
+        Encabezado encabezado = new Encabezado();
+        Detalle[] detalle = {new Detalle()};
+    }
+    
+    static class Encabezado {
+        IdDoc idDoc = new IdDoc();
+        Emisor emisor = new Emisor();
+        Receptor receptor = new Receptor();
+        Totales totales = new Totales();
+    }
+    
+    static class IdDoc {
+        String tipoDTE = "33";
+        String folio = "0";
+        String mntBruto = "2";
+        String fchEmis = "2024-01-20";
+        String fchVenc = "2024-01-26";
+    }
+    
+    static class Emisor {
+        String rutEmisor = "29282726-1";
+        String rznSocEmisor = "EMPRESA DE PRUEBA";
+        String giroEmisor = "DESARROLLO DE SISTEMAS";
+        String dirOrigen = "Avenida del Software #11001101";
+        String cmnaOrigen = "PROVIDENCIA";
+        String ciudadOrigen = "SANTIAGO";
+    }
+    
+    static class Receptor {
+        String rutRecep = "76399744-8";
+        String cdgIntRecep = "1000215-220";
+        String rznSocRecep = "CLIENTE DE PRUEBA";
+        String correoRecep = "prueba@dtemite.cl";
+        String dirRecep = "CALLE A 50";
+        String cmnaRecep = "SANTIAGO";
+        String ciudadRecep = "SANTIAGO";
+    }
+    
+    static class Totales {
+        String mntNeto = "10000";
+        String mntExe = "0";
+        String iva = "1900";
+        String mntTotal = "11900";
+    }
+    
+    static class Detalle {
+        String nroLinDet = "1";
+        CdgItem cdgItem = new CdgItem();
+        String nmbItem = "Descripción de producto WWW";
+        String qtyItem = "1";
+        String prcItem = "11900";
+        String montoItem = "11900";
+    }
+    
+    static class CdgItem {
+        String tpoCodigo = "INT1";
+        String vlrCodigo = "WWW";
+    }
+}`,
+
+  'java_unirest': `import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.google.gson.Gson;
+
+public class DTEmiteClient {
+    public static void main(String[] args) {
+        sendDTEmiteRequest();
+    }
+    
+    public static void sendDTEmiteRequest() {
+        Gson gson = new Gson();
+        DocumentData documentData = new DocumentData();
+        
+        try {
+            String response = Unirest.post("https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento")
+                .header("Content-Type", "application/json")
+                .header("Accept", "application/json")
+                .body(gson.toJson(documentData))
+                .asString()
+                .getBody();
+            
+            System.out.println("Respuesta DTEmite: " + response);
+        } catch (UnirestException e) {
+            System.out.println("Error DTEmite: " + e.getMessage());
+        }
+    }
+    
+    static class DocumentData {
+        Sistema sistema = new Sistema();
+        Documento documento = new Documento();
+    }
+    
+    static class Sistema {
+        String nombre = "webbasico";
+        String rut = "29282726-1";
+        String usuario = "integrado_webbasico";
+        String clave = "d2ViYmFzaWNvMjAyMQ==";
+    }
+    
+    static class Documento {
+        Encabezado encabezado = new Encabezado();
+        Detalle[] detalle = {new Detalle()};
+    }
+    
+    static class Encabezado {
+        IdDoc idDoc = new IdDoc();
+        Emisor emisor = new Emisor();
+        Receptor receptor = new Receptor();
+        Totales totales = new Totales();
+    }
+    
+    static class IdDoc {
+        String tipoDTE = "33";
+        String folio = "0";
+        String mntBruto = "2";
+        String fchEmis = "2024-01-20";
+        String fchVenc = "2024-01-26";
+    }
+    
+    static class Emisor {
+        String rutEmisor = "29282726-1";
+        String rznSocEmisor = "EMPRESA DE PRUEBA";
+        String giroEmisor = "DESARROLLO DE SISTEMAS";
+        String dirOrigen = "Avenida del Software #11001101";
+        String cmnaOrigen = "PROVIDENCIA";
+        String ciudadOrigen = "SANTIAGO";
+    }
+    
+    static class Receptor {
+        String rutRecep = "76399744-8";
+        String cdgIntRecep = "1000215-220";
+        String rznSocRecep = "CLIENTE DE PRUEBA";
+        String correoRecep = "prueba@dtemite.cl";
+        String dirRecep = "CALLE A 50";
+        String cmnaRecep = "SANTIAGO";
+        String ciudadRecep = "SANTIAGO";
+    }
+    
+    static class Totales {
+        String mntNeto = "10000";
+        String mntExe = "0";
+        String iva = "1900";
+        String mntTotal = "11900";
+    }
+    
+    static class Detalle {
+        String nroLinDet = "1";
+        CdgItem cdgItem = new CdgItem();
+        String nmbItem = "Descripción de producto WWW";
+        String qtyItem = "1";
+        String prcItem = "11900";
+        String montoItem = "11900";
+    }
+    
+    static class CdgItem {
+        String tpoCodigo = "INT1";
+        String vlrCodigo = "WWW";
+    }
+}`,
+
   nodejs: `const axios = require('axios');
 
 const sendDTEmiteRequest = async () => {
@@ -699,6 +1721,34 @@ try {
 }`
 };
 
+// Configuración de submétodos para cada lenguaje
+const subMethodsConfig = {
+  curl: [],
+  nodejs: [
+    { key: 'nodejs_axios', name: 'Axios', icon: '📦' },
+    { key: 'nodejs_native', name: 'Native', icon: '🔧' },
+    { key: 'nodejs_request', name: 'Request', icon: '📡' },
+    { key: 'nodejs_unirest', name: 'Unirest', icon: '🌐' }
+  ],
+  python: [
+    { key: 'python_requests', name: 'Requests', icon: '🐍' },
+    { key: 'python_http', name: 'HTTP Client', icon: '🔧' }
+  ],
+  php: [
+    { key: 'php_curl', name: 'CURL', icon: '🌐' },
+    { key: 'php_guzzle', name: 'Guzzle', icon: '📦' },
+    { key: 'php_http_request2', name: 'HTTP Request2', icon: '📡' },
+    { key: 'php_pecl_http', name: 'PECL HTTP', icon: '🔧' }
+  ],
+  java: [
+    { key: 'java_okhttp', name: 'OkHttp', icon: '☕' },
+    { key: 'java_unirest', name: 'Unirest', icon: '🌐' }
+  ],
+  go: [],
+  ruby: [],
+  powershell: []
+};
+
 /**
  * Alterna la expansión/contracción del código
  */
@@ -780,14 +1830,8 @@ function initializeShippingModal() {
         const method = this.getAttribute('data-method');
         console.log('🔄 Cambiando método de envío a:', method);
         
-        // Remover clase active de todos los tabs
-        shippingTabs.forEach(t => t.classList.remove('active'));
-        
-        // Agregar clase active al tab seleccionado
-        this.classList.add('active');
-        
-        // Actualizar código mostrado
-        updateShippingCode(method);
+        // Usar la nueva función que maneja submétodos
+        switchShippingMethod(method);
       });
     });
   }
@@ -838,6 +1882,9 @@ function initializeShippingModal() {
     codeContent.classList.add('collapsed');
   }
   
+  // Inicializar submétodos para CURL (método por defecto)
+  updateSubMethods('curl');
+  
   console.log('✅ Modal de panel de pruebas de envío inicializado');
 }
 
@@ -862,6 +1909,83 @@ function updateShippingCode(method) {
       hljs.highlightBlock(codeDisplay);
     }
   }
+}
+
+/**
+ * Actualiza los submétodos disponibles para el método seleccionado
+ */
+function updateSubMethods(method) {
+  const subMethodsContainer = document.getElementById('subMethodsContainer');
+  const subMethodsTabs = document.getElementById('subMethodsTabs');
+  
+  if (!subMethodsContainer || !subMethodsTabs) return;
+  
+  const subMethods = subMethodsConfig[method] || [];
+  
+  if (subMethods.length === 0) {
+    // Ocultar contenedor de submétodos si no hay submétodos
+    subMethodsContainer.style.display = 'none';
+    // Actualizar código con el método principal
+    updateShippingCode(method);
+    return;
+  }
+  
+  // Mostrar contenedor de submétodos
+  subMethodsContainer.style.display = 'block';
+  
+  // Limpiar submétodos existentes
+  subMethodsTabs.innerHTML = '';
+  
+  // Crear botones para cada submétodo
+  subMethods.forEach((subMethod, index) => {
+    const button = document.createElement('button');
+    button.className = `sub-method-tab ${index === 0 ? 'active' : ''}`;
+    button.setAttribute('data-submethod', subMethod.key);
+    button.innerHTML = `
+      <span class="sub-method-icon">${subMethod.icon}</span>
+      <span class="sub-method-text">${subMethod.name}</span>
+    `;
+    
+    // Event listener para cambiar submétodo
+    button.addEventListener('click', () => {
+      // Remover clase active de todos los submétodos
+      subMethodsTabs.querySelectorAll('.sub-method-tab').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      // Agregar clase active al submétodo seleccionado
+      button.classList.add('active');
+      
+      // Actualizar código con el submétodo seleccionado
+      updateShippingCode(subMethod.key);
+    });
+    
+    subMethodsTabs.appendChild(button);
+  });
+  
+  // Actualizar código con el primer submétodo por defecto
+  if (subMethods.length > 0) {
+    updateShippingCode(subMethods[0].key);
+  }
+}
+
+/**
+ * Cambia el método de envío principal
+ */
+function switchShippingMethod(method) {
+  // Remover clase active de todos los métodos
+  document.querySelectorAll('.shipping-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  // Agregar clase active al método seleccionado
+  const selectedTab = document.querySelector(`[data-method="${method}"]`);
+  if (selectedTab) {
+    selectedTab.classList.add('active');
+  }
+  
+  // Actualizar submétodos
+  updateSubMethods(method);
 }
 
 /**
