@@ -835,4 +835,358 @@
                 background: linear-gradient(135deg, var(--header-primary) 0%, var(--header-secondary) 100%);
             }
         }
+
+        /* === ESTILOS DEL MODAL DE PANEL DE PRUEBAS DE ENVÍO === */
+        
+        /* Botón flotante del panel de envío */
+        .panel-envio-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 100px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 8px 25px rgba(222, 0, 126, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .panel-envio-btn:hover {
+            background: linear-gradient(135deg, #b8005a 0%, #97095a 100%);
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(222, 0, 126, 0.4);
+        }
+        
+        .panel-envio-btn:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+        
+        /* Overlay del modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        /* Contenedor del modal */
+        .modal-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            max-width: 85vw;
+            max-height: 85vh;
+            width: 900px;
+            overflow: hidden;
+            transform: scale(0.9) translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: auto;
+        }
+        
+        .modal-overlay.show .modal-container {
+            transform: scale(1) translateY(0);
+        }
+        
+        /* Header del modal */
+        .modal-header {
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
+            color: white;
+            padding: 16px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* Contenido del modal */
+        .modal-content {
+            padding: 20px;
+            max-height: calc(85vh - 80px);
+            overflow-y: auto;
+        }
+        
+        /* === SELECTOR DE MÉTODOS DE ENVÍO === */
+        
+        .shipping-methods-container {
+            margin-bottom: 25px;
+        }
+        
+        .shipping-methods-container h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        /* Tabs de métodos de envío */
+        .shipping-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 6px;
+            border-radius: 10px;
+            overflow-x: auto;
+        }
+        
+        .shipping-tab {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            font-weight: 500;
+            color: #666;
+        }
+        
+        .shipping-tab:hover {
+            background: rgba(222, 0, 126, 0.1);
+            color: #de007e;
+        }
+        
+        .shipping-tab.active {
+            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(222, 0, 126, 0.3);
+        }
+        
+        .tab-icon {
+            font-size: 16px;
+        }
+        
+        .tab-text {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        /* Contenedor de código de envío */
+        .shipping-code-container {
+            background: #1e1e1e;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .shipping-code-header {
+            background: #2d2d2d;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .method-name {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .code-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .expand-code-btn {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .expand-code-btn:hover {
+            background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+            transform: translateY(-1px);
+        }
+        
+        .expand-icon {
+            font-size: 14px;
+            transition: transform 0.3s ease;
+        }
+        
+        .expand-code-btn.expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+        
+        .copy-code-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-code-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+            transform: translateY(-1px);
+        }
+        
+        .shipping-code-content {
+            padding: 15px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .shipping-code-content.collapsed {
+            max-height: 100px;
+            padding: 10px 15px;
+        }
+        
+        .shipping-code-content.collapsed pre {
+            max-height: 60px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .shipping-code-content.collapsed pre::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background: linear-gradient(transparent, #1e1e1e);
+            pointer-events: none;
+        }
+        
+        .shipping-code-content pre {
+            background: transparent !important;
+            color: #d4d4d4;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 0;
+            overflow-x: auto;
+        }
+        
+        .shipping-code-content code {
+            background: transparent !important;
+            color: inherit;
+            padding: 0;
+        }
+        
+        /* === PANEL DE INTEGRACIÓN === */
+        
+        .integration-panel {
+            border-top: 2px solid #e9ecef;
+            padding-top: 20px;
+        }
+        
+        .integration-panel h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .integration-panel p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-container {
+                width: 95vw;
+                margin: 10px;
+                max-height: 90vh;
+            }
+            
+            .modal-content {
+                padding: 15px;
+            }
+            
+            .shipping-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .shipping-tab {
+                flex: 1;
+                min-width: 70px;
+                justify-content: center;
+                padding: 6px 8px;
+            }
+            
+            .tab-text {
+                font-size: 11px;
+            }
+            
+            .panel-envio-btn {
+                bottom: 20px;
+                right: 80px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
         

@@ -1959,12 +1959,175 @@
       ↑
     </button>
     
+    <!-- Botón Panel de Pruebas de Envío -->
+    <button class="panel-envio-btn" id="panelEnvioBtn" title="Panel de Pruebas de Envío">
+      📦
+    </button>
+
+    <!-- Modal Panel de Pruebas de Envío -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2>Panel de Pruebas de Envío</h2>
+          <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        
+        <div class="modal-content">
+          <!-- Selector de Métodos de Envío -->
+          <div class="shipping-methods-container">
+            <h3>Selecciona un Método de Envío</h3>
+            <div class="shipping-tabs">
+              <button class="shipping-tab active" data-method="curl">
+                <span class="tab-icon">🌐</span>
+                <span class="tab-text">CURL</span>
+              </button>
+              <button class="shipping-tab" data-method="nodejs">
+                <span class="tab-icon">🟢</span>
+                <span class="tab-text">NODEJS</span>
+              </button>
+              <button class="shipping-tab" data-method="python">
+                <span class="tab-icon">🐍</span>
+                <span class="tab-text">PYTHON</span>
+              </button>
+              <button class="shipping-tab" data-method="php">
+                <span class="tab-icon">🐘</span>
+                <span class="tab-text">PHP</span>
+              </button>
+              <button class="shipping-tab" data-method="java">
+                <span class="tab-icon">☕</span>
+                <span class="tab-text">JAVA</span>
+              </button>
+              <button class="shipping-tab" data-method="go">
+                <span class="tab-icon">🔵</span>
+                <span class="tab-text">GO</span>
+              </button>
+              <button class="shipping-tab" data-method="ruby">
+                <span class="tab-icon">💎</span>
+                <span class="tab-text">RUBY</span>
+              </button>
+              <button class="shipping-tab" data-method="powershell">
+                <span class="tab-icon">🔷</span>
+                <span class="tab-text">POWERSHELL</span>
+              </button>
+            </div>
+            
+            <div class="shipping-code-container">
+              <div class="shipping-code-header">
+                <span class="method-name">CURL</span>
+                <div class="code-actions">
+                  <button class="expand-code-btn" id="expandCodeBtn" onclick="toggleCodeExpansion()" title="Expandir/Contraer">
+                    <span class="expand-icon">📖</span>
+                  </button>
+                  <button class="copy-code-btn" id="copyCodeBtn">📋 Copiar</button>
+                </div>
+              </div>
+              <div class="shipping-code-content" id="shippingCodeContent">
+                <pre id="shippingCodeDisplay"><code>curl -L -X POST 'https://services.leadconnectorhq.com/oauth/token' \
+-H 'Content-Type: application/x-www-form-urlencoded' \
+-H 'Accept: application/json' \
+--data-urlencode 'grant_type=client_credentials' \
+--data-urlencode 'client_id=YOUR_CLIENT_ID' \
+--data-urlencode 'client_secret=YOUR_CLIENT_SECRET'</code></pre>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Panel de Pruebas de Integración -->
+          <div class="integration-panel">
+            <h3>Panel de Pruebas de Integración DTEmite</h3>
+            <p>Utiliza este panel para probar las APIs REST y SOAP de DTEmite directamente desde el navegador.</p>
+            
+            <div class="test-panel">
+              <h4 class="section-title">Configuración de Credenciales</h4>
+              <div class="test-form">
+                <label for="modalApiType">Tipo de API:</label>
+                <select id="modalApiType">
+                  <option value="rest">REST</option>
+                  <option value="soap">SOAP</option>
+                </select>
+                
+                <div id="modalSoapMethodsPanel" style="display: none;">
+                  <label for="modalSoapMethod">Método SOAP:</label>
+                  <select id="modalSoapMethod">
+                    <option value="Emision">Emision - Integrar documentos</option>
+                    <option value="ObtenerPDF">ObtenerPDF - Obtener PDF específico</option>
+                    <option value="ObtenerXml">ObtenerXml - Obtener XML específico</option>
+                    <option value="ObtenerTrazabilidad">ObtenerTrazabilidad - Estado del documento</option>
+                    <option value="ObtenerPDFCredible">ObtenerPDFCredible - PDF Credible</option>
+                    <option value="get_DTEcompra">get_DTEcompra - DTE de compra por fechas</option>
+                  </select>
+                  
+                  <div id="modalSoapParamsPanel" style="display: none;">
+                    <label for="modalTipodte">Tipo DTE:</label>
+                    <input type="text" id="modalTipodte" value="33" placeholder="33">
+                    
+                    <label for="modalFoliodte">Folio DTE:</label>
+                    <input type="text" id="modalFoliodte" value="1" placeholder="1">
+                    
+                    <label for="modalFechaDesde">Fecha Desde:</label>
+                    <input type="date" id="modalFechaDesde" value="2024-01-01">
+                    
+                    <label for="modalFechaHasta">Fecha Hasta:</label>
+                    <input type="date" id="modalFechaHasta" value="2024-12-31">
+                  </div>
+                </div>
+                
+                <label for="modalEndpoint">Endpoint:</label>
+                <input type="text" id="modalEndpoint" value="https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento">
+                
+                <label for="modalRut">RUT:</label>
+                <input type="text" id="modalRut" value="29282726-1">
+                
+                <label for="modalSistema">Sistema:</label>
+                <input type="text" id="modalSistema" value="webbasico">
+                
+                <label for="modalUsuario">Usuario:</label>
+                <input type="text" id="modalUsuario" value="integrado_webbasico">
+                
+                <label for="modalClave">Clave (Base64):</label>
+                <input type="text" id="modalClave" value="d2ViYmFzaWNvMjAyMQ==">
+              </div>
+              
+              <h4 class="section-title">Plantillas de Documentos</h4>
+              <div class="test-form">
+                <label for="modalDocumentTemplate">Seleccionar Plantilla:</label>
+                <select id="modalDocumentTemplate">
+                  <option value="factura">Factura Electrónica</option>
+                  <option value="nota_credito">Nota de Crédito</option>
+                  <option value="boleta">Boleta Electrónica</option>
+                  <option value="custom">Personalizado</option>
+                </select>
+                
+                <label for="modalJsonData">JSON del Documento:</label>
+                <textarea id="modalJsonData" placeholder="Pega aquí el JSON del documento..."></textarea>
+                
+                <button class="btn-test" onclick="loadModalTemplate()">Cargar Plantilla</button>
+                <button class="btn-test" onclick="clearModalForm()">Limpiar</button>
+                <button class="btn-test" onclick="sendModalRequest()" id="modalSendBtn">Enviar Petición</button>
+              </div>
+              
+              <div class="loading" id="modalLoading">
+                <div class="spinner"></div>
+                <p>Enviando petición...</p>
+              </div>
+              
+              <div class="response-panel" id="modalResponsePanel" style="display: none;">
+                <h4>Respuesta de la API:</h4>
+                <pre id="modalResponseContent"></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/highlight.pack.js"></script>
     <script src="js/main.js"></script>
     <script src="js/panel-pruebas.js"></script>
+    <script src="js/modal-panel-envio.js"></script>
     
     <script>
       // Botón Volver al Principio
