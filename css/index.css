@@ -1621,6 +1621,28 @@
             font-size: 13px;
         }
         
+        /* Estilos específicos para el textarea de JSON */
+        #modalJsonData {
+            background: #2d3748 !important;
+            color: #ffffff !important;
+            border: 2px solid #4a5568 !important;
+            font-family: 'JetBrains Mono', 'Consolas', 'Monaco', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.5 !important;
+        }
+        
+        #modalJsonData:focus {
+            background: #2d3748 !important;
+            color: #ffffff !important;
+            border-color: #de007e !important;
+            box-shadow: 0 0 0 3px rgba(222, 0, 126, 0.2) !important;
+        }
+        
+        #modalJsonData::placeholder {
+            color: #a0aec0 !important;
+            opacity: 0.8;
+        }
+        
         .form-actions {
             display: flex;
             gap: 15px;
@@ -1775,6 +1797,15 @@
                 font-size: 12px;
                 padding: 6px 12px;
                 margin-bottom: 15px;
+            }
+            
+            .form-group textarea {
+                min-height: 100px;
+                font-size: 12px;
+            }
+            
+            #modalJsonData {
+                font-size: 12px !important;
             }
             
             .modal-header {
