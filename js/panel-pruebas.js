@@ -1433,6 +1433,13 @@ function updateSoapParamsVisibility() {
 function initializePanel() {
   console.log('initializePanel called');
   
+  // Verificar si el panel principal existe (no está oculto)
+  const mainPanel = document.getElementById('panel-pruebas');
+  if (!mainPanel) {
+    console.log('Panel principal oculto, saltando inicialización');
+    return;
+  }
+  
   // Esperar un poco más para asegurar que el DOM esté completamente cargado
   setTimeout(() => {
     // Agregar event listeners adicionales si es necesario

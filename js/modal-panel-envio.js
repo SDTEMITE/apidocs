@@ -1725,24 +1725,24 @@ try {
 const subMethodsConfig = {
   curl: [],
   nodejs: [
-    { key: 'nodejs_axios', name: 'Axios', icon: '📦' },
-    { key: 'nodejs_native', name: 'Native', icon: '🔧' },
-    { key: 'nodejs_request', name: 'Request', icon: '📡' },
-    { key: 'nodejs_unirest', name: 'Unirest', icon: '🌐' }
+    { key: 'nodejs_axios', name: 'Axios', icon: '<i class="fas fa-rocket"></i>' },
+    { key: 'nodejs_native', name: 'Native', icon: '<i class="fab fa-node-js"></i>' },
+    { key: 'nodejs_request', name: 'Request', icon: '<i class="fas fa-download"></i>' },
+    { key: 'nodejs_unirest', name: 'Unirest', icon: '<i class="fas fa-globe"></i>' }
   ],
   python: [
-    { key: 'python_requests', name: 'Requests', icon: '🐍' },
-    { key: 'python_http', name: 'HTTP Client', icon: '🔧' }
+    { key: 'python_requests', name: 'Requests', icon: '<i class="fab fa-python"></i>' },
+    { key: 'python_http', name: 'HTTP Client', icon: '<i class="fas fa-code"></i>' }
   ],
   php: [
-    { key: 'php_curl', name: 'CURL', icon: '🌐' },
-    { key: 'php_guzzle', name: 'Guzzle', icon: '📦' },
-    { key: 'php_http_request2', name: 'HTTP Request2', icon: '📡' },
-    { key: 'php_pecl_http', name: 'PECL HTTP', icon: '🔧' }
+    { key: 'php_curl', name: 'CURL', icon: '<i class="fab fa-linux"></i>' },
+    { key: 'php_guzzle', name: 'Guzzle', icon: '<i class="fab fa-php"></i>' },
+    { key: 'php_http_request2', name: 'HTTP Request2', icon: '<i class="fas fa-exchange-alt"></i>' },
+    { key: 'php_pecl_http', name: 'PECL HTTP', icon: '<i class="fas fa-plug"></i>' }
   ],
   java: [
-    { key: 'java_okhttp', name: 'OkHttp', icon: '☕' },
-    { key: 'java_unirest', name: 'Unirest', icon: '🌐' }
+    { key: 'java_okhttp', name: 'OkHttp', icon: '<i class="fa-brands fa-java"></i>' },
+    { key: 'java_unirest', name: 'Unirest', icon: '<i class="fa-brands fa-java"></i>' }
   ],
   go: [],
   ruby: [],
@@ -1903,11 +1903,6 @@ function updateShippingCode(method) {
     // Actualizar código
     const code = shippingCodeExamples[method] || shippingCodeExamples.curl;
     codeDisplay.textContent = code;
-    
-    // Resaltar sintaxis si está disponible
-    if (typeof hljs !== 'undefined') {
-      hljs.highlightBlock(codeDisplay);
-    }
   }
 }
 

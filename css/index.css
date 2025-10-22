@@ -972,19 +972,20 @@
         /* Tabs de métodos de envío */
         .shipping-tabs {
             display: flex;
-            gap: 6px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 20px;
             background: #f8f9fa;
-            padding: 6px;
+            padding: 12px;
             border-radius: 10px;
             overflow-x: auto;
+            min-height: 80px;
         }
         
         .shipping-tab {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 8px 12px;
+            gap: 8px;
+            padding: 12px 16px;
             background: transparent;
             border: none;
             border-radius: 6px;
@@ -993,6 +994,8 @@
             white-space: nowrap;
             font-weight: 500;
             color: #666;
+            min-height: 56px;
+            justify-content: center;
         }
         
         .shipping-tab:hover {
@@ -1008,10 +1011,31 @@
         
         .tab-icon {
             font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 6px;
+        }
+        
+        .tab-icon i {
+            font-size: 24px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .shipping-tab:hover .tab-icon i {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+        
+        .shipping-tab.active .tab-icon i {
+            transform: scale(1.05);
+            opacity: 1;
+            color: white;
         }
         
         .tab-text {
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
         }
         
@@ -1061,6 +1085,27 @@
         
         .sub-method-icon {
             font-size: 12px;
+            margin-right: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .sub-method-icon i {
+            font-size: 16px;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+        }
+        
+        .sub-method-tab:hover .sub-method-icon i {
+            transform: scale(1.1);
+            opacity: 0.9;
+        }
+        
+        .sub-method-tab.active .sub-method-icon i {
+            transform: scale(1.05);
+            opacity: 1;
+            color: white;
         }
         
         .sub-method-text {
@@ -1172,18 +1217,21 @@
         }
         
         .shipping-code-content pre {
-            background: transparent !important;
-            color: #d4d4d4;
+            background: #000000 !important;
+            color: #ffffff !important;
             font-family: 'JetBrains Mono', 'Consolas', monospace;
             font-size: 13px;
             line-height: 1.5;
             margin: 0;
             overflow-x: auto;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #333333;
         }
         
         .shipping-code-content code {
             background: transparent !important;
-            color: inherit;
+            color: #ffffff !important;
             padding: 0;
         }
         
