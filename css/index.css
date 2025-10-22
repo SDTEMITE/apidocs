@@ -838,6 +838,29 @@
 
         /* === ESTILOS DEL MODAL DE PANEL DE PRUEBAS DE ENVÍO === */
         
+        /* Card para ejemplos de código */
+        .code-examples-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 1px solid #e9ecef;
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-examples-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #de007e, #97095a);
+            border-radius: 20px 20px 0 0;
+        }
+        
         /* Botón flotante del panel de envío */
         .panel-envio-btn {
             position: fixed;
@@ -991,14 +1014,29 @@
         /* === SELECTOR DE MÉTODOS DE ENVÍO === */
         
         .shipping-methods-container {
-            margin-bottom: 25px;
+            margin-bottom: 0;
         }
         
         .shipping-methods-container h3 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 18px;
+            color: #495057;
+            font-size: 20px;
             font-weight: 600;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .shipping-methods-container h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #de007e, #97095a);
+            border-radius: 2px;
         }
         
         /* Tabs de métodos de envío */
@@ -1700,6 +1738,16 @@
             
             .modal-content {
                 padding: 15px;
+            }
+            
+            .code-examples-card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            
+            .shipping-methods-container h3 {
+                font-size: 18px;
+                margin-bottom: 15px;
             }
             
             .modal-header {
