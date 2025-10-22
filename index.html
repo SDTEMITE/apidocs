@@ -1614,7 +1614,7 @@
             <div class="modal-icon">
               <i class="fas fa-cog"></i>
             </div>
-            <h2>Panel de Pruebas de Envío</h2>
+            <h2>Panel de Pruebas</h2>
           </div>
           <button class="modal-close" id="modalClose">&times;</button>
         </div>
@@ -1704,76 +1704,121 @@
           
           <!-- Panel de Pruebas de Integración -->
           <div class="integration-panel">
-            <h3>Panel de Pruebas de Integración DTEmite</h3>
-            <p>Utiliza este panel para probar las APIs REST y SOAP de DTEmite directamente desde el navegador.</p>
+            <div class="integration-header">
+              <div class="integration-icon">
+                <i class="fas fa-code"></i>
+              </div>
+              <div class="integration-title">
+                <h3>Pruebas de Integración DTEmite</h3>
+                <p>Utiliza este panel para probar las APIs REST y SOAP de DTEmite directamente desde el navegador.</p>
+              </div>
+            </div>
             
-            <div class="test-panel">
-              <h4 class="section-title">Configuración de Credenciales</h4>
-              <div class="test-form">
-                <label for="modalApiType">Tipo de API:</label>
-                <select id="modalApiType">
-                  <option value="rest">REST</option>
-                  <option value="soap">SOAP</option>
-                </select>
+           
+              <div class="integration-card">
+                <div class="test-form">
+                <div class="form-group">
+                  <label for="modalApiType">Tipo de API:</label>
+                  <select id="modalApiType">
+                    <option value="rest">REST</option>
+                    <option value="soap">SOAP</option>
+                  </select>
+                </div>
                 
                 <div id="modalSoapMethodsPanel" style="display: none;">
-                  <label for="modalSoapMethod">Método SOAP:</label>
-                  <select id="modalSoapMethod">
-                    <option value="Emision">Emision - Integrar documentos</option>
-                    <option value="ObtenerPDF">ObtenerPDF - Obtener PDF específico</option>
-                    <option value="ObtenerXml">ObtenerXml - Obtener XML específico</option>
-                    <option value="ObtenerTrazabilidad">ObtenerTrazabilidad - Estado del documento</option>
-                    <option value="ObtenerPDFCredible">ObtenerPDFCredible - PDF Credible</option>
-                    <option value="get_DTEcompra">get_DTEcompra - DTE de compra por fechas</option>
-                  </select>
+                  <div class="form-group">
+                    <label for="modalSoapMethod">Método SOAP:</label>
+                    <select id="modalSoapMethod">
+                      <option value="Emision">Emision - Integrar documentos</option>
+                      <option value="ObtenerPDF">ObtenerPDF - Obtener PDF específico</option>
+                      <option value="ObtenerXml">ObtenerXml - Obtener XML específico</option>
+                      <option value="ObtenerTrazabilidad">ObtenerTrazabilidad - Estado del documento</option>
+                      <option value="ObtenerPDFCredible">ObtenerPDFCredible - PDF Credible</option>
+                      <option value="get_DTEcompra">get_DTEcompra - DTE de compra por fechas</option>
+                    </select>
+                  </div>
                   
                   <div id="modalSoapParamsPanel" style="display: none;">
-                    <label for="modalTipodte">Tipo DTE:</label>
-                    <input type="text" id="modalTipodte" value="33" placeholder="33">
-                    
-                    <label for="modalFoliodte">Folio DTE:</label>
-                    <input type="text" id="modalFoliodte" value="1" placeholder="1">
-                    
-                    <label for="modalFechaDesde">Fecha Desde:</label>
-                    <input type="date" id="modalFechaDesde" value="2024-01-01">
-                    
-                    <label for="modalFechaHasta">Fecha Hasta:</label>
-                    <input type="date" id="modalFechaHasta" value="2024-12-31">
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="modalTipodte">Tipo DTE:</label>
+                        <input type="text" id="modalTipodte" value="33" placeholder="33">
+                      </div>
+                      <div class="form-group">
+                        <label for="modalFoliodte">Folio DTE:</label>
+                        <input type="text" id="modalFoliodte" value="1" placeholder="1">
+                      </div>
+                    </div>
+                    <div class="form-row">
+                      <div class="form-group">
+                        <label for="modalFechaDesde">Fecha Desde:</label>
+                        <input type="date" id="modalFechaDesde" value="2024-01-01">
+                      </div>
+                      <div class="form-group">
+                        <label for="modalFechaHasta">Fecha Hasta:</label>
+                        <input type="date" id="modalFechaHasta" value="2024-12-31">
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
-                <label for="modalEndpoint">Endpoint:</label>
-                <input type="text" id="modalEndpoint" value="https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento">
+                <div class="form-group">
+                  <label for="modalEndpoint">Endpoint:</label>
+                  <input type="text" id="modalEndpoint" value="https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento">
+                </div>
                 
-                <label for="modalRut">RUT:</label>
-                <input type="text" id="modalRut" value="29282726-1">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="modalRut">RUT:</label>
+                    <input type="text" id="modalRut" value="29282726-1">
+                  </div>
+                  <div class="form-group">
+                    <label for="modalSistema">Sistema:</label>
+                    <input type="text" id="modalSistema" value="webbasico">
+                  </div>
+                </div>
                 
-                <label for="modalSistema">Sistema:</label>
-                <input type="text" id="modalSistema" value="webbasico">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="modalUsuario">Usuario:</label>
+                    <input type="text" id="modalUsuario" value="integrado_webbasico">
+                  </div>
+                  <div class="form-group">
+                    <label for="modalClave">Clave (Base64):</label>
+                    <input type="text" id="modalClave" value="d2ViYmFzaWNvMjAyMQ==">
+                  </div>
+                </div>
                 
-                <label for="modalUsuario">Usuario:</label>
-                <input type="text" id="modalUsuario" value="integrado_webbasico">
+                <div class="form-group">
+                  <label for="modalDocumentTemplate">Seleccionar Plantilla:</label>
+                  <select id="modalDocumentTemplate">
+                    <option value="factura">Factura Electrónica</option>
+                    <option value="nota_credito">Nota de Crédito</option>
+                    <option value="boleta">Boleta Electrónica</option>
+                    <option value="custom">Personalizado</option>
+                  </select>
+                </div>
                 
-                <label for="modalClave">Clave (Base64):</label>
-                <input type="text" id="modalClave" value="d2ViYmFzaWNvMjAyMQ==">
+                <div class="form-group">
+                  <label for="modalJsonData">JSON del Documento:</label>
+                  <textarea id="modalJsonData" placeholder="Pega aquí el JSON del documento..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                  <button class="btn-test btn-primary" onclick="loadModalTemplate()">
+                    <i class="fas fa-download"></i>
+                    Cargar Plantilla
+                  </button>
+                  <button class="btn-test btn-secondary" onclick="clearModalForm()">
+                    <i class="fas fa-trash"></i>
+                    Limpiar
+                  </button>
+                  <button class="btn-test btn-success" onclick="sendModalRequest()" id="modalSendBtn">
+                    <i class="fas fa-paper-plane"></i>
+                    Enviar Petición
+                  </button>
+                </div>
               </div>
-              
-              <h4 class="section-title">Plantillas de Documentos</h4>
-              <div class="test-form">
-                <label for="modalDocumentTemplate">Seleccionar Plantilla:</label>
-                <select id="modalDocumentTemplate">
-                  <option value="factura">Factura Electrónica</option>
-                  <option value="nota_credito">Nota de Crédito</option>
-                  <option value="boleta">Boleta Electrónica</option>
-                  <option value="custom">Personalizado</option>
-                </select>
-                
-                <label for="modalJsonData">JSON del Documento:</label>
-                <textarea id="modalJsonData" placeholder="Pega aquí el JSON del documento..."></textarea>
-                
-                <button class="btn-test" onclick="loadModalTemplate()">Cargar Plantilla</button>
-                <button class="btn-test" onclick="clearModalForm()">Limpiar</button>
-                <button class="btn-test" onclick="sendModalRequest()" id="modalSendBtn">Enviar Petición</button>
               </div>
               
               <div class="loading" id="modalLoading">
@@ -1782,10 +1827,15 @@
               </div>
               
               <div class="response-panel" id="modalResponsePanel" style="display: none;">
-                <h4>Respuesta de la API:</h4>
+                <div class="response-header">
+                  <div class="response-icon">
+                    <i class="fas fa-server"></i>
+                  </div>
+                  <h4>Respuesta de la API</h4>
+                </div>
                 <pre id="modalResponseContent"></pre>
               </div>
-            </div>
+            
           </div>
         </div>
       </div>
