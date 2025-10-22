@@ -1793,6 +1793,21 @@ function initializeShippingModal() {
       
       // Inicializar panel de pruebas del modal
       initializeModalPanel();
+      
+      // Asegurar seleccionabilidad después de que el modal esté visible
+      setTimeout(() => {
+        ensureCodeSelectability();
+        ensureCollapsedCodeSelectability();
+        // APLICAR SOLUCIÓN DEFINITIVA
+        if (typeof window.fixCodeSelectionNOW === 'function') {
+          window.fixCodeSelectionNOW();
+        }
+        console.log('🔄 Seleccionabilidad aplicada después de abrir modal');
+        
+        // Resetear botón de copia al abrir el modal (por el código inicial del HTML)
+        resetCopyButton();
+        console.log('🔄 Botón de copia reseteado al abrir modal');
+      }, 200);
     });
   }
   
@@ -1838,41 +1853,79 @@ function initializeShippingModal() {
   
   // Copiar código
   if (copyCodeBtn) {
-    copyCodeBtn.addEventListener('click', function() {
-      const codeDisplay = document.getElementById('shippingCodeDisplay');
-      const codeText = codeDisplay.textContent;
+    console.log('🔧 Configurando botón de copia...');
+    copyCodeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
       
-      navigator.clipboard.writeText(codeText).then(() => {
-        console.log('📋 Código copiado al portapapeles');
-        
-        // Feedback visual
-        const originalText = this.textContent;
-        this.textContent = '✅ Copiado!';
+      console.log('📋 Botón de copia clickeado');
+      
+      const codeDisplay = document.getElementById('shippingCodeDisplay');
+      if (!codeDisplay) {
+        console.error('❌ No se encontró el elemento shippingCodeDisplay');
+        return;
+      }
+      
+      const codeText = codeDisplay.textContent || codeDisplay.innerText;
+      console.log('📝 Texto a copiar:', codeText.substring(0, 100) + '...');
+      
+      // Feedback visual inmediato
+      const originalIcon = this.innerHTML;
+      this.innerHTML = '<i class="fas fa-copy"></i><span class="copy-indicator">✓</span>';
+      this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+      
+      // SELECCIONAR AUTOMÁTICAMENTE EL TEXTO ANTES DE COPIAR
+      console.log('🎯 Seleccionando texto automáticamente antes de copiar...');
+      selectAllText(codeDisplay);
+      
+      // Intentar copiar con la API moderna
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(codeText).then(() => {
+          console.log('✅ Código copiado al portapapeles con Clipboard API');
+          console.log('📝 Texto seleccionado automáticamente para visualización');
+        }).catch(err => {
+          console.error('❌ Error con Clipboard API:', err);
+          fallbackCopy(codeText);
+        });
+      } else {
+        console.log('⚠️ Clipboard API no disponible, usando fallback');
+        fallbackCopy(codeText);
+      }
+      
+      // Restaurar botón después de 2 segundos
+      setTimeout(() => {
+        this.innerHTML = originalIcon;
         this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        
-        setTimeout(() => {
-          this.textContent = originalText;
-          this.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
-        }, 2000);
-      }).catch(err => {
-        console.error('Error al copiar:', err);
-        
-        // Fallback para navegadores que no soportan clipboard API
-        const textArea = document.createElement('textarea');
-        textArea.value = codeText;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand('copy');
-        document.body.removeChild(textArea);
-        
-        // Feedback visual
-        const originalText = this.textContent;
-        this.textContent = '✅ Copiado!';
-        setTimeout(() => {
-          this.textContent = originalText;
-        }, 2000);
-      });
+      }, 2000);
+      
+      // Función fallback para navegadores antiguos
+      function fallbackCopy(text) {
+        try {
+          const textArea = document.createElement('textarea');
+          textArea.value = text;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          const successful = document.execCommand('copy');
+          document.body.removeChild(textArea);
+          
+          if (successful) {
+            console.log('✅ Código copiado con fallback');
+            console.log('📝 Texto seleccionado automáticamente para visualización');
+          } else {
+            console.error('❌ Fallback falló');
+          }
+        } catch (err) {
+          console.error('❌ Error en fallback:', err);
+        }
+      }
     });
+  } else {
+    console.error('❌ No se encontró el botón de copia');
   }
   
   
@@ -1884,6 +1937,12 @@ function initializeShippingModal() {
   
   // Inicializar submétodos para CURL (método por defecto)
   updateSubMethods('curl');
+  
+  // Asegurar que el código inicial sea seleccionable
+  setTimeout(() => {
+    ensureCodeSelectability();
+    ensureCollapsedCodeSelectability();
+  }, 100);
   
   console.log('✅ Modal de panel de pruebas de envío inicializado');
 }
@@ -1903,6 +1962,166 @@ function updateShippingCode(method) {
     // Actualizar código
     const code = shippingCodeExamples[method] || shippingCodeExamples.curl;
     codeDisplay.textContent = code;
+    
+    // Asegurar que el código sea seleccionable
+    ensureCodeSelectability();
+    
+    // Aplicar seleccionabilidad también después de un pequeño delay
+    setTimeout(() => {
+      ensureCodeSelectability();
+      ensureCollapsedCodeSelectability();
+      console.log('🔄 Seleccionabilidad re-aplicada después de cambiar código');
+      
+      // Resetear estado del botón de copiar DESPUÉS de actualizar el código
+      resetCopyButton();
+    }, 50);
+  }
+}
+
+/**
+ * Asegura que el código sea completamente seleccionable
+ */
+function ensureCodeSelectability() {
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  const codeContent = document.getElementById('shippingCodeContent');
+  
+  console.log('🔧 Asegurando seleccionabilidad del código...');
+  
+  if (codeDisplay) {
+    console.log('📝 Aplicando estilos a shippingCodeDisplay');
+    
+    // Forzar estilos de selección con !important
+    codeDisplay.style.setProperty('user-select', 'text', 'important');
+    codeDisplay.style.setProperty('-webkit-user-select', 'text', 'important');
+    codeDisplay.style.setProperty('-moz-user-select', 'text', 'important');
+    codeDisplay.style.setProperty('-ms-user-select', 'text', 'important');
+    codeDisplay.style.setProperty('cursor', 'text', 'important');
+    codeDisplay.style.setProperty('pointer-events', 'auto', 'important');
+    codeDisplay.style.setProperty('-webkit-touch-callout', 'default', 'important');
+    
+    // Aplicar a todos los elementos hijos
+    const allElements = codeDisplay.querySelectorAll('*');
+    console.log(`📋 Aplicando estilos a ${allElements.length} elementos hijos`);
+    
+    allElements.forEach((element, index) => {
+      element.style.setProperty('user-select', 'text', 'important');
+      element.style.setProperty('-webkit-user-select', 'text', 'important');
+      element.style.setProperty('-moz-user-select', 'text', 'important');
+      element.style.setProperty('-ms-user-select', 'text', 'important');
+      element.style.setProperty('cursor', 'text', 'important');
+      element.style.setProperty('pointer-events', 'auto', 'important');
+      
+      if (index < 3) { // Log solo los primeros 3 elementos
+        console.log(`✅ Estilos aplicados a elemento ${index}:`, element.tagName);
+      }
+    });
+    
+    // Agregar atributos directamente
+    codeDisplay.setAttribute('style', 
+      codeDisplay.getAttribute('style') + 
+      '; user-select: text !important; -webkit-user-select: text !important; cursor: text !important;'
+    );
+  }
+  
+  if (codeContent) {
+    console.log('📝 Aplicando estilos a shippingCodeContent');
+    
+    codeContent.style.setProperty('user-select', 'text', 'important');
+    codeContent.style.setProperty('-webkit-user-select', 'text', 'important');
+    codeContent.style.setProperty('-moz-user-select', 'text', 'important');
+    codeContent.style.setProperty('-ms-user-select', 'text', 'important');
+    codeContent.style.setProperty('pointer-events', 'auto', 'important');
+  }
+  
+  // Aplicar también con querySelector más específico
+  const allCodeElements = document.querySelectorAll('#shippingCodeDisplay, #shippingCodeDisplay *, #shippingCodeContent, #shippingCodeContent *');
+  console.log(`🎯 Aplicando estilos a ${allCodeElements.length} elementos específicos`);
+  
+  allCodeElements.forEach((element, index) => {
+    element.style.setProperty('user-select', 'text', 'important');
+    element.style.setProperty('-webkit-user-select', 'text', 'important');
+    element.style.setProperty('-moz-user-select', 'text', 'important');
+    element.style.setProperty('-ms-user-select', 'text', 'important');
+    element.style.setProperty('cursor', 'text', 'important');
+    element.style.setProperty('pointer-events', 'auto', 'important');
+  });
+  
+  console.log('✅ Seleccionabilidad del código asegurada con métodos múltiples');
+}
+
+/**
+ * Asegura que el código sea seleccionable incluso cuando está colapsado
+ */
+function ensureCollapsedCodeSelectability() {
+  const codeContent = document.getElementById('shippingCodeContent');
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  
+  if (codeContent && codeContent.classList.contains('collapsed')) {
+    console.log('🔧 Asegurando seleccionabilidad del código colapsado...');
+    
+    // Aplicar estilos específicos para estado colapsado
+    if (codeDisplay) {
+      codeDisplay.style.setProperty('user-select', 'text', 'important');
+      codeDisplay.style.setProperty('-webkit-user-select', 'text', 'important');
+      codeDisplay.style.setProperty('-moz-user-select', 'text', 'important');
+      codeDisplay.style.setProperty('-ms-user-select', 'text', 'important');
+      codeDisplay.style.setProperty('cursor', 'text', 'important');
+      codeDisplay.style.setProperty('pointer-events', 'auto', 'important');
+      codeDisplay.style.setProperty('position', 'relative', 'important');
+      codeDisplay.style.setProperty('z-index', '2', 'important');
+    }
+    
+    // Asegurar que el elemento code también sea seleccionable
+    const codeElement = codeDisplay?.querySelector('code');
+    if (codeElement) {
+      codeElement.style.setProperty('user-select', 'text', 'important');
+      codeElement.style.setProperty('-webkit-user-select', 'text', 'important');
+      codeElement.style.setProperty('-moz-user-select', 'text', 'important');
+      codeElement.style.setProperty('-ms-user-select', 'text', 'important');
+      codeElement.style.setProperty('cursor', 'text', 'important');
+      codeElement.style.setProperty('pointer-events', 'auto', 'important');
+      codeElement.style.setProperty('position', 'relative', 'important');
+      codeElement.style.setProperty('z-index', '3', 'important');
+    }
+    
+    console.log('✅ Seleccionabilidad del código colapsado asegurada');
+  }
+}
+
+/**
+ * Resetea el estado del botón de copia a su estado original
+ */
+function resetCopyButton() {
+  console.log('🔄 Reseteando estado del botón de copia...');
+  
+  const copyCodeBtn = document.getElementById('copyCodeBtn');
+  if (copyCodeBtn) {
+    // Resetear contenido del botón
+    copyCodeBtn.innerHTML = '<i class="fas fa-copy"></i>';
+    
+    // Resetear estilos
+    copyCodeBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+    copyCodeBtn.style.transform = '';
+    copyCodeBtn.style.boxShadow = '0 4px 12px rgba(40, 167, 69, 0.3)';
+    
+    // Remover cualquier indicador de copia
+    const copyIndicator = copyCodeBtn.querySelector('.copy-indicator');
+    if (copyIndicator) {
+      copyIndicator.remove();
+    }
+    
+    // Resetear título
+    copyCodeBtn.title = 'Copiar código';
+    
+    // Limpiar cualquier selección de texto
+    if (window.getSelection) {
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+    }
+    
+    console.log('✅ Botón de copia reseteado correctamente');
+  } else {
+    console.error('❌ No se encontró el botón de copia para resetear');
   }
 }
 
@@ -1922,6 +2141,13 @@ function updateSubMethods(method) {
     subMethodsContainer.style.display = 'none';
     // Actualizar código con el método principal
     updateShippingCode(method);
+    
+    // Resetear botón de copia después de actualizar código sin submétodos
+    setTimeout(() => {
+      resetCopyButton();
+      console.log('🔄 Botón de copia reseteado después de actualizar código sin submétodos');
+    }, 100);
+    
     return;
   }
   
@@ -1953,6 +2179,16 @@ function updateSubMethods(method) {
       
       // Actualizar código con el submétodo seleccionado
       updateShippingCode(subMethod.key);
+      
+      // Asegurar seleccionabilidad después de cambiar submétodo
+      setTimeout(() => {
+        ensureCodeSelectability();
+        console.log('🔄 Seleccionabilidad aplicada después de cambiar submétodo');
+        
+        // Resetear botón de copia DESPUÉS de actualizar el código
+        resetCopyButton();
+        console.log('🔄 Botón de copia reseteado después de cambiar submétodo');
+      }, 100);
     });
     
     subMethodsTabs.appendChild(button);
@@ -1961,6 +2197,12 @@ function updateSubMethods(method) {
   // Actualizar código con el primer submétodo por defecto
   if (subMethods.length > 0) {
     updateShippingCode(subMethods[0].key);
+    
+    // Resetear botón de copia después de actualizar código inicial
+    setTimeout(() => {
+      resetCopyButton();
+      console.log('🔄 Botón de copia reseteado después de actualizar código inicial');
+    }, 100);
   }
 }
 
@@ -1979,8 +2221,17 @@ function switchShippingMethod(method) {
     selectedTab.classList.add('active');
   }
   
+  // Resetear estado del botón de copiar
+  resetCopyButton();
+  
   // Actualizar submétodos
   updateSubMethods(method);
+  
+  // Resetear estado del botón de copiar DESPUÉS de actualizar todo
+  setTimeout(() => {
+    resetCopyButton();
+    console.log('🔄 Botón de copia reseteado después de cambiar método principal');
+  }, 100);
 }
 
 /**
@@ -2495,3 +2746,351 @@ if (typeof $ !== 'undefined') {
     initializeShippingModal();
   });
 }
+
+// Función de prueba para verificar seleccionabilidad (disponible en consola)
+window.testCodeSelection = function() {
+  console.log('🧪 Probando seleccionabilidad del código...');
+  
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  const codeContent = document.getElementById('shippingCodeContent');
+  
+  if (!codeDisplay) {
+    console.error('❌ No se encontró shippingCodeDisplay');
+    return false;
+  }
+  
+  if (!codeContent) {
+    console.error('❌ No se encontró shippingCodeContent');
+    return false;
+  }
+  
+  console.log('✅ Elementos encontrados');
+  console.log('📝 Contenido del código:', codeDisplay.textContent.substring(0, 100) + '...');
+  
+  // Aplicar seleccionabilidad
+  ensureCodeSelectability();
+  
+  // Verificar estilos aplicados
+  const computedStyle = window.getComputedStyle(codeDisplay);
+  console.log('🎨 Estilos aplicados:');
+  console.log('- user-select:', computedStyle.userSelect);
+  console.log('- -webkit-user-select:', computedStyle.webkitUserSelect);
+  console.log('- cursor:', computedStyle.cursor);
+  console.log('- pointer-events:', computedStyle.pointerEvents);
+  
+  return true;
+};
+
+// Función para forzar seleccionabilidad (disponible en consola)
+window.forceCodeSelection = function() {
+  console.log('🔧 Forzando seleccionabilidad del código...');
+  ensureCodeSelectability();
+  
+  // Aplicar también con CSS directo
+  const style = document.createElement('style');
+  style.textContent = `
+    #shippingCodeDisplay, #shippingCodeDisplay *, #shippingCodeContent, #shippingCodeContent * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      cursor: text !important;
+      pointer-events: auto !important;
+    }
+  `;
+  document.head.appendChild(style);
+  
+  console.log('✅ Seleccionabilidad forzada');
+};
+
+// Función para diagnosticar problemas de selección (disponible en consola)
+window.diagnoseSelection = function() {
+  console.log('🔍 Diagnosticando problemas de selección...');
+  
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  const codeContent = document.getElementById('shippingCodeContent');
+  
+  if (!codeDisplay) {
+    console.error('❌ No se encontró shippingCodeDisplay');
+    return;
+  }
+  
+  // Verificar estilos computados
+  const computedStyle = window.getComputedStyle(codeDisplay);
+  console.log('🎨 Estilos computados de shippingCodeDisplay:');
+  console.log('- user-select:', computedStyle.userSelect);
+  console.log('- -webkit-user-select:', computedStyle.webkitUserSelect);
+  console.log('- -moz-user-select:', computedStyle.mozUserSelect);
+  console.log('- -ms-user-select:', computedStyle.msUserSelect);
+  console.log('- cursor:', computedStyle.cursor);
+  console.log('- pointer-events:', computedStyle.pointerEvents);
+  console.log('- position:', computedStyle.position);
+  console.log('- z-index:', computedStyle.zIndex);
+  
+  // Verificar si hay elementos superpuestos
+  const rect = codeDisplay.getBoundingClientRect();
+  const elementsAtPoint = document.elementsFromPoint(rect.left + rect.width/2, rect.top + rect.height/2);
+  console.log('📍 Elementos en el punto central del código:', elementsAtPoint.map(el => el.tagName + (el.id ? '#' + el.id : '') + (el.className ? '.' + el.className.split(' ').join('.') : '')));
+  
+  // Verificar si el elemento está visible
+  console.log('👁️ Visibilidad del elemento:');
+  console.log('- display:', computedStyle.display);
+  console.log('- visibility:', computedStyle.visibility);
+  console.log('- opacity:', computedStyle.opacity);
+  console.log('- width:', computedStyle.width);
+  console.log('- height:', computedStyle.height);
+  
+  // Verificar eventos
+  console.log('🎯 Probando eventos de mouse...');
+  codeDisplay.addEventListener('mousedown', function(e) {
+    console.log('🖱️ mousedown detectado en código');
+  });
+  
+  codeDisplay.addEventListener('mouseup', function(e) {
+    console.log('🖱️ mouseup detectado en código');
+  });
+  
+  codeDisplay.addEventListener('click', function(e) {
+    console.log('🖱️ click detectado en código');
+  });
+  
+  console.log('✅ Diagnóstico completado. Intenta seleccionar el código ahora.');
+};
+
+// SOLUCIÓN DEFINITIVA - Función que se ejecuta inmediatamente
+window.fixCodeSelectionNOW = function() {
+  console.log('🚨 APLICANDO SOLUCIÓN DEFINITIVA PARA SELECCIÓN...');
+  
+  // Crear CSS dinámico que sobrescriba TODO
+  const style = document.createElement('style');
+  style.id = 'force-code-selection';
+  style.textContent = `
+    /* SOLUCIÓN DEFINITIVA - Sobrescribir TODO */
+    #shippingCodeDisplay,
+    #shippingCodeDisplay *,
+    #shippingCodeContent,
+    #shippingCodeContent *,
+    .modal-container #shippingCodeDisplay,
+    .modal-container #shippingCodeDisplay *,
+    .modal-container #shippingCodeContent,
+    .modal-container #shippingCodeContent *,
+    .modal-overlay #shippingCodeDisplay,
+    .modal-overlay #shippingCodeDisplay *,
+    .modal-overlay #shippingCodeContent,
+    .modal-overlay #shippingCodeContent * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      cursor: text !important;
+      pointer-events: auto !important;
+      -webkit-touch-callout: default !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+    
+    /* Forzar en estados colapsados */
+    .shipping-code-content.collapsed #shippingCodeDisplay,
+    .shipping-code-content.collapsed #shippingCodeDisplay *,
+    .shipping-code-content.expanded #shippingCodeDisplay,
+    .shipping-code-content.expanded #shippingCodeDisplay * {
+      user-select: text !important;
+      -webkit-user-select: text !important;
+      -moz-user-select: text !important;
+      -ms-user-select: text !important;
+      cursor: text !important;
+      pointer-events: auto !important;
+    }
+  `;
+  
+  // Remover estilo anterior si existe
+  const existingStyle = document.getElementById('force-code-selection');
+  if (existingStyle) {
+    existingStyle.remove();
+  }
+  
+  // Agregar nuevo estilo
+  document.head.appendChild(style);
+  
+  // Aplicar estilos directamente a los elementos
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  const codeContent = document.getElementById('shippingCodeContent');
+  
+  if (codeDisplay) {
+    console.log('🔧 Aplicando estilos directos a shippingCodeDisplay');
+    
+    // Aplicar estilos con máxima prioridad
+    codeDisplay.style.cssText += '; user-select: text !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; cursor: text !important; pointer-events: auto !important;';
+    
+    // Aplicar a todos los elementos hijos
+    const allElements = codeDisplay.querySelectorAll('*');
+    allElements.forEach(element => {
+      element.style.cssText += '; user-select: text !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; cursor: text !important; pointer-events: auto !important;';
+    });
+    
+    // Agregar eventos de mouse para forzar selección automática
+    let isSelecting = false;
+    let startPosition = 0;
+    
+    codeDisplay.addEventListener('mousedown', function(e) {
+      console.log('🖱️ mousedown en código - iniciando selección');
+      isSelecting = true;
+      startPosition = e.clientX;
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    
+    codeDisplay.addEventListener('mousemove', function(e) {
+      if (isSelecting) {
+        console.log('🖱️ mousemove - seleccionando texto');
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+    
+    codeDisplay.addEventListener('mouseup', function(e) {
+      if (isSelecting) {
+        console.log('🖱️ mouseup en código - finalizando selección');
+        isSelecting = false;
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Intentar seleccionar el texto completo si no hay selección
+        setTimeout(() => {
+          const selection = window.getSelection();
+          if (selection.toString().length === 0) {
+            console.log('📝 No hay selección, seleccionando texto completo');
+            selectAllText(codeDisplay);
+          }
+        }, 10);
+      }
+    });
+    
+    codeDisplay.addEventListener('click', function(e) {
+      console.log('🖱️ click en código - seleccionando todo');
+      e.preventDefault();
+      e.stopPropagation();
+      selectAllText(codeDisplay);
+    });
+    
+    codeDisplay.addEventListener('dblclick', function(e) {
+      console.log('🖱️ doble click en código - seleccionando palabra');
+      e.preventDefault();
+      e.stopPropagation();
+      selectWordAtPosition(codeDisplay, e);
+    });
+    
+    codeDisplay.addEventListener('selectstart', function(e) {
+      console.log('📝 selectstart en código');
+      e.stopPropagation();
+    });
+  }
+  
+  if (codeContent) {
+    console.log('🔧 Aplicando estilos directos a shippingCodeContent');
+    codeContent.style.cssText += '; user-select: text !important; -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; pointer-events: auto !important;';
+  }
+  
+  console.log('✅ SOLUCIÓN DEFINITIVA APLICADA');
+  console.log('🎯 Ahora intenta seleccionar el código manualmente');
+};
+
+// Función para seleccionar todo el texto
+function selectAllText(element) {
+  console.log('📝 Seleccionando todo el texto...');
+  
+  if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    range.selectNodeContents(element);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    
+    console.log('✅ Texto seleccionado:', selection.toString().substring(0, 50) + '...');
+    
+    // Agregar efecto visual sutil
+    element.style.transition = 'background-color 0.2s ease';
+    element.style.backgroundColor = 'rgba(222, 0, 126, 0.1)';
+    
+    // Remover efecto después de un tiempo
+    setTimeout(() => {
+      element.style.backgroundColor = '';
+    }, 1000);
+    
+  } else if (document.selection) {
+    // Fallback para IE
+    const range = document.body.createTextRange();
+    range.moveToElementText(element);
+    range.select();
+  }
+}
+
+// Función para seleccionar una palabra en una posición específica
+function selectWordAtPosition(element, event) {
+  console.log('📝 Seleccionando palabra en posición...');
+  
+  if (window.getSelection) {
+    const selection = window.getSelection();
+    const range = document.createRange();
+    
+    // Intentar encontrar el texto en la posición del click
+    const textNode = element.firstChild;
+    if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+      const text = textNode.textContent;
+      const clickX = event.clientX;
+      const rect = element.getBoundingClientRect();
+      const relativeX = clickX - rect.left;
+      
+      // Calcular posición aproximada en el texto
+      const charWidth = rect.width / text.length;
+      const charPosition = Math.floor(relativeX / charWidth);
+      
+      // Encontrar límites de la palabra
+      let start = charPosition;
+      let end = charPosition;
+      
+      // Buscar inicio de palabra
+      while (start > 0 && /\S/.test(text[start - 1])) {
+        start--;
+      }
+      
+      // Buscar fin de palabra
+      while (end < text.length && /\S/.test(text[end])) {
+        end++;
+      }
+      
+      // Crear rango de selección
+      range.setStart(textNode, start);
+      range.setEnd(textNode, end);
+      selection.removeAllRanges();
+      selection.addRange(range);
+      
+      console.log('✅ Palabra seleccionada:', text.substring(start, end));
+    }
+  }
+}
+
+// Función para hacer click automático y seleccionar todo (disponible en consola)
+window.autoSelectCode = function() {
+  console.log('🎯 Seleccionando código automáticamente...');
+  
+  const codeDisplay = document.getElementById('shippingCodeDisplay');
+  if (codeDisplay) {
+    // Simular click para activar selección automática
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      view: window
+    });
+    
+    codeDisplay.dispatchEvent(clickEvent);
+    
+    // También intentar selección directa
+    setTimeout(() => {
+      selectAllText(codeDisplay);
+    }, 100);
+    
+    console.log('✅ Selección automática activada');
+  } else {
+    console.error('❌ No se encontró el elemento de código');
+  }
+};

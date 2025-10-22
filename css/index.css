@@ -1179,26 +1179,55 @@
             background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
             color: white;
             border: none;
-            padding: 8px 12px;
-            border-radius: 6px;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 6px;
-            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            position: relative;
         }
         
         .copy-code-btn:hover {
             background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 4px 16px rgba(40, 167, 69, 0.4);
+            transform: translateY(-2px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
         }
         
         .copy-code-btn:active {
-            transform: translateY(0) scale(1.02);
+            transform: translateY(0) scale(1.05);
+        }
+        
+        .copy-code-btn i {
+            font-size: 14px;
+        }
+        
+        .copy-indicator {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: #28a745;
+            color: white;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            animation: copyPulse 0.3s ease-in-out;
+        }
+        
+        @keyframes copyPulse {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
         }
         
         .shipping-code-content {
@@ -1216,6 +1245,12 @@
             max-height: 60px;
             overflow: hidden;
             position: relative;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
         }
         
         .shipping-code-content.collapsed pre::after {
@@ -1226,7 +1261,20 @@
             right: 0;
             height: 20px;
             background: linear-gradient(transparent, #1e1e1e);
-            pointer-events: none;
+            pointer-events: none !important;
+            z-index: 1;
+        }
+        
+        /* Asegurar que el código sea seleccionable incluso colapsado */
+        .shipping-code-content.collapsed pre code {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 2;
         }
         
         .shipping-code-content pre {
@@ -1240,12 +1288,121 @@
             padding: 15px;
             border-radius: 6px;
             border: 1px solid #333333;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            -webkit-touch-callout: default !important;
+            -webkit-tap-highlight-color: transparent !important;
         }
         
         .shipping-code-content code {
             background: transparent !important;
             color: #ffffff !important;
             padding: 0;
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+        }
+        
+        /* Forzar seleccionabilidad en todos los elementos del código */
+        .shipping-code-content * {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+        }
+        
+        /* Asegurar que el código sea seleccionable incluso con otros estilos */
+        #shippingCodeDisplay,
+        #shippingCodeDisplay *,
+        #shippingCodeContent,
+        #shippingCodeContent * {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            -webkit-touch-callout: default !important;
+            -webkit-tap-highlight-color: transparent !important;
+            pointer-events: auto !important;
+        }
+        
+        /* Solución más agresiva para la selección */
+        .modal-container #shippingCodeDisplay,
+        .modal-container #shippingCodeDisplay code,
+        .modal-container #shippingCodeDisplay pre,
+        .modal-container #shippingCodeContent,
+        .modal-container #shippingCodeContent pre,
+        .modal-container #shippingCodeContent code {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
+            -webkit-touch-callout: default !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        /* Forzar selección en el modal */
+        .modal-overlay #shippingCodeDisplay,
+        .modal-overlay #shippingCodeDisplay *,
+        .modal-overlay #shippingCodeContent,
+        .modal-overlay #shippingCodeContent * {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
+        }
+        
+        /* SOLUCIÓN DEFINITIVA - Sobrescribir TODO */
+        body #shippingCodeDisplay,
+        body #shippingCodeDisplay *,
+        body #shippingCodeContent,
+        body #shippingCodeContent *,
+        html #shippingCodeDisplay,
+        html #shippingCodeDisplay *,
+        html #shippingCodeContent,
+        html #shippingCodeContent * {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
+            -webkit-touch-callout: default !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        /* Forzar selección en TODOS los estados */
+        .shipping-code-content.collapsed #shippingCodeDisplay,
+        .shipping-code-content.collapsed #shippingCodeDisplay *,
+        .shipping-code-content.expanded #shippingCodeDisplay,
+        .shipping-code-content.expanded #shippingCodeDisplay * {
+            user-select: text !important;
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            cursor: text !important;
+            pointer-events: auto !important;
+        }
+        
+        .shipping-code-content pre::selection,
+        .shipping-code-content code::selection {
+            background: #de007e;
+            color: white;
+        }
+        
+        .shipping-code-content pre::-moz-selection,
+        .shipping-code-content code::-moz-selection {
+            background: #de007e;
+            color: white;
         }
         
         /* === PANEL DE INTEGRACIÓN === */
