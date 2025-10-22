@@ -1269,17 +1269,72 @@
             
             .shipping-tabs {
                 flex-wrap: wrap;
+                padding: 12px;
+                min-height: 80px;
+                gap: 6px;
             }
             
             .shipping-tab {
                 flex: 1;
-                min-width: 70px;
+                min-width: 90px;
                 justify-content: center;
-                padding: 6px 8px;
+                padding: 10px 6px;
+                min-height: 55px;
+                margin: 3px;
+                box-sizing: border-box;
             }
             
             .tab-text {
                 font-size: 11px;
+            }
+            
+            .tab-icon i {
+                font-size: 18px;
+            }
+            
+            .shipping-tab.active .tab-icon i {
+                transform: none;
+                opacity: 1;
+                color: white;
+            }
+            
+            .shipping-tab:hover .tab-icon i {
+                transform: none;
+                opacity: 0.9;
+            }
+            
+            .sub-methods-tabs {
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 10px;
+            }
+            
+            .sub-method-tab {
+                flex: 1;
+                min-width: 80px;
+                padding: 8px 6px;
+                min-height: 45px;
+                margin: 2px;
+                box-sizing: border-box;
+            }
+            
+            .sub-method-icon i {
+                font-size: 14px;
+            }
+            
+            .sub-method-tab.active .sub-method-icon i {
+                transform: none;
+                opacity: 1;
+                color: white;
+            }
+            
+            .sub-method-tab:hover .sub-method-icon i {
+                transform: none;
+                opacity: 0.9;
+            }
+            
+            .sub-method-text {
+                font-size: 10px;
             }
             
             .panel-envio-btn {
