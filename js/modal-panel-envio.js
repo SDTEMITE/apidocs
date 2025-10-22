@@ -1761,13 +1761,13 @@ function toggleCodeExpansion() {
     // Expandir
     codeContent.classList.remove('collapsed');
     expandBtn.classList.add('expanded');
-    expandIcon.textContent = '📕';
+    expandIcon.textContent = '−';
     expandBtn.title = 'Contraer código';
   } else {
     // Contraer
     codeContent.classList.add('collapsed');
     expandBtn.classList.remove('expanded');
-    expandIcon.textContent = '📖';
+    expandIcon.textContent = '+';
     expandBtn.title = 'Expandir código';
   }
 }
