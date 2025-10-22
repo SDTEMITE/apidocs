@@ -1042,34 +1042,39 @@
         /* === SUB-MÉTODOS === */
         
         .sub-methods-container {
-            margin-top: 15px;
-            margin-bottom: 15px;
+            margin-top: 20px;
+            margin-bottom: 20px;
         }
         
         .sub-methods-tabs {
             display: flex;
-            gap: 4px;
+            gap: 6px;
             background: #f1f3f4;
-            padding: 4px;
-            border-radius: 8px;
+            padding: 8px;
+            border-radius: 10px;
             overflow-x: auto;
             flex-wrap: wrap;
+            margin: 0;
         }
         
         .sub-method-tab {
             display: flex;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 4px;
-            padding: 6px 10px;
+            padding: 10px 12px;
             background: transparent;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
             transition: all 0.3s ease;
             white-space: nowrap;
             font-weight: 500;
             color: #666;
-            font-size: 12px;
+            font-size: 13px;
+            min-height: 50px;
+            min-width: 80px;
         }
         
         .sub-method-tab:hover {
@@ -1084,15 +1089,15 @@
         }
         
         .sub-method-icon {
-            font-size: 12px;
-            margin-right: 4px;
+            font-size: 14px;
+            margin-bottom: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         
         .sub-method-icon i {
-            font-size: 16px;
+            font-size: 18px;
             transition: all 0.3s ease;
             opacity: 0.7;
         }
@@ -1109,8 +1114,10 @@
         }
         
         .sub-method-text {
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
+            text-align: center;
+            line-height: 1.2;
         }
         
         /* Contenedor de código de envío */
@@ -1475,21 +1482,28 @@
             
             .sub-methods-tabs {
                 flex-wrap: wrap;
-                gap: 6px;
-                padding: 10px;
+                gap: 8px;
+                padding: 12px;
+                margin: 10px 0;
             }
             
             .sub-method-tab {
                 flex: 1;
-                min-width: 80px;
-                padding: 8px 6px;
-                min-height: 45px;
-                margin: 2px;
+                min-width: 90px;
+                padding: 12px 8px;
+                min-height: 55px;
+                margin: 3px;
                 box-sizing: border-box;
+                border-radius: 6px;
+                font-size: 13px;
+            }
+            
+            .sub-method-icon {
+                margin-bottom: 4px;
             }
             
             .sub-method-icon i {
-                font-size: 14px;
+                font-size: 16px;
             }
             
             .sub-method-tab.active .sub-method-icon i {
@@ -1504,7 +1518,9 @@
             }
             
             .sub-method-text {
-                font-size: 10px;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 1.2;
             }
             
             .panel-envio-btn {
