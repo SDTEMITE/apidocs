@@ -61,7 +61,7 @@ const shippingCodeExamples = {
           "TpoCodigo": "INT1",
           "VlrCodigo": "WWW"
         },
-        "NmbItem": "Descripción de producto WWW",
+        "NmbItem": "Descripcion de producto WWW",
         "QtyItem": "1",
         "PrcItem": "11900",
         "MontoItem": "11900"
@@ -73,82 +73,115 @@ const shippingCodeExamples = {
   // NodeJS submétodos
   'nodejs_axios': `const axios = require('axios');
 
+/**
+ * Envía un documento a la API DTEmite usando Axios
+ * @async
+ * @function sendDTEmiteRequest
+ * @returns {Promise<void>}
+ */
 const sendDTEmiteRequest = async () => {
-  try {
-    const documentData = {
-      Sistema: {
-        nombre: "webbasico",
-        rut: "29282726-1",
-        usuario: "integrado_webbasico",
-        clave: "d2ViYmFzaWNvMjAyMQ=="
-      },
-      Documento: {
-        Encabezado: {
-          IdDoc: {
-            TipoDTE: "33",
-            Folio: "0",
-            MntBruto: "2",
-            FchEmis: "2024-01-20",
-            FchVenc: "2024-01-26"
-          },
-          Emisor: {
-            RUTEmisor: "29282726-1",
-            RznSocEmisor: "EMPRESA DE PRUEBA",
-            GiroEmisor: "DESARROLLO DE SISTEMAS",
-            DirOrigen: "Avenida del Software #11001101",
-            CmnaOrigen: "PROVIDENCIA",
-            CiudadOrigen: "SANTIAGO"
-          },
-          Receptor: {
-            RUTRecep: "76399744-8",
-            CdgIntRecep: "1000215-220",
-            RznSocRecep: "CLIENTE DE PRUEBA",
-            CorreoRecep: "prueba@dtemite.cl",
-            DirRecep: "CALLE A 50",
-            CmnaRecep: "SANTIAGO",
-            CiudadRecep: "SANTIAGO"
-          },
-          Totales: {
-            MntNeto: "10000",
-            MntExe: "0",
-            IVA: "1900",
-            MntTotal: "11900"
-          }
+  const API_URL = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento';
+  const TIMEOUT = 30000; // 30 segundos
+  
+  const documentData = {
+    Sistema: {
+      nombre: "webbasico",
+      rut: "29282726-1",
+      usuario: "integrado_webbasico",
+      clave: "d2ViYmFzaWNvMjAyMQ=="
+    },
+    Documento: {
+      Encabezado: {
+        IdDoc: {
+          TipoDTE: "33",
+          Folio: "0",
+          MntBruto: "2",
+          FchEmis: "2024-01-20",
+          FchVenc: "2024-01-26"
         },
-        Detalle: [
-          {
-            NroLinDet: "1",
-            CdgItem: {
-              TpoCodigo: "INT1",
-              VlrCodigo: "WWW"
-            },
-            NmbItem: "Descripción de producto WWW",
-            QtyItem: "1",
-            PrcItem: "11900",
-            MontoItem: "11900"
-          }
-        ]
-      }
-    };
-
-    const response = await axios.post(
-      'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento',
-      documentData,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+        Emisor: {
+          RUTEmisor: "29282726-1",
+          RznSocEmisor: "EMPRESA DE PRUEBA",
+          GiroEmisor: "DESARROLLO DE SISTEMAS",
+          DirOrigen: "Avenida del Software #11001101",
+          CmnaOrigen: "PROVIDENCIA",
+          CiudadOrigen: "SANTIAGO"
+        },
+        Receptor: {
+          RUTRecep: "76399744-8",
+          CdgIntRecep: "1000215-220",
+          RznSocRecep: "CLIENTE DE PRUEBA",
+          CorreoRecep: "prueba@dtemite.cl",
+          DirRecep: "CALLE A 50",
+          CmnaRecep: "SANTIAGO",
+          CiudadRecep: "SANTIAGO"
+        },
+        Totales: {
+          MntNeto: "10000",
+          MntExe: "0",
+          IVA: "1900",
+          MntTotal: "11900"
         }
-      }
-    );
+      },
+      Detalle: [
+        {
+          NroLinDet: "1",
+          CdgItem: {
+            TpoCodigo: "INT1",
+            VlrCodigo: "WWW"
+          },
+          NmbItem: "Descripcion de producto WWW",
+          QtyItem: "1",
+          PrcItem: "11900",
+          MontoItem: "11900"
+        }
+      ]
+    }
+  };
+
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'User-Agent': 'DTEmite-Client/1.0'
+    },
+    timeout: TIMEOUT,
+    validateStatus: (status) => status < 500 // Solo rechazar errores del servidor
+  };
+
+  try {
+    const response = await axios.post(API_URL, documentData, config);
     
-    console.log('Respuesta DTEmite:', response.data);
+    if (response.status === 200) {
+      console.log('✅ Respuesta DTEmite:', response.data);
+      return response.data;
+    } else {
+      console.warn('⚠️ Respuesta HTTP inesperada:', response.status, response.statusText);
+      return response.data;
+    }
   } catch (error) {
-    console.error('Error DTEmite:', error.response?.data || error.message);
+    if (error.response) {
+      // El servidor respondió con un código de error
+      console.error('❌ Error DTEmite:', error.response.status, error.response.data);
+    } else if (error.request) {
+      // La petición fue hecha pero no hubo respuesta
+      console.error('❌ Error de conexion:', error.message);
+    } else {
+      // Algo más pasó
+      console.error('❌ Error:', error.message);
+    }
+    throw error; // Re-lanzar para manejo superior
   }
 };
 
-sendDTEmiteRequest();`,
+// Ejecutar solo si es el módulo principal
+if (require.main === module) {
+  sendDTEmiteRequest()
+    .then(result => console.log('🎉 Proceso completado:', result))
+    .catch(error => console.error('💥 Error fatal:', error));
+}
+
+module.exports = { sendDTEmiteRequest };`,
 
   'nodejs_native': `const https = require('https');
 
@@ -240,7 +273,9 @@ const sendDTEmiteRequest = () => {
 
 sendDTEmiteRequest();`,
 
-  'nodejs_request': `const request = require('request');
+  'nodejs_request': `// NOTA: La librería 'request' está deprecada desde 2020
+// Se recomienda usar 'axios' o 'node-fetch' como alternativa moderna
+const request = require('request');
 
 const sendDTEmiteRequest = () => {
   const documentData = {
@@ -395,81 +430,171 @@ const sendDTEmiteRequest = () => {
 sendDTEmiteRequest();`,
 
   // Python submétodos
-  'python_requests': `import requests
+  'python_requests': `#!/usr/bin/env python3
+"""
+Cliente DTEmite API - Ejemplo usando requests
+Autor: DTEmite Team
+Versión: 1.0
+"""
+
+import requests
 import json
+import logging
+from typing import Dict, Any, Optional
+from dataclasses import dataclass
 
-def send_dtemite_request():
-    url = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento'
+# Configurar logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+@dataclass
+class DTEmiteConfig:
+    """Configuración para la API DTEmite"""
+    api_url: str = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento'
+    timeout: int = 30
+    max_retries: int = 3
+
+class DTEmiteClient:
+    """Cliente para la API DTEmite"""
     
-    document_data = {
-        "Sistema": {
-            "nombre": "webbasico",
-            "rut": "29282726-1",
-            "usuario": "integrado_webbasico",
-            "clave": "d2ViYmFzaWNvMjAyMQ=="
-        },
-        "Documento": {
-            "Encabezado": {
-                "IdDoc": {
-                    "TipoDTE": "33",
-                    "Folio": "0",
-                    "MntBruto": "2",
-                    "FchEmis": "2024-01-20",
-                    "FchVenc": "2024-01-26"
-                },
-                "Emisor": {
-                    "RUTEmisor": "29282726-1",
-                    "RznSocEmisor": "EMPRESA DE PRUEBA",
-                    "GiroEmisor": "DESARROLLO DE SISTEMAS",
-                    "DirOrigen": "Avenida del Software #11001101",
-                    "CmnaOrigen": "PROVIDENCIA",
-                    "CiudadOrigen": "SANTIAGO"
-                },
-                "Receptor": {
-                    "RUTRecep": "76399744-8",
-                    "CdgIntRecep": "1000215-220",
-                    "RznSocRecep": "CLIENTE DE PRUEBA",
-                    "CorreoRecep": "prueba@dtemite.cl",
-                    "DirRecep": "CALLE A 50",
-                    "CmnaRecep": "SANTIAGO",
-                    "CiudadRecep": "SANTIAGO"
-                },
-                "Totales": {
-                    "MntNeto": "10000",
-                    "MntExe": "0",
-                    "IVA": "1900",
-                    "MntTotal": "11900"
-                }
+    def __init__(self, config: DTEmiteConfig = None):
+        self.config = config or DTEmiteConfig()
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'User-Agent': 'DTEmite-Python-Client/1.0'
+        })
+    
+    def create_document_data(self) -> Dict[str, Any]:
+        """Crea la estructura de datos del documento"""
+        return {
+            "Sistema": {
+                "nombre": "webbasico",
+                "rut": "29282726-1",
+                "usuario": "integrado_webbasico",
+                "clave": "d2ViYmFzaWNvMjAyMQ=="
             },
-            "Detalle": [
-                {
-                    "NroLinDet": "1",
-                    "CdgItem": {
-                        "TpoCodigo": "INT1",
-                        "VlrCodigo": "WWW"
+            "Documento": {
+                "Encabezado": {
+                    "IdDoc": {
+                        "TipoDTE": "33",
+                        "Folio": "0",
+                        "MntBruto": "2",
+                        "FchEmis": "2024-01-20",
+                        "FchVenc": "2024-01-26"
                     },
-                    "NmbItem": "Descripción de producto WWW",
-                    "QtyItem": "1",
-                    "PrcItem": "11900",
-                    "MontoItem": "11900"
-                }
-            ]
+                    "Emisor": {
+                        "RUTEmisor": "29282726-1",
+                        "RznSocEmisor": "EMPRESA DE PRUEBA",
+                        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                        "DirOrigen": "Avenida del Software #11001101",
+                        "CmnaOrigen": "PROVIDENCIA",
+                        "CiudadOrigen": "SANTIAGO"
+                    },
+                    "Receptor": {
+                        "RUTRecep": "76399744-8",
+                        "CdgIntRecep": "1000215-220",
+                        "RznSocRecep": "CLIENTE DE PRUEBA",
+                        "CorreoRecep": "prueba@dtemite.cl",
+                        "DirRecep": "CALLE A 50",
+                        "CmnaRecep": "SANTIAGO",
+                        "CiudadRecep": "SANTIAGO"
+                    },
+                    "Totales": {
+                        "MntNeto": "10000",
+                        "MntExe": "0",
+                        "IVA": "1900",
+                        "MntTotal": "11900"
+                    }
+                },
+                "Detalle": [
+                    {
+                        "NroLinDet": "1",
+                        "CdgItem": {
+                            "TpoCodigo": "INT1",
+                            "VlrCodigo": "WWW"
+                        },
+                        "NmbItem": "Descripcion de producto WWW",
+                        "QtyItem": "1",
+                        "PrcItem": "11900",
+                        "MontoItem": "11900"
+                    }
+                ]
+            }
         }
-    }
     
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    }
+    def send_document(self, document_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+        """
+        Envía un documento a la API DTEmite
+        
+        Args:
+            document_data: Datos del documento a enviar
+            
+        Returns:
+            Respuesta de la API o None si hay error
+        """
+        try:
+            logger.info(f"Enviando documento a {self.config.api_url}")
+            
+            response = self.session.post(
+                self.config.api_url,
+                json=document_data,
+                timeout=self.config.timeout
+            )
+            
+            response.raise_for_status()
+            
+            # Validar que la respuesta sea JSON válido
+            try:
+                result = response.json()
+                logger.info("✅ Documento enviado exitosamente")
+                return result
+            except ValueError as json_error:
+                logger.error(f"❌ Respuesta no es JSON válido: {json_error}")
+                logger.error(f"Respuesta raw: {response.text}")
+                return None
+                
+        except requests.exceptions.Timeout:
+            logger.error("❌ Timeout de conexión")
+            return None
+        except requests.exceptions.ConnectionError:
+            logger.error("❌ Error de conexión")
+            return None
+        except requests.exceptions.HTTPError as http_error:
+            logger.error(f"❌ Error HTTP: {http_error.response.status_code} - {http_error.response.text}")
+            return None
+        except requests.exceptions.RequestException as e:
+            logger.error(f"❌ Error de petición: {e}")
+            return None
+        finally:
+            self.session.close()
     
-    try:
-        response = requests.post(url, json=document_data, headers=headers)
-        response.raise_for_status()
-        print("Respuesta DTEmite:", response.json())
-    except requests.exceptions.RequestException as e:
-        print("Error DTEmite:", e)
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.session.close()
 
-send_dtemite_request()`,
+def main():
+    """Función principal"""
+    config = DTEmiteConfig()
+    
+    with DTEmiteClient(config) as client:
+        document_data = client.create_document_data()
+        result = client.send_document(document_data)
+        
+        if result:
+            print("🎉 Proceso completado exitosamente")
+            print(f"Respuesta: {json.dumps(result, indent=2, ensure_ascii=False)}")
+        else:
+            print("💥 Error en el proceso")
+            return 1
+    
+    return 0
+
+if __name__ == "__main__":
+    exit(main())`,
 
   'python_http': `import http.client
 import json
@@ -553,88 +678,181 @@ send_dtemite_request()`,
 
   // PHP submétodos
   'php_curl': `<?php
-function sendDTEmiteRequest() {
-    $url = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento';
+/**
+ * Cliente DTEmite API - Ejemplo usando cURL
+ * Autor: DTEmite Team
+ * Versión: 1.0
+ */
+
+declare(strict_types=1);
+
+namespace DTEmite;
+
+use InvalidArgumentException;
+use RuntimeException;
+
+class DTEmiteClient
+{
+    private const API_URL = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento';
+    private const TIMEOUT = 30;
+    private const USER_AGENT = 'DTEmite-PHP-Client/1.0';
     
-    $documentData = [
-        'Sistema' => [
-            'nombre' => 'webbasico',
-            'rut' => '29282726-1',
-            'usuario' => 'integrado_webbasico',
-            'clave' => 'd2ViYmFzaWNvMjAyMQ=='
-        ],
-        'Documento' => [
-            'Encabezado' => [
-                'IdDoc' => [
-                    'TipoDTE' => '33',
-                    'Folio' => '0',
-                    'MntBruto' => '2',
-                    'FchEmis' => '2024-01-20',
-                    'FchVenc' => '2024-01-26'
-                ],
-                'Emisor' => [
-                    'RUTEmisor' => '29282726-1',
-                    'RznSocEmisor' => 'EMPRESA DE PRUEBA',
-                    'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
-                    'DirOrigen' => 'Avenida del Software #11001101',
-                    'CmnaOrigen' => 'PROVIDENCIA',
-                    'CiudadOrigen' => 'SANTIAGO'
-                ],
-                'Receptor' => [
-                    'RUTRecep' => '76399744-8',
-                    'CdgIntRecep' => '1000215-220',
-                    'RznSocRecep' => 'CLIENTE DE PRUEBA',
-                    'CorreoRecep' => 'prueba@dtemite.cl',
-                    'DirRecep' => 'CALLE A 50',
-                    'CmnaRecep' => 'SANTIAGO',
-                    'CiudadRecep' => 'SANTIAGO'
-                ],
-                'Totales' => [
-                    'MntNeto' => '10000',
-                    'MntExe' => '0',
-                    'IVA' => '1900',
-                    'MntTotal' => '11900'
-                ]
-            ],
-            'Detalle' => [
-                [
-                    'NroLinDet' => '1',
-                    'CdgItem' => [
-                        'TpoCodigo' => 'INT1',
-                        'VlrCodigo' => 'WWW'
-                    ],
-                    'NmbItem' => 'Descripción de producto WWW',
-                    'QtyItem' => '1',
-                    'PrcItem' => '11900',
-                    'MontoItem' => '11900'
-                ]
-            ]
-        ]
+    private array $defaultHeaders = [
+        'Content-Type: application/json',
+        'Accept: application/json',
+        'User-Agent: ' . self::USER_AGENT
     ];
     
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($documentData));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json',
-        'Accept: application/json'
-    ]);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    
-    if (curl_error($ch)) {
-        echo "Error DTEmite: " . curl_error($ch);
-    } else {
-        echo "Respuesta DTEmite: " . $response;
+    /**
+     * Envía un documento a la API DTEmite
+     *
+     * @param array $documentData Datos del documento
+     * @return array Respuesta de la API
+     * @throws RuntimeException Si hay error en la petición
+     */
+    public function sendDocument(array $documentData): array
+    {
+        $this->validateDocumentData($documentData);
+        
+        $jsonData = json_encode($documentData, JSON_THROW_ON_ERROR);
+        
+        $ch = curl_init();
+        
+        curl_setopt_array($ch, [
+            CURLOPT_URL => self::API_URL,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => $jsonData,
+            CURLOPT_HTTPHEADER => $this->defaultHeaders,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => self::TIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_SSL_VERIFYPEER => true,
+            CURLOPT_SSL_VERIFYHOST => 2,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS => 3
+        ]);
+        
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $error = curl_error($ch);
+        
+        curl_close($ch);
+        
+        if ($response === false) {
+            throw new RuntimeException("Error cURL: {$error}");
+        }
+        
+        if ($httpCode >= 400) {
+            throw new RuntimeException("Error HTTP {$httpCode}: {$response}");
+        }
+        
+        $decodedResponse = json_decode($response, true);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new RuntimeException("Respuesta no es JSON válido: " . json_last_error_msg());
+        }
+        
+        return $decodedResponse;
     }
     
-    curl_close($ch);
+    /**
+     * Crea los datos de ejemplo del documento
+     *
+     * @return array Datos del documento
+     */
+    public function createSampleDocument(): array
+    {
+        return [
+            'Sistema' => [
+                'nombre' => 'webbasico',
+                'rut' => '29282726-1',
+                'usuario' => 'integrado_webbasico',
+                'clave' => 'd2ViYmFzaWNvMjAyMQ=='
+            ],
+            'Documento' => [
+                'Encabezado' => [
+                    'IdDoc' => [
+                        'TipoDTE' => '33',
+                        'Folio' => '0',
+                        'MntBruto' => '2',
+                        'FchEmis' => '2024-01-20',
+                        'FchVenc' => '2024-01-26'
+                    ],
+                    'Emisor' => [
+                        'RUTEmisor' => '29282726-1',
+                        'RznSocEmisor' => 'EMPRESA DE PRUEBA',
+                        'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
+                        'DirOrigen' => 'Avenida del Software #11001101',
+                        'CmnaOrigen' => 'PROVIDENCIA',
+                        'CiudadOrigen' => 'SANTIAGO'
+                    ],
+                    'Receptor' => [
+                        'RUTRecep' => '76399744-8',
+                        'CdgIntRecep' => '1000215-220',
+                        'RznSocRecep' => 'CLIENTE DE PRUEBA',
+                        'CorreoRecep' => 'prueba@dtemite.cl',
+                        'DirRecep' => 'CALLE A 50',
+                        'CmnaRecep' => 'SANTIAGO',
+                        'CiudadRecep' => 'SANTIAGO'
+                    ],
+                    'Totales' => [
+                        'MntNeto' => '10000',
+                        'MntExe' => '0',
+                        'IVA' => '1900',
+                        'MntTotal' => '11900'
+                    ]
+                ],
+                'Detalle' => [
+                    [
+                        'NroLinDet' => '1',
+                        'CdgItem' => [
+                            'TpoCodigo' => 'INT1',
+                            'VlrCodigo' => 'WWW'
+                        ],
+                        'NmbItem' => 'Descripcion de producto WWW',
+                        'QtyItem' => '1',
+                        'PrcItem' => '11900',
+                        'MontoItem' => '11900'
+                    ]
+                ]
+            ]
+        ];
+    }
+    
+    /**
+     * Valida los datos del documento
+     *
+     * @param array $documentData Datos a validar
+     * @throws InvalidArgumentException Si los datos son inválidos
+     */
+    private function validateDocumentData(array $documentData): void
+    {
+        if (!isset($documentData['Sistema']) || !isset($documentData['Documento'])) {
+            throw new InvalidArgumentException('Datos del documento incompletos');
+        }
+        
+        if (!is_array($documentData['Sistema']) || !is_array($documentData['Documento'])) {
+            throw new InvalidArgumentException('Estructura de datos inválida');
+        }
+    }
 }
 
-sendDTEmiteRequest();
+// Ejemplo de uso
+try {
+    $client = new DTEmiteClient();
+    $documentData = $client->createSampleDocument();
+    $response = $client->sendDocument($documentData);
+    
+    echo "✅ Documento enviado exitosamente\n";
+    echo "Respuesta: " . json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . "\n";
+    
+} catch (RuntimeException $e) {
+    echo "❌ Error: " . $e->getMessage() . "\n";
+    exit(1);
+} catch (InvalidArgumentException $e) {
+    echo "❌ Error de validación: " . $e->getMessage() . "\n";
+    exit(1);
+}
 ?>`,
 
   'php_guzzle': `<?php
@@ -879,116 +1097,260 @@ sendDTEmiteRequest();
 ?>`,
 
   // Java submétodos
-  'java_okhttp': `import okhttp3.*;
-import com.google.gson.Gson;
-import java.io.IOException;
+  'java_okhttp': `package com.dtemite.client;
 
+import okhttp3.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import java.io.IOException;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Cliente DTEmite API usando OkHttp
+ * Autor: DTEmite Team
+ * Versión: 1.0
+ */
 public class DTEmiteClient {
-    private static final String URL = "https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento";
     
-    public static void main(String[] args) {
-        sendDTEmiteRequest();
+    private static final String API_URL = "https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento";
+    private static final Duration TIMEOUT = Duration.ofSeconds(30);
+    
+    private final OkHttpClient client;
+    private final Gson gson;
+    
+    public DTEmiteClient() {
+        this.client = new OkHttpClient.Builder()
+                .connectTimeout(TIMEOUT)
+                .readTimeout(TIMEOUT)
+                .writeTimeout(TIMEOUT)
+                .retryOnConnectionFailure(true)
+                .build();
+                
+        this.gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .create();
     }
     
-    public static void sendDTEmiteRequest() {
-        OkHttpClient client = new OkHttpClient();
-        Gson gson = new Gson();
-        
-        DocumentData documentData = new DocumentData();
+    /**
+     * Envía un documento a la API DTEmite
+     *
+     * @param documentData Datos del documento
+     * @return Respuesta de la API
+     * @throws IOException Si hay error en la comunicación
+     * @throws DTEmiteException Si hay error en la API
+     */
+    public DTEmiteResponse sendDocument(DocumentData documentData) throws IOException, DTEmiteException {
+        String jsonData = gson.toJson(documentData);
         
         RequestBody body = RequestBody.create(
-            gson.toJson(documentData),
-            MediaType.parse("application/json")
+                jsonData,
+                MediaType.parse("application/json; charset=utf-8")
         );
         
         Request request = new Request.Builder()
-            .url(URL)
-            .post(body)
-            .addHeader("Content-Type", "application/json")
-            .addHeader("Accept", "application/json")
-            .build();
+                .url(API_URL)
+                .post(body)
+                .addHeader("Content-Type", "application/json")
+                .addHeader("Accept", "application/json")
+                .addHeader("User-Agent", "DTEmite-Java-Client/1.0")
+                .build();
         
         try (Response response = client.newCall(request).execute()) {
-            if (response.isSuccessful()) {
-                System.out.println("Respuesta DTEmite: " + response.body().string());
-            } else {
-                System.out.println("Error DTEmite: " + response.code() + " - " + response.message());
+            if (!response.isSuccessful()) {
+                throw new DTEmiteException("Error HTTP: " + response.code() + " - " + response.message());
             }
-        } catch (IOException e) {
-            System.out.println("Error DTEmite: " + e.getMessage());
+            
+            String responseBody = response.body().string();
+            return gson.fromJson(responseBody, DTEmiteResponse.class);
         }
     }
     
-    static class DocumentData {
-        Sistema sistema = new Sistema();
-        Documento documento = new Documento();
+    /**
+     * Crea datos de ejemplo del documento
+     *
+     * @return Datos del documento
+     */
+    public DocumentData createSampleDocument() {
+        DocumentData documentData = new DocumentData();
+        
+        // Sistema
+        documentData.sistema = new Sistema();
+        documentData.sistema.nombre = "webbasico";
+        documentData.sistema.rut = "29282726-1";
+        documentData.sistema.usuario = "integrado_webbasico";
+        documentData.sistema.clave = "d2ViYmFzaWNvMjAyMQ==";
+        
+        // Documento
+        documentData.documento = new Documento();
+        
+        // Encabezado
+        documentData.documento.encabezado = new Encabezado();
+        
+        // IdDoc
+        documentData.documento.encabezado.idDoc = new IdDoc();
+        documentData.documento.encabezado.idDoc.tipoDTE = "33";
+        documentData.documento.encabezado.idDoc.folio = "0";
+        documentData.documento.encabezado.idDoc.mntBruto = "2";
+        documentData.documento.encabezado.idDoc.fchEmis = "2024-01-20";
+        documentData.documento.encabezado.idDoc.fchVenc = "2024-01-26";
+        
+        // Emisor
+        documentData.documento.encabezado.emisor = new Emisor();
+        documentData.documento.encabezado.emisor.rutEmisor = "29282726-1";
+        documentData.documento.encabezado.emisor.rznSocEmisor = "EMPRESA DE PRUEBA";
+        documentData.documento.encabezado.emisor.giroEmisor = "DESARROLLO DE SISTEMAS";
+        documentData.documento.encabezado.emisor.dirOrigen = "Avenida del Software #11001101";
+        documentData.documento.encabezado.emisor.cmnaOrigen = "PROVIDENCIA";
+        documentData.documento.encabezado.emisor.ciudadOrigen = "SANTIAGO";
+        
+        // Receptor
+        documentData.documento.encabezado.receptor = new Receptor();
+        documentData.documento.encabezado.receptor.rutRecep = "76399744-8";
+        documentData.documento.encabezado.receptor.cdgIntRecep = "1000215-220";
+        documentData.documento.encabezado.receptor.rznSocRecep = "CLIENTE DE PRUEBA";
+        documentData.documento.encabezado.receptor.correoRecep = "prueba@dtemite.cl";
+        documentData.documento.encabezado.receptor.dirRecep = "CALLE A 50";
+        documentData.documento.encabezado.receptor.cmnaRecep = "SANTIAGO";
+        documentData.documento.encabezado.receptor.ciudadRecep = "SANTIAGO";
+        
+        // Totales
+        documentData.documento.encabezado.totales = new Totales();
+        documentData.documento.encabezado.totales.mntNeto = "10000";
+        documentData.documento.encabezado.totales.mntExe = "0";
+        documentData.documento.encabezado.totales.iva = "1900";
+        documentData.documento.encabezado.totales.mntTotal = "11900";
+        
+        // Detalle
+        Detalle detalle = new Detalle();
+        detalle.nroLinDet = "1";
+        detalle.cdgItem = new CdgItem();
+        detalle.cdgItem.tpoCodigo = "INT1";
+        detalle.cdgItem.vlrCodigo = "WWW";
+        detalle.nmbItem = "Descripcion de producto WWW";
+        detalle.qtyItem = "1";
+        detalle.prcItem = "11900";
+        detalle.montoItem = "11900";
+        
+        documentData.documento.detalle = new Detalle[]{detalle};
+        
+        return documentData;
     }
     
-    static class Sistema {
-        String nombre = "webbasico";
-        String rut = "29282726-1";
-        String usuario = "integrado_webbasico";
-        String clave = "d2ViYmFzaWNvMjAyMQ==";
+    /**
+     * Cierra el cliente
+     */
+    public void close() {
+        client.dispatcher().executorService().shutdown();
+        client.connectionPool().evictAll();
     }
     
-    static class Documento {
-        Encabezado encabezado = new Encabezado();
-        Detalle[] detalle = {new Detalle()};
+    // Clases de datos
+    public static class DocumentData {
+        public Sistema sistema;
+        public Documento documento;
     }
     
-    static class Encabezado {
-        IdDoc idDoc = new IdDoc();
-        Emisor emisor = new Emisor();
-        Receptor receptor = new Receptor();
-        Totales totales = new Totales();
+    public static class Sistema {
+        public String nombre;
+        public String rut;
+        public String usuario;
+        public String clave;
     }
     
-    static class IdDoc {
-        String tipoDTE = "33";
-        String folio = "0";
-        String mntBruto = "2";
-        String fchEmis = "2024-01-20";
-        String fchVenc = "2024-01-26";
+    public static class Documento {
+        public Encabezado encabezado;
+        public Detalle[] detalle;
     }
     
-    static class Emisor {
-        String rutEmisor = "29282726-1";
-        String rznSocEmisor = "EMPRESA DE PRUEBA";
-        String giroEmisor = "DESARROLLO DE SISTEMAS";
-        String dirOrigen = "Avenida del Software #11001101";
-        String cmnaOrigen = "PROVIDENCIA";
-        String ciudadOrigen = "SANTIAGO";
+    public static class Encabezado {
+        public IdDoc idDoc;
+        public Emisor emisor;
+        public Receptor receptor;
+        public Totales totales;
     }
     
-    static class Receptor {
-        String rutRecep = "76399744-8";
-        String cdgIntRecep = "1000215-220";
-        String rznSocRecep = "CLIENTE DE PRUEBA";
-        String correoRecep = "prueba@dtemite.cl";
-        String dirRecep = "CALLE A 50";
-        String cmnaRecep = "SANTIAGO";
-        String ciudadRecep = "SANTIAGO";
+    public static class IdDoc {
+        public String tipoDTE;
+        public String folio;
+        public String mntBruto;
+        public String fchEmis;
+        public String fchVenc;
     }
     
-    static class Totales {
-        String mntNeto = "10000";
-        String mntExe = "0";
-        String iva = "1900";
-        String mntTotal = "11900";
+    public static class Emisor {
+        public String rutEmisor;
+        public String rznSocEmisor;
+        public String giroEmisor;
+        public String dirOrigen;
+        public String cmnaOrigen;
+        public String ciudadOrigen;
     }
     
-    static class Detalle {
-        String nroLinDet = "1";
-        CdgItem cdgItem = new CdgItem();
-        String nmbItem = "Descripción de producto WWW";
-        String qtyItem = "1";
-        String prcItem = "11900";
-        String montoItem = "11900";
+    public static class Receptor {
+        public String rutRecep;
+        public String cdgIntRecep;
+        public String rznSocRecep;
+        public String correoRecep;
+        public String dirRecep;
+        public String cmnaRecep;
+        public String ciudadRecep;
     }
     
-    static class CdgItem {
-        String tpoCodigo = "INT1";
-        String vlrCodigo = "WWW";
+    public static class Totales {
+        public String mntNeto;
+        public String mntExe;
+        public String iva;
+        public String mntTotal;
+    }
+    
+    public static class Detalle {
+        public String nroLinDet;
+        public CdgItem cdgItem;
+        public String nmbItem;
+        public String qtyItem;
+        public String prcItem;
+        public String montoItem;
+    }
+    
+    public static class CdgItem {
+        public String tpoCodigo;
+        public String vlrCodigo;
+    }
+    
+    public static class DTEmiteResponse {
+        // Estructura de respuesta según la API
+    }
+    
+    public static class DTEmiteException extends Exception {
+        public DTEmiteException(String message) {
+            super(message);
+        }
+        
+        public DTEmiteException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+    
+    public static void main(String[] args) {
+        DTEmiteClient client = new DTEmiteClient();
+        
+        try {
+            DocumentData documentData = client.createSampleDocument();
+            DTEmiteResponse response = client.sendDocument(documentData);
+            
+            System.out.println("✅ Documento enviado exitosamente");
+            System.out.println("Respuesta: " + client.gson.toJson(response));
+            
+        } catch (DTEmiteException e) {
+            System.err.println("❌ Error DTEmite: " + e.getMessage());
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("❌ Error de conexión: " + e.getMessage());
+            System.exit(1);
+        } finally {
+            client.close();
+        }
     }
 }`,
 
@@ -1033,7 +1395,9 @@ public class DTEmiteClient {
     
     static class Documento {
         Encabezado encabezado = new Encabezado();
-        Detalle[] detalle = {new Detalle()};
+        Detalle[] detalle = {
+            new Detalle()
+        };
     }
     
     static class Encabezado {
@@ -1250,31 +1614,31 @@ send_dtemite_request()`,
   php: `<?php
 $url = 'https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento';
 
-$documentData = array(
-    'Sistema' => array(
+$documentData = [
+    'Sistema' => [
         'nombre' => 'webbasico',
         'rut' => '29282726-1',
         'usuario' => 'integrado_webbasico',
         'clave' => 'd2ViYmFzaWNvMjAyMQ=='
-    ),
-    'Documento' => array(
-        'Encabezado' => array(
-            'IdDoc' => array(
+    ],
+    'Documento' => [
+        'Encabezado' => [
+            'IdDoc' => [
                 'TipoDTE' => '33',
                 'Folio' => '0',
                 'MntBruto' => '2',
                 'FchEmis' => '2024-01-20',
                 'FchVenc' => '2024-01-26'
-            ),
-            'Emisor' => array(
+            ],
+            'Emisor' => [
                 'RUTEmisor' => '29282726-1',
                 'RznSocEmisor' => 'EMPRESA DE PRUEBA',
                 'GiroEmisor' => 'DESARROLLO DE SISTEMAS',
                 'DirOrigen' => 'Avenida del Software #11001101',
                 'CmnaOrigen' => 'PROVIDENCIA',
                 'CiudadOrigen' => 'SANTIAGO'
-            ),
-            'Receptor' => array(
+            ],
+            'Receptor' => [
                 'RUTRecep' => '76399744-8',
                 'CdgIntRecep' => '1000215-220',
                 'RznSocRecep' => 'CLIENTE DE PRUEBA',
@@ -1282,46 +1646,52 @@ $documentData = array(
                 'DirRecep' => 'CALLE A 50',
                 'CmnaRecep' => 'SANTIAGO',
                 'CiudadRecep' => 'SANTIAGO'
-            ),
-            'Totales' => array(
+            ],
+            'Totales' => [
                 'MntNeto' => '10000',
                 'MntExe' => '0',
                 'IVA' => '1900',
                 'MntTotal' => '11900'
-            )
-        ),
-        'Detalle' => array(
-            array(
+            ]
+        ],
+        'Detalle' => [
+            [
                 'NroLinDet' => '1',
-                'CdgItem' => array(
+                'CdgItem' => [
                     'TpoCodigo' => 'INT1',
                     'VlrCodigo' => 'WWW'
-                ),
+                ],
                 'NmbItem' => 'Descripción de producto WWW',
                 'QtyItem' => '1',
                 'PrcItem' => '11900',
                 'MontoItem' => '11900'
-            )
-        )
-    )
-);
+            ]
+        ]
+    ]
+];
 
-$options = array(
-    'http' => array(
+$options = [
+    'http' => [
         'header' => "Content-Type: application/json\\r\\n" .
                    "Accept: application/json\\r\\n",
         'method' => 'POST',
         'content' => json_encode($documentData)
-    )
-);
+    ]
+];
 
 $context = stream_context_create($options);
 $result = file_get_contents($url, false, $context);
 
 if ($result === FALSE) {
-    echo "Error en la petición DTEmite";
+    echo "Error en la peticion DTEmite";
 } else {
-    echo "Respuesta DTEmite: " . $result;
+    // Validar que la respuesta sea JSON válido
+    $decoded = json_decode($result, true);
+    if (json_last_error() === JSON_ERROR_NONE) {
+        echo "Respuesta DTEmite: " . json_encode($decoded, JSON_PRETTY_PRINT);
+    } else {
+        echo "Error: Respuesta no es JSON valido. Raw: " . $result;
+    }
 }
 ?>`,
 
@@ -1407,7 +1777,18 @@ public class DTEmiteClient {
             while ((responseLine = br.readLine()) != null) {
                 response.append(responseLine.trim());
             }
-            System.out.println("Respuesta DTEmite: " + response.toString());
+            
+            // Validar código de respuesta HTTP
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                System.out.println("Respuesta DTEmite: " + response.toString());
+            } else {
+                System.out.println("Error HTTP: " + responseCode + " - " + connection.getResponseMessage());
+            }
+        } catch (IOException e) {
+            System.out.println("Error DTEmite: " + e.getMessage());
+        } finally {
+            connection.disconnect();
         }
     }
 }`,
@@ -1641,7 +2022,18 @@ def send_dtemite_request
   
   begin
     response = http.request(request)
-    puts "Respuesta DTEmite: #{response.body}"
+    
+    # Validar código de respuesta HTTP
+    if response.code.to_i == 200
+      puts "Respuesta DTEmite: #{response.body}"
+    else
+      puts "Error HTTP: #{response.code} - #{response.message}"
+      puts "Respuesta: #{response.body}"
+    end
+  rescue Net::TimeoutError => e
+    puts "Error DTEmite: Timeout de conexion - #{e.message}"
+  rescue Net::HTTPError => e
+    puts "Error DTEmite HTTP: #{e.message}"
   rescue => e
     puts "Error DTEmite: #{e.message}"
   end
@@ -1714,10 +2106,18 @@ $headers = @{
 }
 
 try {
-    $response = Invoke-RestMethod -Uri $uri -Method Post -Body $documentData -Headers $headers
+    $response = Invoke-RestMethod -Uri $uri -Method Post -Body $documentData -Headers $headers -TimeoutSec 30
     Write-Host "Respuesta DTEmite: $($response | ConvertTo-Json -Depth 10)"
 } catch {
-    Write-Host "Error DTEmite: $($_.Exception.Message)"
+    if ($_.Exception.Response) {
+        $statusCode = $_.Exception.Response.StatusCode.value__
+        $responseBody = $_.Exception.Response.GetResponseStream()
+        $reader = New-Object System.IO.StreamReader($responseBody)
+        $responseText = $reader.ReadToEnd()
+        Write-Host "Error DTEmite HTTP: $statusCode - $responseText"
+    } else {
+        Write-Host "Error DTEmite: $($_.Exception.Message)"
+    }
 }`
 };
 
