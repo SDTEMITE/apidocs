@@ -2711,8 +2711,122 @@ function setupModalPanelListeners() {
     });
   }
   
+  // Event listeners para actualización en tiempo real de credenciales
+  const credentialFields = ['modalRut', 'modalSistema', 'modalUsuario', 'modalClave'];
+  credentialFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      field.addEventListener('input', updateJsonInRealTime);
+      field.addEventListener('change', updateJsonInRealTime);
+    }
+  });
+  
   // Inicializar estado de controles SOAP
   toggleModalSoapMethods();
+}
+
+/**
+ * Actualiza el JSON/XML en tiempo real cuando cambian las credenciales
+ */
+function updateJsonInRealTime() {
+  const modalApiType = document.getElementById('modalApiType').value;
+  const modalJsonData = document.getElementById('modalJsonData');
+  const modalDocumentTemplate = document.getElementById('modalDocumentTemplate');
+  
+  // Solo actualizar si hay contenido en el textarea y no es personalizado
+  if (!modalJsonData.value.trim() || modalDocumentTemplate.value === 'custom') {
+    return;
+  }
+  
+  try {
+    if (modalApiType === 'rest') {
+      // Para REST, actualizar JSON
+      updateRestJson();
+    } else {
+      // Para SOAP, actualizar XML
+      updateSoapXml();
+    }
+  } catch (error) {
+    console.warn('Error actualizando contenido en tiempo real:', error);
+  }
+}
+
+/**
+ * Actualiza el JSON REST con las credenciales actuales
+ */
+function updateRestJson() {
+  const modalJsonData = document.getElementById('modalJsonData');
+  const modalDocumentTemplate = document.getElementById('modalDocumentTemplate');
+  
+  if (!modalJsonData.value.trim() || modalDocumentTemplate.value === 'custom') {
+    return;
+  }
+  
+  try {
+    // Parsear el JSON actual
+    const currentJson = JSON.parse(modalJsonData.value);
+    
+    // Actualizar las credenciales del sistema
+    if (currentJson.Sistema) {
+      currentJson.Sistema.nombre = document.getElementById('modalSistema').value;
+      currentJson.Sistema.rut = document.getElementById('modalRut').value;
+      currentJson.Sistema.usuario = document.getElementById('modalUsuario').value;
+      currentJson.Sistema.clave = document.getElementById('modalClave').value;
+    }
+    
+    // Actualizar el RUT del emisor si existe
+    if (currentJson.Documento && currentJson.Documento.Encabezado && currentJson.Documento.Encabezado.Emisor) {
+      currentJson.Documento.Encabezado.Emisor.RUTEmisor = document.getElementById('modalRut').value;
+    }
+    
+    // Actualizar el textarea con el JSON modificado
+    modalJsonData.value = JSON.stringify(currentJson, null, 2);
+    
+  } catch (error) {
+    console.warn('Error actualizando JSON REST:', error);
+  }
+}
+
+/**
+ * Actualiza el XML SOAP con las credenciales actuales
+ */
+function updateSoapXml() {
+  const modalJsonData = document.getElementById('modalJsonData');
+  const modalDocumentTemplate = document.getElementById('modalDocumentTemplate');
+  const modalSoapMethod = document.getElementById('modalSoapMethod');
+  
+  if (!modalJsonData.value.trim() || modalDocumentTemplate.value === 'custom') {
+    return;
+  }
+  
+  try {
+    // Obtener la plantilla actual
+    const selectedTemplate = modalDocumentTemplate.value;
+    if (templates[selectedTemplate] && templates[selectedTemplate].type === 'soap') {
+      const templateData = templates[selectedTemplate];
+      
+      // Actualizar las credenciales en los datos de la plantilla
+      if (templateData.data.Sistema) {
+        templateData.data.Sistema.nombre = document.getElementById('modalSistema').value;
+        templateData.data.Sistema.rut = document.getElementById('modalRut').value;
+        templateData.data.Sistema.usuario = document.getElementById('modalUsuario').value;
+        templateData.data.Sistema.clave = document.getElementById('modalClave').value;
+      }
+      
+      // Regenerar el XML con las credenciales actualizadas
+      const xmlContent = createSoapEnvelopeByMethod(
+        templateData.data, 
+        modalSoapMethod ? modalSoapMethod.value : templateData.method, 
+        templateData.data.Parametros || {}
+      );
+      
+      // Actualizar el textarea con el XML modificado
+      modalJsonData.value = xmlContent;
+    }
+    
+  } catch (error) {
+    console.warn('Error actualizando XML SOAP:', error);
+  }
 }
 
 /**
