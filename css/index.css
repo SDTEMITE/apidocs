@@ -916,16 +916,48 @@
         .modal-header {
             background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
             color: white;
-            padding: 16px 24px;
+            padding: 20px 25px;
+            border-radius: 15px 15px 0 0;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 15px rgba(222, 0, 126, 0.3);
+        }
+        
+        .modal-header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .modal-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .modal-icon i {
+            font-size: 18px;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-icon:hover i {
+            transform: rotate(90deg);
         }
         
         .modal-header h2 {
             margin: 0;
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .modal-close {
@@ -1442,6 +1474,27 @@
             
             .modal-content {
                 padding: 15px;
+            }
+            
+            .modal-header {
+                padding: 15px 20px;
+            }
+            
+            .modal-header-content {
+                gap: 12px;
+            }
+            
+            .modal-icon {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .modal-icon i {
+                font-size: 16px;
+            }
+            
+            .modal-header h2 {
+                font-size: 20px;
             }
             
             .shipping-tabs {
