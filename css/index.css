@@ -22,6 +22,141 @@
             box-shadow: 0 4px 24px rgba(109, 36, 120, 0.25);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+           
+        }
+        
+        /* Optimización del navbar para reducir espacio */
+        .docs-nav .navbar-brand {
+            padding: 5px 15px !important;
+        }
+        
+        .docs-nav .navbar-brand img {
+            max-height: 70px !important;
+            margin-top: -20px !important;
+        }
+        
+        .docs-nav .navbar-nav {
+            margin: 0;
+        }
+        
+        .docs-nav .navbar-nav > li {
+            margin: 0;
+        }
+        
+        .docs-nav .navbar-nav > li > a {
+            color: #b9c8e0 !important;
+            padding: 12px 10px !important;
+            font-size: 13px !important;
+            font-weight: 500;
+            line-height: 1.2;
+            white-space: nowrap;
+            transition: color 0.2s ease;
+            background: transparent !important;
+        }
+        
+        .docs-nav .navbar-nav > li > a:hover {
+            color: #fff !important;
+            background: transparent !important;
+        }
+        
+        /* Estilos para el dropdown de APIs */
+        .docs-nav .dropdown > a {
+            position: relative;
+        }
+        
+        .docs-nav .dropdown-menu {
+            background: linear-gradient(135deg, #6D2478 0%, #8B2A8B 100%) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-top: 5px;
+            min-width: 220px;
+        }
+        
+        .docs-nav .dropdown-menu > li > a {
+            color: #b9c8e0 !important;
+            padding: 10px 20px !important;
+            font-size: 13px !important;
+            transition: all 0.2s ease;
+        }
+        
+        .docs-nav .dropdown-menu > li > a:hover,
+        .docs-nav .dropdown-menu > li > a:focus {
+            background: transparent !important;
+            color: #fff !important;
+        }
+        
+        .docs-nav .dropdown-menu > .active > a,
+        .docs-nav .dropdown-menu > .active > a:hover,
+        .docs-nav .dropdown-menu > .active > a:focus {
+            background: transparent !important;
+            color: #fff !important;
+        }
+        
+        .docs-nav .dropdown-menu .divider {
+            background-color: rgba(255, 255, 255, 0.2);
+            margin: 8px 0;
+        }
+        
+        .docs-nav .caret {
+            border-top-color: #b9c8e0;
+            border-bottom-color: #b9c8e0;
+            margin-left: 5px;
+        }
+        
+        .docs-nav .dropdown.open > a,
+        .docs-nav .dropdown.open > a:hover,
+        .docs-nav .dropdown.open > a:focus {
+            background: transparent !important;
+            color: #b9c8e0 !important;
+        }
+        
+        /* Navbar activo - solo texto blanco */
+        .docs-nav .navbar-nav > li.active > a {
+            background: transparent !important;
+            color: #fff !important;
+            font-weight: 500;
+            border: none !important;
+        }
+        
+        /* Responsive para pantallas medianas */
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .docs-nav .navbar-nav > li > a {
+                padding: 12px 8px !important;
+                font-size: 12px !important;
+            }
+        }
+        
+        /* Para pantallas grandes */
+        @media (min-width: 1200px) {
+            .docs-nav .navbar-nav > li > a {
+                padding: 12px 12px !important;
+                font-size: 13.5px !important;
+            }
+        }
+        
+        /* Mobile - mostrar nombres completos */
+        @media (max-width: 991px) {
+            .docs-nav .navbar-brand img {
+                max-height: 55px !important;
+                margin-top: -8px !important;
+            }
+            
+            .docs-nav .navbar-nav > li > a {
+                padding: 10px 15px !important;
+                font-size: 14px !important;
+            }
+            
+            .docs-nav .dropdown-menu {
+                background: rgba(109, 36, 120, 0.98) !important;
+                position: static !important;
+                float: none;
+                width: 100%;
+                margin-top: 0;
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
         }
         
         /* CSS Custom Properties para efectos modernos */
@@ -726,19 +861,19 @@
         /* Estilos para scroll suave mejorado */
         .sidebar a.scrolling,
         .navbar-nav a.scrolling {
-            background: linear-gradient(135deg, #de007e 0%, #97095a 100%);
+            background: transparent !important;
             color: white !important;
-            transform: scale(1.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(222, 0, 126, 0.3);
-            border-radius: 6px;
-            padding: 8px 12px;
+            transform: none;
+            transition: color 0.2s ease;
+            box-shadow: none;
+            border-radius: 0;
+            padding: 12px 10px !important;
         }
         
         .sidebar a.scrolling:hover,
         .navbar-nav a.scrolling:hover {
-            transform: scale(1.08);
-            box-shadow: 0 6px 16px rgba(222, 0, 126, 0.4);
+            transform: none;
+            box-shadow: none;
         }
         
         /* Indicador de progreso de lectura en el sidebar */

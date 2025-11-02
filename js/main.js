@@ -59,10 +59,29 @@ $(function() {
       }
     });
     
-    // Actualizar el menú activo
+    // Actualizar el menú activo en sidebar Y navbar
     if (currentSection) {
+      // Sidebar
       $('.sidebar .nav li').removeClass('active');
       $('.sidebar .nav li a[href="#' + currentSection + '"]').parent().addClass('active');
+      
+      // Navbar - items principales
+      $('.navbar-nav > li').removeClass('active');
+      var $navbarLink = $('.navbar-nav > li:not(.dropdown) > a[href="#' + currentSection + '"]');
+      
+      if ($navbarLink.length > 0) {
+        // Es un item directo del navbar
+        $navbarLink.parent().addClass('active');
+      } else {
+        // Es un item del dropdown
+        var $dropdownLink = $('.dropdown-menu > li > a[href="#' + currentSection + '"]');
+        if ($dropdownLink.length > 0) {
+          // Activar el item dentro del dropdown
+          $('.dropdown-menu > li').removeClass('active');
+          $dropdownLink.parent().addClass('active');
+          // No abrir el dropdown automáticamente, solo marcar como activo
+        }
+      }
     }
     
     // Calcular progreso de lectura
