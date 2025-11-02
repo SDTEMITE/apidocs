@@ -42,6 +42,8 @@
             <li><a href="#api_aceptacion_rechazo">API Aceptación/Rechazo</a></li>
             <li><a href="#api_anulacion_guias">API Anulación Guías</a></li>
             <li><a href="#api_conciliacion_bancaria">API Conciliación Bancaria</a></li>
+            <li><a href="#api_bhe">API BHE</a></li>
+            <li><a href="#diccionario_rcv">Diccionario RCV</a></li>
             <li style="display: none;"><a href="#panel_pruebas">Panel Pruebas</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -114,6 +116,12 @@
               </li>
               <li>
                 <a href="#api_conciliacion_bancaria">12. API Conciliación Bancaria</a>
+              </li>
+              <li>
+                <a href="#api_bhe">13. API Emisión Boletas de Honorarios (BHE)</a>
+              </li>
+              <li>
+                <a href="#diccionario_rcv">14. Diccionario Response API RCV</a>
               </li>
               <li style="display: none;">
                 <a href="#panel_pruebas">Panel de Pruebas</a>
@@ -2175,6 +2183,834 @@ Content-Type: application/json</code></pre>
                   </ul>
                 </li>
                 <li><strong>Body:</strong> JSON con fecha_desde, fecha_hasta y links_token array</li>
+              </ul>
+            </div>
+            
+            <!-- API EMISIÓN BOLETAS DE HONORARIOS (BHE) -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="api_bhe">API Emisión Boletas de Honorarios (BHE)</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Esta API permite emitir, anular y consultar Boletas de Honorarios Electrónicas (BHE). Para utilizar esta API, primero se debe obtener un token de seguridad mediante el endpoint de login.
+              </p>
+              
+              <p style="text-align: justify">
+                <strong>Documentación:</strong> <a href="https://sistema.dtemite.cl/Documentation/Bhe" target="_blank">https://sistema.dtemite.cl/Documentation/Bhe</a>
+              </p>
+              
+              <h3 class="section-title">Ambiente de Prueba</h3>
+              
+              <div class="code-example">
+                <h4>Credenciales de Integración:</h4>
+                <p style="text-align: justify">
+                  Cada cliente tendrá distintas credenciales de integración. Estas credenciales van incorporadas en el JSON.
+                </p>
+                <ul>
+                  <li><strong>Rut:</strong> 29282726-1</li>
+                  <li><strong>Sistema:</strong> webbasico</li>
+                  <li><strong>Usuario:</strong> integrado_webbasico</li>
+                  <li><strong>Clave B64:</strong> d2ViYmFzaWNvMjAyMQ==</li>
+                </ul>
+              </div>
+              
+              <h4>Portal Web (para revisar los documentos generados):</h4>
+              <ul>
+                <li><strong>Link:</strong> <a href="https://pro.dtemite.cl/Login/webbasico" target="_blank">https://pro.dtemite.cl/Login/webbasico</a></li>
+                <li><strong>Usuario:</strong> demo</li>
+                <li><strong>Clave:</strong> demo123</li>
+              </ul>
+              
+              <h3 class="section-title">Endpoint Login - Obtener Token</h3>
+              <p style="text-align: justify">
+                Para utilizar esta API tenemos que previamente obtener un token de seguridad.
+              </p>
+              
+              <div class="code-example">
+                <h4>URL:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/login</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                Aquí deberán enviar las credenciales de cada cliente. (En este caso son las de un ambiente de prueba)
+              </p>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "rut": "29282726-1",
+  "usuario": "demo",
+  "password": "demo123"
+}</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "sistema": "webbasico",
+  "usuario": "demo",
+  "token": "webbasico_LB621d9j889b6a23afic7f9c8f9u97w40buahd7f9a9f93f211dbnpvcea413685e35g1243e90ap2ccc4zc31c7f29057",
+  "id": "1",
+  "rut": "29282726-1",
+  "giro": "DEMOSTRACIÓN EMPRESAS DE SERVICIOS INTEGRALES DE INFORMATICA",
+  "telefono": "955555555",
+  "razon": "DEMOSTRACIÓN SISTEMAS Y SERVICIOS INFORMATICOS DTEMITE LIMITADA",
+  "direccion": "MONEDA 812, OF.706. SANTIAGO",
+  "email": "ventas@dtemite.cl",
+  "region": "METROPOLITANA DE SANTIAGO",
+  "provincia": "ARICA",
+  "comuna": "SANTIAGO",
+  "color_personalizado": "A93ABD"
+}</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                <strong>Importante:</strong> Al obtener la respuesta, se deberá utilizar el campo <code>"token"</code> para consumir el endpoint de emisión de BHE. El token se debe enviar en el header <code>Authorization</code> como <code>Bearer {token}</code>.
+              </p>
+              
+              <h3 class="section-title">API REST para la Emisión BHE</h3>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/emision</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Estructura JSON del Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "demo",
+    "clave": "demo123"
+  },
+  "info": {
+    "emision": "03-07-2025",
+    "honorario": "SAN BERNARDO",
+    "agente_retenedor": "1",
+    "id_direccion_sii": "073589063",
+    "direccion_sii": "AVDA LAS TORRES 760 Block Depto. Villa/Pob. VILLA 10 ERRAZURIZ"
+  },
+  "cliente": {
+    "rut": "20297815-0",
+    "razon": "José Robles",
+    "giro": "Servicios Informáticos",
+    "telefono": "123123123",
+    "email": "jose.robles@prueba.cl",
+    "direccion": "Av. Prueba 123",
+    "comuna": "SAN BERNARDO"
+  },
+  "totales": {
+    "honorarios": "100000",
+    "impuesto": "14500",
+    "total": "85500"
+  },
+  "detalle": [
+    {
+      "codigo": "0",
+      "descripcion": "Servicios Informáticos",
+      "cantidad": "1",
+      "precio": "100000",
+      "total": "85500"
+    }
+  ]
+}</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "id": "11",
+  "Mensaje": "11",
+  "Status": 200,
+  "ruta_pdf": "https://sistema.dtemite.cl/bhe/7b4154a66079d0d58771a9a64a3b/5eb/4512b043d9fcaae02c990b6a82652dca"
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">API REST para Anulación BHE</h3>
+              <p style="text-align: justify">
+                Esta API permite anular una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
+              </p>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/anulacion</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "folio": "149",
+  "causa": "2"
+}</code></pre>
+              </div>
+              
+              <h4>Causas de Anulación:</h4>
+              <table class="table table-striped table-custom" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 15%;">CÓDIGO</th>
+                    <th class="text-center" style="width: 85%;">DESCRIPCIÓN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>No se efectuó el pago de los servicios por parte del receptor</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>No se efectuó la presentación de servicios</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Error en la digitación</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">"Anulación realizada con éxito"</code></pre>
+              </div>
+              
+              <h3 class="section-title">API REST para Consultar BHE</h3>
+              <p style="text-align: justify">
+                Esta API permite consultar y obtener el PDF de una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
+              </p>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                <strong>"FolioDocumento":</strong> Corresponde al Folio de la BHE que desea consultar.
+              </p>
+              
+              <p style="text-align: justify">
+                <strong>Método:</strong> GET
+              </p>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/8134</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "resultado": true,
+  "Status": 200,
+  "ruta_pdf": "https://sistema.dtemite.cl/bh/06f2c2dd88262dff3d576f07ee9e8cd9526fca6fe9ba5"
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Diccionario de Términos</h3>
+              
+              <div style="text-align: justify">
+                <h4>Campos del Sistema:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>sistema</strong></td>
+                      <td>Objeto que contiene las credenciales de integración del sistema.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>nombre</strong></td>
+                      <td>Nombre del sistema configurado (ejemplo: "webbasico").</td>
+                    </tr>
+                    <tr>
+                      <td><strong>rut</strong></td>
+                      <td>RUT de la empresa emisora.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>usuario</strong></td>
+                      <td>Usuario de integración.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>clave</strong></td>
+                      <td>Clave de integración (puede estar en Base64).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos de Información (info):</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>emision</strong></td>
+                      <td>Fecha de emisión de la BHE (formato: DD-MM-YYYY).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>honorario</strong></td>
+                      <td>Nombre o descripción del honorario.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>agente_retenedor</strong></td>
+                      <td>Indicador si es agente retenedor (1 = Sí, 0 = No).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>id_direccion_sii</strong></td>
+                      <td>ID de la dirección registrada en el SII.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>direccion_sii</strong></td>
+                      <td>Dirección completa registrada en el SII.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos del Cliente:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>rut</strong></td>
+                      <td>RUT del cliente receptor de la BHE.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>razon</strong></td>
+                      <td>Razón social o nombre del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>giro</strong></td>
+                      <td>Giro del negocio del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>telefono</strong></td>
+                      <td>Teléfono de contacto del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>email</strong></td>
+                      <td>Correo electrónico del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>direccion</strong></td>
+                      <td>Dirección del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>comuna</strong></td>
+                      <td>Comuna del cliente.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos de Totales:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>honorarios</strong></td>
+                      <td>Monto bruto de los honorarios (antes de impuestos).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>impuesto</strong></td>
+                      <td>Monto del impuesto retenido.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>total</strong></td>
+                      <td>Monto total a pagar (honorarios - impuesto).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos del Detalle:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>codigo</strong></td>
+                      <td>Código del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>descripcion</strong></td>
+                      <td>Descripción del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>cantidad</strong></td>
+                      <td>Cantidad del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>precio</strong></td>
+                      <td>Precio unitario.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>total</strong></td>
+                      <td>Total de la línea de detalle.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Notas Importantes</h3>
+              <ul style="text-align: justify">
+                <li>Es obligatorio obtener el token mediante el endpoint de login antes de consumir cualquier endpoint de BHE.</li>
+                <li>El token debe incluirse en el header <code>Authorization</code> con el formato <code>Bearer {token}</code>.</li>
+                <li>La fecha de emisión debe estar en formato DD-MM-YYYY (día-mes-año).</li>
+                <li>Los montos deben enviarse como strings numéricos sin puntos ni comas.</li>
+                <li>Para anular una BHE, se requiere el folio del documento y una causa válida (1, 2 o 3).</li>
+                <li>Para consultar una BHE, el folio se incluye en la URL del endpoint.</li>
+                <li>La respuesta de emisión incluye una ruta al PDF del documento generado.</li>
+              </ul>
+              
+              <h3 class="section-title">Ejemplos Completos en Postman</h3>
+              
+              <h4>Emisión BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/emision</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con estructura completa del BHE</li>
+              </ul>
+              
+              <h4>Anulación BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/anulacion</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con folio y causa de anulación</li>
+              </ul>
+              
+              <h4>Consultar BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> GET</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> No se requiere body para este endpoint</li>
+              </ul>
+            </div>
+            
+            <!-- DICCIONARIO RESPONSE API RCV -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="diccionario_rcv">Diccionario Response API RCV</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Este diccionario detalla todos los campos de respuesta de la API RCV (Registro de Compras y Ventas), incluyendo su tipo de dato y una descripción detallada de cada campo.
+              </p>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 15%;">TIPO DE DATO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>dhdrCodigo</strong></td>
+                      <td>BigInt</td>
+                      <td>Código de Dirección - Interno SII</td>
+                    </tr>
+                    <tr>
+                      <td><strong>dcvCodigo</strong></td>
+                      <td>BigInt</td>
+                      <td>Código de Comuna - Interno SII</td>
+                    </tr>
+                    <tr>
+                      <td><strong>dcvEstadoContab</strong></td>
+                      <td>BigInt</td>
+                      <td>Interno SII</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detCodigo</strong></td>
+                      <td>BigInt</td>
+                      <td>Interno SII</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTipoDoc</strong></td>
+                      <td>BigInt</td>
+                      <td>Tipo de Documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detRutDoc</strong></td>
+                      <td>BigInt</td>
+                      <td>Rut del cliente sin dígito verificador</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detDvDoc</strong></td>
+                      <td>Varchar</td>
+                      <td>Dígito verificador</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detRznSoc</strong></td>
+                      <td>Varchar</td>
+                      <td>Razón social del cliente</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detNroDoc</strong></td>
+                      <td>BigInt</td>
+                      <td>Número de documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detFchDoc</strong></td>
+                      <td>Varchar</td>
+                      <td>Fecha del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detFecAcuse</strong></td>
+                      <td>Varchar</td>
+                      <td>Fecha de acuse por parte del cliente</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detFecReclamado</strong></td>
+                      <td>Varchar</td>
+                      <td>Fecha de reclamo o rechazo del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detFecRecepcion</strong></td>
+                      <td>Varchar</td>
+                      <td>Fecha de recepción SII</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntExe</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto exento del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntNeto</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto neto del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntActFijo</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto activo Fijo</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntIVAActFijo</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto Iva activo Fijo</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntIVANoRec</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto Iva activo Fijo No recuperable</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntCodNoRec</strong></td>
+                      <td>BigInt</td>
+                      <td>Código del monto No recuperable</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntSinCredito</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto del Activo sin crédito</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntIVA</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto Iva del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntTotal</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto Total del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTasalmp</strong></td>
+                      <td>Varchar</td>
+                      <td>Tasa de impuesto del documento</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detAnulado</strong></td>
+                      <td>Varchar</td>
+                      <td>Indicador de Documento Anulado</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVARetTotal</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto de iva retenido Total</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVARetParcial</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto de iva retenido Parcial</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVANoRetenido</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto iva No retenido</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVAPropio</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto iva propio</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVATerceros</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto iva terceros</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVAUsoComun</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto iva Uso Común</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLiqRutEmisor</strong></td>
+                      <td>BigInt</td>
+                      <td>Rut emisor liquidación de factura - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLiqDvEmisor</strong></td>
+                      <td>Varchar</td>
+                      <td>Dígito Verificador - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLiqValComNeto</strong></td>
+                      <td>BigInt</td>
+                      <td>Valor comisión Neto - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLiqValComExe</strong></td>
+                      <td>BigInt</td>
+                      <td>Valor comisión Exento - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLiqValComIVA</strong></td>
+                      <td>BigInt</td>
+                      <td>Valor comisión IVA - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detIVAFueraPlazo</strong></td>
+                      <td>BigInt</td>
+                      <td>Valor iva fuera de plazo - Liquidación de Factura</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTipoDocRef</strong></td>
+                      <td>BigInt</td>
+                      <td>Tipo documento referencia</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detFolioDocRef</strong></td>
+                      <td>BigInt</td>
+                      <td>Folio documento referencia</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detExpNumId</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detExpNacionalidad</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detCredEc</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detLey18211</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detDepEnvase</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detindSinCosto</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detindServicio</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntNoFact</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto no Facturable - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detMntPeriodo</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto periodo - No Aplica</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detPsjNac</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detPsjInt</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detNumInt</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detCdgSIISucur</strong></td>
+                      <td>BigInt</td>
+                      <td>Código Sucursal SII - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detEmisorNota</strong></td>
+                      <td>BigInt</td>
+                      <td>Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTabPuros</strong></td>
+                      <td>BigInt</td>
+                      <td>Códigos Puros - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTabCigarrillos</strong></td>
+                      <td>BigInt</td>
+                      <td>Códigos Cigarrillos - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTabElaborado</strong></td>
+                      <td>BigInt</td>
+                      <td>Códigos Producto Elaborado - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detImpVehiculo</strong></td>
+                      <td>BigInt</td>
+                      <td>Detalle de Impuesto de Vehículos - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTpoImp</strong></td>
+                      <td>BigInt</td>
+                      <td>Detalle Tipo de Impuesto - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detTipoTransaccion</strong></td>
+                      <td>Varchar</td>
+                      <td>Detalle Tipo de transacción - Factura Exportación</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detEventoReceptor</strong></td>
+                      <td>Varchar</td>
+                      <td>Forma en que se dio el acuse al documento de compra</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detEventoReceptorLeyenda</strong></td>
+                      <td>Varchar</td>
+                      <td>Detalle Forma en que se dio el acuse al documento de compra</td>
+                    </tr>
+                    <tr>
+                      <td><strong>cambiarTipoTran</strong></td>
+                      <td>Boolean</td>
+                      <td>Indicador de cambio de tipo de transacción documento de compra</td>
+                    </tr>
+                    <tr>
+                      <td><strong>detPcarga</strong></td>
+                      <td>BigInt</td>
+                      <td>Periodo de carga</td>
+                    </tr>
+                    <tr>
+                      <td><strong>descTipoTransaccion</strong></td>
+                      <td>Varchar</td>
+                      <td>Descripción del tipo de transacción de la compra (Del Giro, Supermercado, bienes raíces...)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>totalDtoiMontoImp</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto del documento fuera del Giro</td>
+                    </tr>
+                    <tr>
+                      <td><strong>totalDinrMontoIVANOR</strong></td>
+                      <td>BigInt</td>
+                      <td>Monto de Iva No recuperable por fuera del giro</td>
+                    </tr>
+                    <tr>
+                      <td><strong>emisorAgresivo</strong></td>
+                      <td>Boolean</td>
+                      <td>Control interno del SII por evasión de impuestos</td>
+                    </tr>
+                    <tr>
+                      <td><strong>fechaActivacionAnotacion</strong></td>
+                      <td>Varchar</td>
+                      <td>Fecha ingreso Control interno del SII por evasión de impuestos</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Notas Importantes</h3>
+              <ul style="text-align: justify">
+                <li><strong>BigInt:</strong> Tipo de dato numérico de gran tamaño (enteros).</li>
+                <li><strong>Varchar:</strong> Tipo de dato alfanumérico (texto variable).</li>
+                <li><strong>Boolean:</strong> Tipo de dato lógico (true/false).</li>
+                <li>Los campos marcados como "Interno SII" son identificadores internos del sistema del Servicio de Impuestos Internos.</li>
+                <li>Los campos relacionados con "Factura Exportación" aplican únicamente para documentos de exportación.</li>
+                <li>Los campos de "Liquidación de Factura" aplican para documentos tipo Liquidación de Factura.</li>
+                <li>Los montos están expresados en valores numéricos enteros (sin decimales).</li>
+                <li>Las fechas están en formato de texto (Varchar) según la configuración del SII.</li>
               </ul>
             </div>
             
