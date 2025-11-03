@@ -859,10 +859,20 @@
         }
         
         /* Estilos para scroll suave mejorado */
-        .sidebar a.scrolling,
+        .sidebar a.scrolling {
+            background: linear-gradient(135deg, rgba(222, 0, 126, 0.15) 0%, rgba(151, 9, 90, 0.15) 100%) !important;
+            color: #de007e !important;
+            transform: translateX(4px);
+            transition: all 0.3s ease;
+            box-shadow: none;
+            border-radius: 6px;
+            border-left: 3px solid #de007e;
+            font-weight: 600;
+        }
+        
         .navbar-nav a.scrolling {
             background: transparent !important;
-            color: white !important;
+            color: #fff !important;
             transform: none;
             transition: color 0.2s ease;
             box-shadow: none;
@@ -872,8 +882,12 @@
         
         .sidebar a.scrolling:hover,
         .navbar-nav a.scrolling:hover {
-            transform: none;
+            transform: translateX(4px);
             box-shadow: none;
+        }
+        
+        .navbar-nav a.scrolling:hover {
+            transform: none;
         }
         
         /* Indicador de progreso de lectura en el sidebar */
