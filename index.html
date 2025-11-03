@@ -1177,6 +1177,140 @@
 }</code></pre>
               </div>
               
+              <div class="code-example">
+                <h4>Ejemplo 2 - Nota de Débito Electrónica:</h4>
+                <p><strong>HEADERS:</strong> Content-Type: application/json</p>
+                <p><strong>METHOD:</strong> POST</p>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "demo",
+    "rut": "11111111-1",
+    "usuario": "integracion",
+    "clave": "MW50M2dyNGMxMG4="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "56",
+        "Folio": "1",
+        "FchEmis": "2008-09-01",
+        "FchVenc": "2008-09-20"
+      },
+      "Emisor": {
+        "RUTEmisor": "6-K",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "50000",
+        "MntExe": "0",
+        "TasaIVA": "19",
+        "IVA": "9500",
+        "MntTotal": "59500"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "DDD"
+        },
+        "NmbItem": "Cargo adicional por servicios",
+        "QtyItem": "1",
+        "PrcItem": "59500",
+        "MontoItem": "59500"
+      }
+    ],
+    "Referencia": [
+      {
+        "NroLinRef": "1",
+        "TpoDocRef": "33",
+        "FolioRef": "1",
+        "FchRef": "2008-09-01",
+        "CodRef": "3",
+        "RazonRef": "Corrige montos"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo 3 - Guía de Despacho Electrónica:</h4>
+                <p><strong>HEADERS:</strong> Content-Type: application/json</p>
+                <p><strong>METHOD:</strong> POST</p>
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "demo",
+    "rut": "11111111-1",
+    "usuario": "integracion",
+    "clave": "MW50M2dyNGMxMG4="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "52",
+        "Folio": "1",
+        "FchEmis": "2008-09-01",
+        "TipoDespacho": "1",
+        "IndTraslado": "1"
+      },
+      "Emisor": {
+        "RUTEmisor": "6-K",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "150000",
+        "MntExe": "0",
+        "TasaIVA": "19",
+        "IVA": "28500",
+        "MntTotal": "178500"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "GGG"
+        },
+        "NmbItem": "Producto para despacho",
+        "QtyItem": "2",
+        "UnmdItem": "UN",
+        "PrcItem": "89250",
+        "MontoItem": "178500"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
               <h3 class="section-title">Protocolos y estándares SOAP</h3>
               <p class="text-justify">
                 Se describe la funcionalidad, parámetros y métodos que componen nuestro servicio disponible para la integración a la solución de gestión de documentos tributarios electrónicos DTEmite. Este servicio está orientado a nuestros clientes que utilizan un aplicativo externo que NO tienen la opción de emisión de documentos electrónicos. Nuestro web service utiliza los protocolos y estándares SOAP.
@@ -1309,34 +1443,99 @@
               
               <p>Los campos marcados con (*) son entregados por DTEmite.</p>
               
-              <h3 class="section-title">Ejemplos de uso:</h3>
+              <h3 class="section-title">Ejemplos de uso SOAP:</h3>
               
               <div class="code-example">
-                <h4>Ejemplo 1 - Sistema básico:</h4>
-                <pre><code class="lang-json">{
-  "Sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "integrado_webbasico",
-    "clave": "d2ViYmFzaWNvMjAyMQ=="
-  }
-}</code></pre>
+                <h4>Ejemplo 1 - Emisión (Método Emision):</h4>
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:Emision&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;xml&gt;&lt;![CDATA[
+            &lt;Encabezado&gt;
+               &lt;IdDoc&gt;
+                  &lt;TipoDTE&gt;33&lt;/TipoDTE&gt;
+                  &lt;Folio&gt;0&lt;/Folio&gt;
+                  &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
+                  &lt;FchVenc&gt;2024-01-26&lt;/FchVenc&gt;
+               &lt;/IdDoc&gt;
+               &lt;Emisor&gt;
+                  &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
+                  &lt;RznSoc&gt;EMPRESA DE PRUEBA&lt;/RznSoc&gt;
+                  &lt;GiroEmis&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmis&gt;
+                  &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
+                  &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+                  &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+               &lt;/Emisor&gt;
+               &lt;Receptor&gt;
+                  &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
+                  &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
+                  &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
+                  &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
+                  &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+                  &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+               &lt;/Receptor&gt;
+               &lt;Totales&gt;
+                  &lt;MntNeto&gt;10000&lt;/MntNeto&gt;
+                  &lt;MntExe&gt;0&lt;/MntExe&gt;
+                  &lt;TasaIVA&gt;19&lt;/TasaIVA&gt;
+                  &lt;IVA&gt;1900&lt;/IVA&gt;
+                  &lt;MntTotal&gt;11900&lt;/MntTotal&gt;
+               &lt;/Totales&gt;
+            &lt;/Encabezado&gt;
+            &lt;Detalle&gt;
+               &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+               &lt;CdgItem&gt;
+                  &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+                  &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
+               &lt;/CdgItem&gt;
+               &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
+               &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+               &lt;PrcItem&gt;11900&lt;/PrcItem&gt;
+               &lt;MontoItem&gt;11900&lt;/MontoItem&gt;
+            &lt;/Detalle&gt;
+         ]]&gt;&lt;/xml&gt;
+      &lt;/ws:Emision&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
               </div>
               
               <div class="code-example">
-                <h4>Ejemplo 2 - Con documento específico:</h4>
-                <pre><code class="lang-json">{
-  "Sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "integrado_webbasico",
-    "clave": "d2ViYmFzaWNvMjAyMQ=="
-  },
-  "Documento": {
-    "tipodte": "33",
-    "foliodte": "136"
-  }
-}</code></pre>
+                <h4>Ejemplo 2 - Obtener PDF (Método ObtenerPDF):</h4>
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:ObtenerPDF&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;tipodte&gt;33&lt;/tipodte&gt;
+         &lt;foliodte&gt;136&lt;/foliodte&gt;
+      &lt;/ws:ObtenerPDF&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Ejemplo 3 - Obtener XML (Método ObtenerXml):</h4>
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:ObtenerXml&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;tipodte&gt;33&lt;/tipodte&gt;
+         &lt;foliodte&gt;136&lt;/foliodte&gt;
+      &lt;/ws:ObtenerXml&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
               </div>
             </div>
             
@@ -1567,6 +1766,329 @@
     ]
   }
 }</code></pre>
+              </div>
+              
+              <h4>4. Nota de Débito Electrónica</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "56",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "FchVenc": "2024-01-26"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "5000",
+        "MntExe": "0",
+        "IVA": "950",
+        "MntTotal": "5950"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "DDD"
+        },
+        "NmbItem": "Cargo adicional por servicios",
+        "QtyItem": "1",
+        "PrcItem": "5950",
+        "MontoItem": "5950"
+      }
+    ],
+    "Referencia": [
+      {
+        "NroLinRef": "1",
+        "TpoDocRef": "33",
+        "FolioRef": "123",
+        "FchRef": "2024-01-15",
+        "CodRef": "3",
+        "RazonRef": "Corrige montos"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h4>5. Guía de Despacho Electrónica</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "Sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "integrado_webbasico",
+    "clave": "d2ViYmFzaWNvMjAyMQ=="
+  },
+  "Documento": {
+    "Encabezado": {
+      "IdDoc": {
+        "TipoDTE": "52",
+        "Folio": "0",
+        "FchEmis": "2024-01-20",
+        "TipoDespacho": "1",
+        "IndTraslado": "1"
+      },
+      "Emisor": {
+        "RUTEmisor": "29282726-1",
+        "RznSocEmisor": "EMPRESA DE PRUEBA",
+        "GiroEmisor": "DESARROLLO DE SISTEMAS",
+        "DirOrigen": "Avenida del Software #11001101",
+        "CmnaOrigen": "PROVIDENCIA",
+        "CiudadOrigen": "SANTIAGO"
+      },
+      "Receptor": {
+        "RUTRecep": "76399744-8",
+        "CdgIntRecep": "1000215-220",
+        "RznSocRecep": "CLIENTE DE PRUEBA",
+        "CorreoRecep": "prueba@dtemite.cl",
+        "Contacto": "correo@prueba.cl",
+        "DirRecep": "CALLE A 50",
+        "CmnaRecep": "SANTIAGO",
+        "CiudadRecep": "SANTIAGO"
+      },
+      "Totales": {
+        "MntNeto": "15000",
+        "MntExe": "0",
+        "IVA": "2850",
+        "MntTotal": "17850"
+      }
+    },
+    "Detalle": [
+      {
+        "NroLinDet": "1",
+        "CdgItem": {
+          "TpoCodigo": "INT1",
+          "VlrCodigo": "GGG"
+        },
+        "NmbItem": "Producto para despacho",
+        "QtyItem": "2",
+        "UnmdItem": "UN",
+        "PrcItem": "8925",
+        "MontoItem": "17850"
+      }
+    ]
+  }
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">API SOAP</h3>
+              <p style="text-align: justify">
+                <strong>Dirección WSDL:</strong> 
+                <a href="http://api.dtemite.cl:8089/WSDTEIntegrado/WSDTEInt?wsdl" target="_blank">
+                  http://api.dtemite.cl:8089/WSDTEIntegrado/WSDTEInt?wsdl</a>
+              </p>
+              
+              <h4>1. Factura Electrónica - Método Emision</h4>
+              <div class="code-example">
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:Emision&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;xml&gt;&lt;![CDATA[
+            &lt;Encabezado&gt;
+               &lt;IdDoc&gt;
+                  &lt;TipoDTE&gt;33&lt;/TipoDTE&gt;
+                  &lt;Folio&gt;0&lt;/Folio&gt;
+                  &lt;MntBruto&gt;2&lt;/MntBruto&gt;
+                  &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
+                  &lt;FchVenc&gt;2024-01-26&lt;/FchVenc&gt;
+               &lt;/IdDoc&gt;
+               &lt;Emisor&gt;
+                  &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
+                  &lt;RznSoc&gt;EMPRESA DE PRUEBA&lt;/RznSoc&gt;
+                  &lt;GiroEmis&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmis&gt;
+                  &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
+                  &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+                  &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+               &lt;/Emisor&gt;
+               &lt;Receptor&gt;
+                  &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
+                  &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
+                  &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
+                  &lt;Contacto&gt;correo@prueba.cl&lt;/Contacto&gt;
+                  &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
+                  &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+                  &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+               &lt;/Receptor&gt;
+               &lt;Totales&gt;
+                  &lt;MntNeto&gt;10000&lt;/MntNeto&gt;
+                  &lt;MntExe&gt;0&lt;/MntExe&gt;
+                  &lt;IVA&gt;1900&lt;/IVA&gt;
+                  &lt;MntTotal&gt;11900&lt;/MntTotal&gt;
+               &lt;/Totales&gt;
+            &lt;/Encabezado&gt;
+            &lt;Detalle&gt;
+               &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+               &lt;CdgItem&gt;
+                  &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+                  &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
+               &lt;/CdgItem&gt;
+               &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
+               &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+               &lt;PrcItem&gt;11900&lt;/PrcItem&gt;
+               &lt;MontoItem&gt;11900&lt;/MontoItem&gt;
+            &lt;/Detalle&gt;
+         ]]&gt;&lt;/xml&gt;
+      &lt;/ws:Emision&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
+              </div>
+              
+              <h4>2. Nota de Crédito - Método Emision</h4>
+              <div class="code-example">
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:Emision&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;xml&gt;&lt;![CDATA[
+            &lt;Encabezado&gt;
+               &lt;IdDoc&gt;
+                  &lt;TipoDTE&gt;61&lt;/TipoDTE&gt;
+                  &lt;Folio&gt;0&lt;/Folio&gt;
+                  &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
+                  &lt;FchVenc&gt;2024-01-20&lt;/FchVenc&gt;
+               &lt;/IdDoc&gt;
+               &lt;Emisor&gt;
+                  &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
+                  &lt;RznSoc&gt;EMPRESA DE PRUEBA&lt;/RznSoc&gt;
+                  &lt;GiroEmis&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmis&gt;
+                  &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
+                  &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+                  &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+               &lt;/Emisor&gt;
+               &lt;Receptor&gt;
+                  &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
+                  &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
+                  &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
+                  &lt;Contacto&gt;correo@prueba.cl&lt;/Contacto&gt;
+                  &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
+                  &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+                  &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+               &lt;/Receptor&gt;
+               &lt;Totales&gt;
+                  &lt;MntNeto&gt;10034&lt;/MntNeto&gt;
+                  &lt;MntExe&gt;0&lt;/MntExe&gt;
+                  &lt;IVA&gt;1906&lt;/IVA&gt;
+                  &lt;MntTotal&gt;11940&lt;/MntTotal&gt;
+               &lt;/Totales&gt;
+            &lt;/Encabezado&gt;
+            &lt;Detalle&gt;
+               &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+               &lt;CdgItem&gt;
+                  &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+                  &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
+               &lt;/CdgItem&gt;
+               &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
+               &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+               &lt;PrcItem&gt;10034&lt;/PrcItem&gt;
+               &lt;MontoItem&gt;10034&lt;/MontoItem&gt;
+            &lt;/Detalle&gt;
+            &lt;Referencia&gt;
+               &lt;NroLinRef&gt;1&lt;/NroLinRef&gt;
+               &lt;TpoDocRef&gt;30&lt;/TpoDocRef&gt;
+               &lt;FolioRef&gt;41139&lt;/FolioRef&gt;
+               &lt;FchRef&gt;2007-06-29&lt;/FchRef&gt;
+               &lt;CodRef&gt;1&lt;/CodRef&gt;
+               &lt;RazonRef&gt;Anula Documento Ref&lt;/RazonRef&gt;
+            &lt;/Referencia&gt;
+         ]]&gt;&lt;/xml&gt;
+      &lt;/ws:Emision&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
+              </div>
+              
+              <h4>3. Boleta Electrónica - Método Emision</h4>
+              <div class="code-example">
+                <pre><code class="lang-xml">&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ws="http://ws.dtemite.cl/"&gt;
+   &lt;soapenv:Header/&gt;
+   &lt;soapenv:Body&gt;
+      &lt;ws:Emision&gt;
+         &lt;Sistema&gt;webbasico&lt;/Sistema&gt;
+         &lt;rut&gt;29282726-1&lt;/rut&gt;
+         &lt;usuario&gt;integrado_webbasico&lt;/usuario&gt;
+         &lt;clave&gt;d2ViYmFzaWNvMjAyMQ==&lt;/clave&gt;
+         &lt;xml&gt;&lt;![CDATA[
+            &lt;Encabezado&gt;
+               &lt;IdDoc&gt;
+                  &lt;TipoDTE&gt;39&lt;/TipoDTE&gt;
+                  &lt;Folio&gt;0&lt;/Folio&gt;
+                  &lt;FchEmis&gt;2024-01-20&lt;/FchEmis&gt;
+                  &lt;FchVenc&gt;2024-01-26&lt;/FchVenc&gt;
+               &lt;/IdDoc&gt;
+               &lt;Emisor&gt;
+                  &lt;RUTEmisor&gt;29282726-1&lt;/RUTEmisor&gt;
+                  &lt;RznSoc&gt;EMPRESA DE PRUEBA&lt;/RznSoc&gt;
+                  &lt;GiroEmis&gt;DESARROLLO DE SISTEMAS&lt;/GiroEmis&gt;
+                  &lt;DirOrigen&gt;Avenida del Software #11001101&lt;/DirOrigen&gt;
+                  &lt;CmnaOrigen&gt;PROVIDENCIA&lt;/CmnaOrigen&gt;
+                  &lt;CiudadOrigen&gt;SANTIAGO&lt;/CiudadOrigen&gt;
+               &lt;/Emisor&gt;
+               &lt;Receptor&gt;
+                  &lt;RUTRecep&gt;76399744-8&lt;/RUTRecep&gt;
+                  &lt;RznSocRecep&gt;CLIENTE DE PRUEBA&lt;/RznSocRecep&gt;
+                  &lt;CorreoRecep&gt;prueba@dtemite.cl&lt;/CorreoRecep&gt;
+                  &lt;Contacto&gt;correo@prueba.cl&lt;/Contacto&gt;
+                  &lt;DirRecep&gt;CALLE A 50&lt;/DirRecep&gt;
+                  &lt;CmnaRecep&gt;SANTIAGO&lt;/CmnaRecep&gt;
+                  &lt;CiudadRecep&gt;SANTIAGO&lt;/CiudadRecep&gt;
+               &lt;/Receptor&gt;
+               &lt;Totales&gt;
+                  &lt;MntNeto&gt;10000&lt;/MntNeto&gt;
+                  &lt;MntExe&gt;0&lt;/MntExe&gt;
+                  &lt;IVA&gt;1900&lt;/IVA&gt;
+                  &lt;MntTotal&gt;11900&lt;/MntTotal&gt;
+               &lt;/Totales&gt;
+            &lt;/Encabezado&gt;
+            &lt;Detalle&gt;
+               &lt;NroLinDet&gt;1&lt;/NroLinDet&gt;
+               &lt;CdgItem&gt;
+                  &lt;TpoCodigo&gt;INT1&lt;/TpoCodigo&gt;
+                  &lt;VlrCodigo&gt;WWW&lt;/VlrCodigo&gt;
+               &lt;/CdgItem&gt;
+               &lt;NmbItem&gt;Descripción de producto WWW&lt;/NmbItem&gt;
+               &lt;QtyItem&gt;1&lt;/QtyItem&gt;
+               &lt;PrcItem&gt;11900&lt;/PrcItem&gt;
+               &lt;MontoItem&gt;11900&lt;/MontoItem&gt;
+            &lt;/Detalle&gt;
+         ]]&gt;&lt;/xml&gt;
+      &lt;/ws:Emision&gt;
+   &lt;/soapenv:Body&gt;
+&lt;/soapenv:Envelope&gt;</code></pre>
               </div>
               
               <h3 class="section-title">Ejemplo en Postman</h3>
