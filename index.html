@@ -1178,9 +1178,10 @@
               </div>
               
               <div class="code-example">
-                <h4>Ejemplo 2 - Nota de Débito Electrónica:</h4>
+                <h4>Ejemplo {endpoint}/Pdf - Obtener PDF de documento específico:</h4>
                 <p><strong>HEADERS:</strong> Content-Type: application/json</p>
                 <p><strong>METHOD:</strong> POST</p>
+                <p><strong>URL:</strong> https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento/Pdf</p>
                 <pre><code class="lang-json">{
   "Sistema": {
     "nombre": "demo",
@@ -1188,70 +1189,16 @@
     "usuario": "integracion",
     "clave": "MW50M2dyNGMxMG4="
   },
-  "Documento": {
-    "Encabezado": {
-      "IdDoc": {
-        "TipoDTE": "56",
-        "Folio": "1",
-        "FchEmis": "2008-09-01",
-        "FchVenc": "2008-09-20"
-      },
-      "Emisor": {
-        "RUTEmisor": "6-K",
-        "RznSocEmisor": "EMPRESA DE PRUEBA",
-        "GiroEmisor": "DESARROLLO DE SISTEMAS",
-        "DirOrigen": "Avenida del Software #11001101",
-        "CmnaOrigen": "PROVIDENCIA",
-        "CiudadOrigen": "SANTIAGO"
-      },
-      "Receptor": {
-        "RUTRecep": "76399744-8",
-        "CdgIntRecep": "1000215-220",
-        "RznSocRecep": "CLIENTE DE PRUEBA",
-        "CorreoRecep": "prueba@dtemite.cl",
-        "DirRecep": "CALLE A 50",
-        "CmnaRecep": "SANTIAGO",
-        "CiudadRecep": "SANTIAGO"
-      },
-      "Totales": {
-        "MntNeto": "50000",
-        "MntExe": "0",
-        "TasaIVA": "19",
-        "IVA": "9500",
-        "MntTotal": "59500"
-      }
-    },
-    "Detalle": [
-      {
-        "NroLinDet": "1",
-        "CdgItem": {
-          "TpoCodigo": "INT1",
-          "VlrCodigo": "DDD"
-        },
-        "NmbItem": "Cargo adicional por servicios",
-        "QtyItem": "1",
-        "PrcItem": "59500",
-        "MontoItem": "59500"
-      }
-    ],
-    "Referencia": [
-      {
-        "NroLinRef": "1",
-        "TpoDocRef": "33",
-        "FolioRef": "1",
-        "FchRef": "2008-09-01",
-        "CodRef": "3",
-        "RazonRef": "Corrige montos"
-      }
-    ]
-  }
+  "tipodte": "33",
+  "foliodte": "1"
 }</code></pre>
               </div>
               
               <div class="code-example">
-                <h4>Ejemplo 3 - Guía de Despacho Electrónica:</h4>
+                <h4>Ejemplo {endpoint}/Xml - Obtener XML de documento específico:</h4>
                 <p><strong>HEADERS:</strong> Content-Type: application/json</p>
                 <p><strong>METHOD:</strong> POST</p>
+                <p><strong>URL:</strong> https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento/Xml</p>
                 <pre><code class="lang-json">{
   "Sistema": {
     "nombre": "demo",
@@ -1259,55 +1206,8 @@
     "usuario": "integracion",
     "clave": "MW50M2dyNGMxMG4="
   },
-  "Documento": {
-    "Encabezado": {
-      "IdDoc": {
-        "TipoDTE": "52",
-        "Folio": "1",
-        "FchEmis": "2008-09-01",
-        "TipoDespacho": "1",
-        "IndTraslado": "1"
-      },
-      "Emisor": {
-        "RUTEmisor": "6-K",
-        "RznSocEmisor": "EMPRESA DE PRUEBA",
-        "GiroEmisor": "DESARROLLO DE SISTEMAS",
-        "DirOrigen": "Avenida del Software #11001101",
-        "CmnaOrigen": "PROVIDENCIA",
-        "CiudadOrigen": "SANTIAGO"
-      },
-      "Receptor": {
-        "RUTRecep": "76399744-8",
-        "CdgIntRecep": "1000215-220",
-        "RznSocRecep": "CLIENTE DE PRUEBA",
-        "CorreoRecep": "prueba@dtemite.cl",
-        "DirRecep": "CALLE A 50",
-        "CmnaRecep": "SANTIAGO",
-        "CiudadRecep": "SANTIAGO"
-      },
-      "Totales": {
-        "MntNeto": "150000",
-        "MntExe": "0",
-        "TasaIVA": "19",
-        "IVA": "28500",
-        "MntTotal": "178500"
-      }
-    },
-    "Detalle": [
-      {
-        "NroLinDet": "1",
-        "CdgItem": {
-          "TpoCodigo": "INT1",
-          "VlrCodigo": "GGG"
-        },
-        "NmbItem": "Producto para despacho",
-        "QtyItem": "2",
-        "UnmdItem": "UN",
-        "PrcItem": "89250",
-        "MontoItem": "178500"
-      }
-    ]
-  }
+  "tipodte": "33",
+  "foliodte": "1"
 }</code></pre>
               </div>
               
@@ -1577,6 +1477,17 @@
                 <strong>EndPoint:</strong> 
                 <code>https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</code>
               </p>
+              
+              <h3 class="section-title">Ejemplo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API REST, puede utilizar Postman con la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</li>
+                <li><strong>Headers:</strong> Content-Type: application/json</li>
+                <li><strong>Body:</strong> Utilice cualquiera de los ejemplos JSON proporcionados a continuación</li>
+              </ul>
               
               <h3 class="section-title">Ejemplos de Archivos JSON</h3>
               
@@ -2090,17 +2001,6 @@
    &lt;/soapenv:Body&gt;
 &lt;/soapenv:Envelope&gt;</code></pre>
               </div>
-              
-              <h3 class="section-title">Ejemplo en Postman</h3>
-              <p style="text-align: justify">
-                Para probar la API REST, puede utilizar Postman con la siguiente configuración:
-              </p>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</li>
-                <li><strong>Headers:</strong> Content-Type: application/json</li>
-                <li><strong>Body:</strong> Utilice cualquiera de los ejemplos JSON proporcionados arriba</li>
-              </ul>
             </div>
             
             <!-- API ACEPTACIÓN Y RECHAZO DOCUMENTOS DE COMPRA -->
@@ -2175,6 +2075,22 @@
 Content-Type: application/json</code></pre>
               </div>
               
+              <h3 class="section-title">Ejemplo Completo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API en Postman, utilice la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librodecompras/aceptacion</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> Utilice cualquiera de los ejemplos JSON proporcionados a continuación</li>
+              </ul>
+              
               <h3 class="section-title">Casos de Aceptación y Rechazo</h3>
               <p style="text-align: justify">
                 Se tienen 3 casos principales para aceptación o rechazo de documentos:
@@ -2184,8 +2100,8 @@ Content-Type: application/json</code></pre>
               <div class="code-example">
                 <h4>Request:</h4>
                 <pre><code class="lang-json">{
-  "folio": "9560",
   "rut": "77143385-5",
+  "folio": "9560",
   "tipodoc": "33",
   "acepta_rechaza": "ACD"
 }</code></pre>
@@ -2285,22 +2201,6 @@ Content-Type: application/json</code></pre>
                   </tbody>
                 </table>
               </div>
-              
-              <h3 class="section-title">Ejemplo Completo en Postman</h3>
-              <p style="text-align: justify">
-                Para probar la API en Postman, utilice la siguiente configuración:
-              </p>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librodecompras/aceptacion</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> Utilice cualquiera de los ejemplos JSON proporcionados arriba</li>
-              </ul>
             </div>
             
             <!-- API ANULACIÓN GUÍAS DE DESPACHO ELECTRÓNICAS -->
@@ -2399,10 +2299,24 @@ Content-Type: application/json</code></pre>
 Content-Type: application/json</code></pre>
               </div>
               
-              <h3 class="section-title">Ejemplo en Postman</h3>
+              <h3 class="section-title">Ejemplo Completo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API en Postman, utilice la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> DELETE</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librodespachos/{FolioDocumento}</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> No se requiere body para este endpoint (método DELETE con parámetro en URL)</li>
+              </ul>
               
+              <h4>Ejemplo de Request:</h4>
               <div class="code-example">
-                <h4>Ejemplo de Request:</h4>
                 <pre><code class="lang-json">DELETE https://pro.dtemite.cl/api/librodespachos/14</code></pre>
               </div>
               
@@ -2458,22 +2372,6 @@ Content-Type: application/json</code></pre>
                 <li>Es obligatorio incluir el token en el header <code>Authorization</code> con el formato <code>Bearer {token}</code>.</li>
                 <li>La anulación es permanente, asegúrese de anular solo las guías de despacho correctas.</li>
                 <li>Solo se pueden anular guías de despacho que estén en estado válido para anulación.</li>
-              </ul>
-              
-              <h3 class="section-title">Ejemplo Completo en Postman</h3>
-              <p style="text-align: justify">
-                Para probar la API en Postman, utilice la siguiente configuración:
-              </p>
-              <ul>
-                <li><strong>Método:</strong> DELETE</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librodespachos/{FolioDocumento}</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> No se requiere body para este endpoint (método DELETE con parámetro en URL)</li>
               </ul>
             </div>
             
@@ -2634,6 +2532,33 @@ Content-Type: application/json</code></pre>
                 <strong>Resultado:</strong> Retorna los movimientos separados por cuenta para el período especificado.
               </p>
               
+              <h3 class="section-title">Ejemplo Completo en Postman</h3>
+              
+              <h4>Paso 2 - Consultar Cuentas:</h4>
+              <ul>
+                <li><strong>Método:</strong> GET</li>
+                <li><strong>URL:</strong> http://pro.dtemite.cl/api/conciliaciondtemite/cuentas/webbasico</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+              </ul>
+              
+              <h4>Paso 3 - Consultar Movimientos:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://conciliacion.dtemite.cl/</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con fecha_desde, fecha_hasta y links_token array</li>
+              </ul>
+              
               <h3 class="section-title">Flujo Completo de Integración</h3>
               <ol style="text-align: justify">
                 <li><strong>Crear cuentas corrientes</strong> mediante el portal web (Cobranza → Conciliación bancaria).</li>
@@ -2686,33 +2611,6 @@ Content-Type: application/json</code></pre>
                 <li>Puede consultar movimientos de múltiples cuentas enviando varios tokens en el array links_token.</li>
                 <li>Las fechas deben estar en formato YYYY-MM-DD (año-mes-día).</li>
                 <li>Para más detalles, revisar el diccionario de Conciliación 'Diccionario API ctas ctes'.</li>
-              </ul>
-              
-              <h3 class="section-title">Ejemplo Completo en Postman</h3>
-              
-              <h4>Paso 2 - Consultar Cuentas:</h4>
-              <ul>
-                <li><strong>Método:</strong> GET</li>
-                <li><strong>URL:</strong> http://pro.dtemite.cl/api/conciliaciondtemite/cuentas/webbasico</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-              </ul>
-              
-              <h4>Paso 3 - Consultar Movimientos:</h4>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://conciliacion.dtemite.cl/</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con fecha_desde, fecha_hasta y links_token array</li>
               </ul>
             </div>
             
@@ -2955,6 +2853,47 @@ Content-Type: application/json</code></pre>
 }</code></pre>
               </div>
               
+              <h3 class="section-title">Ejemplos Completos en Postman</h3>
+              
+              <h4>Emisión BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/emision</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con estructura completa del BHE</li>
+              </ul>
+              
+              <h4>Anulación BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/anulacion</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con folio y causa de anulación</li>
+              </ul>
+              
+              <h4>Consultar BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> GET</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> No se requiere body para este endpoint</li>
+              </ul>
+              
               <h3 class="section-title">Diccionario de Términos</h3>
               
               <div style="text-align: justify">
@@ -3128,47 +3067,6 @@ Content-Type: application/json</code></pre>
                 <li>Para anular una BHE, se requiere el folio del documento y una causa válida (1, 2 o 3).</li>
                 <li>Para consultar una BHE, el folio se incluye en la URL del endpoint.</li>
                 <li>La respuesta de emisión incluye una ruta al PDF del documento generado.</li>
-              </ul>
-              
-              <h3 class="section-title">Ejemplos Completos en Postman</h3>
-              
-              <h4>Emisión BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/emision</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con estructura completa del BHE</li>
-              </ul>
-              
-              <h4>Anulación BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/anulacion</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con folio y causa de anulación</li>
-              </ul>
-              
-              <h4>Consultar BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> GET</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> No se requiere body para este endpoint</li>
               </ul>
             </div>
             
