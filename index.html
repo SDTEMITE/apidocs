@@ -44,12 +44,14 @@
               </a>
               <ul class="dropdown-menu">
                 <li><a href="#api_emision">API Emisión</a></li>
+                <li><a href="#api_bhe">API BHE</a></li>
                 <li><a href="#api_aceptacion_rechazo">API Aceptación/Rechazo</a></li>
                 <li><a href="#api_anulacion_guias">API Anulación Guías</a></li>
                 <li><a href="#api_conciliacion_bancaria">API Conciliación Bancaria</a></li>
-                <li><a href="#api_bhe">API BHE</a></li>
+                <li><a href="#api_consulta_rcv">API Consulta RCV</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#diccionario_rcv">Diccionario RCV</a></li>
+                <li><a href="#diccionario_ctas_ctes">Diccionario API Ctas Ctes</a></li>
               </ul>
             </li>
             <li style="display: none;"><a href="#panel_pruebas">Panel Pruebas</a></li>
@@ -114,22 +116,28 @@
                 <a href="#funcionalidades">8. Métodos y parámetros</a>
               </li>
               <li>
-                <a href="#api_emision">9. API Emisión Docs. Electrónicos</a>
+                <a href="#api_emision">9. API Emisión Documentos Electrónicos</a>
               </li>
               <li>
-                <a href="#api_aceptacion_rechazo">10. API Aceptación y Rechazo Documentos de compra</a>
+                <a href="#api_bhe">10. API Emisión Boletas de Honorarios (BHE)</a>
               </li>
               <li>
-                <a href="#api_anulacion_guias">11. API Anulación Guías de Despacho Electrónicas</a>
+                <a href="#api_aceptacion_rechazo">11. API Aceptación y Rechazo Documentos de compra</a>
               </li>
               <li>
-                <a href="#api_conciliacion_bancaria">12. API Conciliación Bancaria</a>
+                <a href="#api_anulacion_guias">12. API Anulación Guías de Despacho Electrónicas</a>
               </li>
               <li>
-                <a href="#api_bhe">13. API Emisión Boletas de Honorarios (BHE)</a>
+                <a href="#api_conciliacion_bancaria">13. API Conciliación Bancaria</a>
               </li>
               <li>
-                <a href="#diccionario_rcv">14. Diccionario Response API RCV</a>
+                <a href="#api_consulta_rcv">14. API Consulta RCV desde SII</a>
+              </li>
+              <li>
+                <a href="#diccionario_rcv">15. Diccionario Response API RCV</a>
+              </li>
+              <li>
+                <a href="#diccionario_ctas_ctes">16. Diccionario API Ctas Ctes</a>
               </li>
               <li style="display: none;">
                 <a href="#panel_pruebas">Panel de Pruebas</a>
@@ -2003,6 +2011,462 @@
               </div>
             </div>
             
+            <!-- API EMISIÓN BOLETAS DE HONORARIOS (BHE) -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="api_bhe">API Emisión Boletas de Honorarios (BHE)</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Esta API permite emitir, anular y consultar Boletas de Honorarios Electrónicas (BHE). Para utilizar esta API, primero se debe obtener un token de seguridad mediante el endpoint de login.
+              </p>
+              
+              <p style="text-align: justify">
+                <strong>Documentación:</strong> <a href="https://sistema.dtemite.cl/Documentation/Bhe" target="_blank">https://sistema.dtemite.cl/Documentation/Bhe</a>
+              </p>
+              
+              <h3 class="section-title">Ambiente de Prueba</h3>
+              
+              <div class="code-example">
+                <h4>Credenciales de Integración:</h4>
+                <p style="text-align: justify">
+                  Cada cliente tendrá distintas credenciales de integración. Estas credenciales van incorporadas en el JSON.
+                </p>
+                <ul>
+                  <li><strong>Rut:</strong> 29282726-1</li>
+                  <li><strong>Sistema:</strong> webbasico</li>
+                  <li><strong>Usuario:</strong> integrado_webbasico</li>
+                  <li><strong>Clave B64:</strong> d2ViYmFzaWNvMjAyMQ==</li>
+                </ul>
+              </div>
+              
+              <h4>Portal Web (para revisar los documentos generados):</h4>
+              <ul>
+                <li><strong>Link:</strong> <a href="https://pro.dtemite.cl/Login/webbasico" target="_blank">https://pro.dtemite.cl/Login/webbasico</a></li>
+                <li><strong>Usuario:</strong> demo</li>
+                <li><strong>Clave:</strong> demo123</li>
+              </ul>
+              
+              <h3 class="section-title">Endpoint Login - Obtener Token</h3>
+              <p style="text-align: justify">
+                Para utilizar esta API tenemos que previamente obtener un token de seguridad.
+              </p>
+              
+              <div class="code-example">
+                <h4>URL:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/login</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                Aquí deberán enviar las credenciales de cada cliente. (En este caso son las de un ambiente de prueba)
+              </p>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "rut": "29282726-1",
+  "usuario": "demo",
+  "password": "demo123"
+}</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "sistema": "webbasico",
+  "usuario": "demo",
+  "token": "webbasico_LB621d9j889b6a23afic7f9c8f9u97w40buahd7f9a9f93f211dbnpvcea413685e35g1243e90ap2ccc4zc31c7f29057",
+  "id": "1",
+  "rut": "29282726-1",
+  "giro": "DEMOSTRACIÓN EMPRESAS DE SERVICIOS INTEGRALES DE INFORMATICA",
+  "telefono": "955555555",
+  "razon": "DEMOSTRACIÓN SISTEMAS Y SERVICIOS INFORMATICOS DTEMITE LIMITADA",
+  "direccion": "MONEDA 812, OF.706. SANTIAGO",
+  "email": "ventas@dtemite.cl",
+  "region": "METROPOLITANA DE SANTIAGO",
+  "provincia": "ARICA",
+  "comuna": "SANTIAGO",
+  "color_personalizado": "A93ABD"
+}</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                <strong>Importante:</strong> Al obtener la respuesta, se deberá utilizar el campo <code>"token"</code> para consumir el endpoint de emisión de BHE. El token se debe enviar en el header <code>Authorization</code> como <code>Bearer {token}</code>.
+              </p>
+              
+              <h3 class="section-title">API REST para la Emisión BHE</h3>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/emision</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Estructura JSON del Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "sistema": {
+    "nombre": "webbasico",
+    "rut": "29282726-1",
+    "usuario": "demo",
+    "clave": "demo123"
+  },
+  "info": {
+    "emision": "03-07-2025",
+    "honorario": "SAN BERNARDO",
+    "agente_retenedor": "1",
+    "id_direccion_sii": "073589063",
+    "direccion_sii": "AVDA LAS TORRES 760 Block Depto. Villa/Pob. VILLA 10 ERRAZURIZ"
+  },
+  "cliente": {
+    "rut": "20297815-0",
+    "razon": "José Robles",
+    "giro": "Servicios Informáticos",
+    "telefono": "123123123",
+    "email": "jose.robles@prueba.cl",
+    "direccion": "Av. Prueba 123",
+    "comuna": "SAN BERNARDO"
+  },
+  "totales": {
+    "honorarios": "100000",
+    "impuesto": "14500",
+    "total": "85500"
+  },
+  "detalle": [
+    {
+      "codigo": "0",
+      "descripcion": "Servicios Informáticos",
+      "cantidad": "1",
+      "precio": "100000",
+      "total": "85500"
+    }
+  ]
+}</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "id": "11",
+  "Mensaje": "11",
+  "Status": 200,
+  "ruta_pdf": "https://sistema.dtemite.cl/bhe/7b4154a66079d0d58771a9a64a3b/5eb/4512b043d9fcaae02c990b6a82652dca"
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">API REST para Anulación BHE</h3>
+              <p style="text-align: justify">
+                Esta API permite anular una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
+              </p>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/anulacion</code></pre>
+              </div>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "folio": "149",
+  "causa": "2"
+}</code></pre>
+              </div>
+              
+              <h4>Causas de Anulación:</h4>
+              <table class="table table-striped table-custom" style="width:100%;">
+                <thead>
+                  <tr>
+                    <th class="text-center" style="width: 15%;">CÓDIGO</th>
+                    <th class="text-center" style="width: 85%;">DESCRIPCIÓN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>No se efectuó el pago de los servicios por parte del receptor</td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>No se efectuó la presentación de servicios</td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Error en la digitación</td>
+                  </tr>
+                </tbody>
+              </table>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">"Anulación realizada con éxito"</code></pre>
+              </div>
+              
+              <h3 class="section-title">API REST para Consultar BHE</h3>
+              <p style="text-align: justify">
+                Esta API permite consultar y obtener el PDF de una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
+              </p>
+              
+              <div class="code-example">
+                <h4>Endpoint:</h4>
+                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</code></pre>
+              </div>
+              
+              <p style="text-align: justify">
+                <strong>"FolioDocumento":</strong> Corresponde al Folio de la BHE que desea consultar.
+              </p>
+              
+              <p style="text-align: justify">
+                <strong>Método:</strong> GET
+              </p>
+              
+              <div class="code-example">
+                <h4>Headers Requeridos:</h4>
+                <pre><code class="lang-json">Authorization: Bearer {token}
+Content-Type: application/json</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Request:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/8134</code></pre>
+              </div>
+              
+              <h4>Ejemplo de Response Exitoso:</h4>
+              <div class="code-example">
+                <pre><code class="lang-json">{
+  "resultado": true,
+  "Status": 200,
+  "ruta_pdf": "https://sistema.dtemite.cl/bh/06f2c2dd88262dff3d576f07ee9e8cd9526fca6fe9ba5"
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Ejemplos Completos en Postman</h3>
+              
+              <h4>Emisión BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/emision</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con estructura completa del BHE</li>
+              </ul>
+              
+              <h4>Anulación BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/anulacion</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con folio y causa de anulación</li>
+              </ul>
+              
+              <h4>Consultar BHE:</h4>
+              <ul>
+                <li><strong>Método:</strong> GET</li>
+                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> No se requiere body para este endpoint</li>
+              </ul>
+              
+              <h3 class="section-title">Diccionario de Términos</h3>
+              
+              <div style="text-align: justify">
+                <h4>Campos del Sistema:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>sistema</strong></td>
+                      <td>Objeto que contiene las credenciales de integración del sistema.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>nombre</strong></td>
+                      <td>Nombre del sistema configurado (ejemplo: "webbasico").</td>
+                    </tr>
+                    <tr>
+                      <td><strong>rut</strong></td>
+                      <td>RUT de la empresa emisora.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>usuario</strong></td>
+                      <td>Usuario de integración.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>clave</strong></td>
+                      <td>Clave de integración (puede estar en Base64).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos de Información (info):</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>emision</strong></td>
+                      <td>Fecha de emisión de la BHE (formato: DD-MM-YYYY).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>honorario</strong></td>
+                      <td>Nombre o descripción del honorario.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>agente_retenedor</strong></td>
+                      <td>Indicador si es agente retenedor (1 = Sí, 0 = No).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>id_direccion_sii</strong></td>
+                      <td>ID de la dirección registrada en el SII.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>direccion_sii</strong></td>
+                      <td>Dirección completa registrada en el SII.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos del Cliente:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>rut</strong></td>
+                      <td>RUT del cliente receptor de la BHE.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>razon</strong></td>
+                      <td>Razón social o nombre del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>giro</strong></td>
+                      <td>Giro del negocio del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>telefono</strong></td>
+                      <td>Teléfono de contacto del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>email</strong></td>
+                      <td>Correo electrónico del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>direccion</strong></td>
+                      <td>Dirección del cliente.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>comuna</strong></td>
+                      <td>Comuna del cliente.</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos de Totales:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>honorarios</strong></td>
+                      <td>Monto bruto de los honorarios (antes de impuestos).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>impuesto</strong></td>
+                      <td>Monto del impuesto retenido.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>total</strong></td>
+                      <td>Monto total a pagar (honorarios - impuesto).</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <h4>Campos del Detalle:</h4>
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">CAMPO</th>
+                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>codigo</strong></td>
+                      <td>Código del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>descripcion</strong></td>
+                      <td>Descripción del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>cantidad</strong></td>
+                      <td>Cantidad del servicio o producto.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>precio</strong></td>
+                      <td>Precio unitario.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>total</strong></td>
+                      <td>Total de la línea de detalle.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Notas Importantes</h3>
+              <ul style="text-align: justify">
+                <li>Es obligatorio obtener el token mediante el endpoint de login antes de consumir cualquier endpoint de BHE.</li>
+                <li>El token debe incluirse en el header <code>Authorization</code> con el formato <code>Bearer {token}</code>.</li>
+                <li>La fecha de emisión debe estar en formato DD-MM-YYYY (día-mes-año).</li>
+                <li>Los montos deben enviarse como strings numéricos sin puntos ni comas.</li>
+                <li>Para anular una BHE, se requiere el folio del documento y una causa válida (1, 2 o 3).</li>
+                <li>Para consultar una BHE, el folio se incluye en la URL del endpoint.</li>
+                <li>La respuesta de emisión incluye una ruta al PDF del documento generado.</li>
+              </ul>
+            </div>
+            
             <!-- API ACEPTACIÓN Y RECHAZO DOCUMENTOS DE COMPRA -->
             <div class="docs-section">
               <div class="page-header">
@@ -2614,45 +3078,35 @@ Content-Type: application/json</code></pre>
               </ul>
             </div>
             
-            <!-- API EMISIÓN BOLETAS DE HONORARIOS (BHE) -->
+            <!-- API CONSULTA RCV DESDE SII -->
             <div class="docs-section">
               <div class="page-header">
-                <h1 class="docs-heading section-title" id="api_bhe">API Emisión Boletas de Honorarios (BHE)</h1>
+                <h1 class="docs-heading section-title" id="api_consulta_rcv">API Consulta RCV desde SII</h1>
               </div>
               
               <p style="text-align: justify">
-                Esta API permite emitir, anular y consultar Boletas de Honorarios Electrónicas (BHE). Para utilizar esta API, primero se debe obtener un token de seguridad mediante el endpoint de login.
-              </p>
-              
-              <p style="text-align: justify">
-                <strong>Documentación:</strong> <a href="https://sistema.dtemite.cl/Documentation/Bhe" target="_blank">https://sistema.dtemite.cl/Documentation/Bhe</a>
+                Esta API permite consultar el Registro de Compras y Ventas (RCV) desde el Servicio de Impuestos Internos (SII). Para utilizar esta API, primero se debe obtener un token de seguridad mediante el endpoint de login.
               </p>
               
               <h3 class="section-title">Ambiente de Prueba</h3>
-              
+              <p style="text-align: justify">
+                <strong>Portal Web:</strong> <a href="https://pro.dtemite.cl/Login/webbasico" target="_blank">https://pro.dtemite.cl/Login/webbasico</a>
+              </p>
               <div class="code-example">
-                <h4>Credenciales de Integración:</h4>
-                <p style="text-align: justify">
-                  Cada cliente tendrá distintas credenciales de integración. Estas credenciales van incorporadas en el JSON.
-                </p>
+                <h4>Credenciales de Prueba:</h4>
                 <ul>
-                  <li><strong>Rut:</strong> 29282726-1</li>
-                  <li><strong>Sistema:</strong> webbasico</li>
-                  <li><strong>Usuario:</strong> integrado_webbasico</li>
-                  <li><strong>Clave B64:</strong> d2ViYmFzaWNvMjAyMQ==</li>
+                  <li><strong>Usuario:</strong> demo</li>
+                  <li><strong>Clave:</strong> demo123</li>
                 </ul>
               </div>
               
-              <h4>Portal Web (para revisar los documentos generados):</h4>
-              <ul>
-                <li><strong>Link:</strong> <a href="https://pro.dtemite.cl/Login/webbasico" target="_blank">https://pro.dtemite.cl/Login/webbasico</a></li>
-                <li><strong>Usuario:</strong> demo</li>
-                <li><strong>Clave:</strong> demo123</li>
-              </ul>
+              <p style="text-align: justify">
+                <strong>Nota:</strong> Para utilizar esta API tenemos que previamente obtener un token de seguridad.
+              </p>
               
               <h3 class="section-title">Endpoint Login - Obtener Token</h3>
               <p style="text-align: justify">
-                Para utilizar esta API tenemos que previamente obtener un token de seguridad.
+                Antes de consumir la API de consulta RCV, es necesario autenticarse y obtener un token de seguridad.
               </p>
               
               <div class="code-example">
@@ -2677,8 +3131,8 @@ Content-Type: application/json</code></pre>
               <div class="code-example">
                 <pre><code class="lang-json">{
   "sistema": "webbasico",
-  "usuario": "demo",
-  "token": "webbasico_LB621d9j889b6a23afic7f9c8f9u97w40buahd7f9a9f93f211dbnpvcea413685e35g1243e90ap2ccc4zc31c7f29057",
+  "usuario": "DEMO",
+  "token": "webbasico_LB621d9j80b6a23afic7c9c89a9704Duahd970wai939211bdNPiceafa2515413685e35g12A3d90mp2ccc82c31c7f29057",
   "id": "1",
   "rut": "29282726-1",
   "giro": "DEMOSTRACIÓN EMPRESAS DE SERVICIOS INTEGRALES DE INFORMATICA",
@@ -2694,83 +3148,19 @@ Content-Type: application/json</code></pre>
               </div>
               
               <p style="text-align: justify">
-                <strong>Importante:</strong> Al obtener la respuesta, se deberá utilizar el campo <code>"token"</code> para consumir el endpoint de emisión de BHE. El token se debe enviar en el header <code>Authorization</code> como <code>Bearer {token}</code>.
+                <strong>Importante:</strong> Al obtener la respuesta, se deberá utilizar el campo <code>"token"</code> para consumir el endpoint de consulta RCV. El token se debe enviar en el header <code>Authorization</code> como <code>Bearer {token}</code>.
               </p>
               
-              <h3 class="section-title">API REST para la Emisión BHE</h3>
+              <h3 class="section-title">API REST para Consultar RCV</h3>
               
               <div class="code-example">
                 <h4>Endpoint:</h4>
-                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/emision</code></pre>
+                <pre><code class="lang-json">POST https://sii.dtemite.cl/rcv</code></pre>
               </div>
               
-              <div class="code-example">
-                <h4>Headers Requeridos:</h4>
-                <pre><code class="lang-json">Authorization: Bearer {token}
-Content-Type: application/json</code></pre>
-              </div>
-              
-              <h4>Estructura JSON del Request:</h4>
-              <div class="code-example">
-                <pre><code class="lang-json">{
-  "sistema": {
-    "nombre": "webbasico",
-    "rut": "29282726-1",
-    "usuario": "demo",
-    "clave": "demo123"
-  },
-  "info": {
-    "emision": "03-07-2025",
-    "honorario": "SAN BERNARDO",
-    "agente_retenedor": "1",
-    "id_direccion_sii": "073589063",
-    "direccion_sii": "AVDA LAS TORRES 760 Block Depto. Villa/Pob. VILLA 10 ERRAZURIZ"
-  },
-  "cliente": {
-    "rut": "20297815-0",
-    "razon": "José Robles",
-    "giro": "Servicios Informáticos",
-    "telefono": "123123123",
-    "email": "jose.robles@prueba.cl",
-    "direccion": "Av. Prueba 123",
-    "comuna": "SAN BERNARDO"
-  },
-  "totales": {
-    "honorarios": "100000",
-    "impuesto": "14500",
-    "total": "85500"
-  },
-  "detalle": [
-    {
-      "codigo": "0",
-      "descripcion": "Servicios Informáticos",
-      "cantidad": "1",
-      "precio": "100000",
-      "total": "85500"
-    }
-  ]
-}</code></pre>
-              </div>
-              
-              <h4>Ejemplo de Response Exitoso:</h4>
-              <div class="code-example">
-                <pre><code class="lang-json">{
-  "id": "11",
-  "Mensaje": "11",
-  "Status": 200,
-  "ruta_pdf": "https://sistema.dtemite.cl/bhe/7b4154a66079d0d58771a9a64a3b/5eb/4512b043d9fcaae02c990b6a82652dca"
-}</code></pre>
-              </div>
-              
-              <h3 class="section-title">API REST para Anulación BHE</h3>
               <p style="text-align: justify">
-                Esta API permite anular una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
+                <strong>Método:</strong> POST
               </p>
-              
-              <div class="code-example">
-                <h4>Endpoint:</h4>
-                <pre><code class="lang-json">POST https://pro.dtemite.cl/api/librohonorarios/anulacion</code></pre>
-              </div>
               
               <div class="code-example">
                 <h4>Headers Requeridos:</h4>
@@ -2781,123 +3171,16 @@ Content-Type: application/json</code></pre>
               <h4>Ejemplo de Request:</h4>
               <div class="code-example">
                 <pre><code class="lang-json">{
-  "folio": "149",
-  "causa": "2"
+  "sistema": "webbasico",
+  "rut": "29282726-1",
+  "clave": "clave-SII",
+  "periodo": "202501"
 }</code></pre>
               </div>
               
-              <h4>Causas de Anulación:</h4>
-              <table class="table table-striped table-custom" style="width:100%;">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 15%;">CÓDIGO</th>
-                    <th class="text-center" style="width: 85%;">DESCRIPCIÓN</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>No se efectuó el pago de los servicios por parte del receptor</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>No se efectuó la presentación de servicios</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Error en la digitación</td>
-                  </tr>
-                </tbody>
-              </table>
-              
-              <h4>Ejemplo de Response Exitoso:</h4>
-              <div class="code-example">
-                <pre><code class="lang-json">"Anulación realizada con éxito"</code></pre>
-              </div>
-              
-              <h3 class="section-title">API REST para Consultar BHE</h3>
-              <p style="text-align: justify">
-                Esta API permite consultar y obtener el PDF de una Boleta de Honorarios Electrónica. Se debe consumir primero la API de Login para obtener el token de autorización.
-              </p>
-              
-              <div class="code-example">
-                <h4>Endpoint:</h4>
-                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</code></pre>
-              </div>
-              
-              <p style="text-align: justify">
-                <strong>"FolioDocumento":</strong> Corresponde al Folio de la BHE que desea consultar.
-              </p>
-              
-              <p style="text-align: justify">
-                <strong>Método:</strong> GET
-              </p>
-              
-              <div class="code-example">
-                <h4>Headers Requeridos:</h4>
-                <pre><code class="lang-json">Authorization: Bearer {token}
-Content-Type: application/json</code></pre>
-              </div>
-              
-              <h4>Ejemplo de Request:</h4>
-              <div class="code-example">
-                <pre><code class="lang-json">GET https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/8134</code></pre>
-              </div>
-              
-              <h4>Ejemplo de Response Exitoso:</h4>
-              <div class="code-example">
-                <pre><code class="lang-json">{
-  "resultado": true,
-  "Status": 200,
-  "ruta_pdf": "https://sistema.dtemite.cl/bh/06f2c2dd88262dff3d576f07ee9e8cd9526fca6fe9ba5"
-}</code></pre>
-              </div>
-              
-              <h3 class="section-title">Ejemplos Completos en Postman</h3>
-              
-              <h4>Emisión BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/emision</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con estructura completa del BHE</li>
-              </ul>
-              
-              <h4>Anulación BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/anulacion</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con folio y causa de anulación</li>
-              </ul>
-              
-              <h4>Consultar BHE:</h4>
-              <ul>
-                <li><strong>Método:</strong> GET</li>
-                <li><strong>URL:</strong> https://pro.dtemite.cl/api/librohonorarios/obtenerPDF/{FolioDocumento}</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> No se requiere body para este endpoint</li>
-              </ul>
-              
-              <h3 class="section-title">Diccionario de Términos</h3>
+              <h3 class="section-title">Definiciones</h3>
               
               <div style="text-align: justify">
-                <h4>Campos del Sistema:</h4>
                 <table class="table table-striped table-custom" style="width:100%;">
                   <thead>
                     <tr>
@@ -2908,165 +3191,51 @@ Content-Type: application/json</code></pre>
                   <tbody>
                     <tr>
                       <td><strong>sistema</strong></td>
-                      <td>Objeto que contiene las credenciales de integración del sistema.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>nombre</strong></td>
                       <td>Nombre del sistema configurado (ejemplo: "webbasico").</td>
                     </tr>
                     <tr>
                       <td><strong>rut</strong></td>
-                      <td>RUT de la empresa emisora.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>usuario</strong></td>
-                      <td>Usuario de integración.</td>
+                      <td>RUT de la empresa que se desea consultar.</td>
                     </tr>
                     <tr>
                       <td><strong>clave</strong></td>
-                      <td>Clave de integración (puede estar en Base64).</td>
-                    </tr>
-                  </tbody>
-                </table>
-                
-                <h4>Campos de Información (info):</h4>
-                <table class="table table-striped table-custom" style="width:100%;">
-                  <thead>
-                    <tr>
-                      <th class="text-center" style="width: 25%;">CAMPO</th>
-                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>emision</strong></td>
-                      <td>Fecha de emisión de la BHE (formato: DD-MM-YYYY).</td>
+                      <td>Es la clave del SII de la empresa.</td>
                     </tr>
                     <tr>
-                      <td><strong>honorario</strong></td>
-                      <td>Nombre o descripción del honorario.</td>
+                      <td><strong>periodo</strong></td>
+                      <td>Es el periodo que necesita consultar en formato "AAAA-MM" (año-mes). Ejemplo: "202501" para enero de 2025.</td>
                     </tr>
                     <tr>
-                      <td><strong>agente_retenedor</strong></td>
-                      <td>Indicador si es agente retenedor (1 = Sí, 0 = No).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>id_direccion_sii</strong></td>
-                      <td>ID de la dirección registrada en el SII.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>direccion_sii</strong></td>
-                      <td>Dirección completa registrada en el SII.</td>
-                    </tr>
-                  </tbody>
-                </table>
-                
-                <h4>Campos del Cliente:</h4>
-                <table class="table table-striped table-custom" style="width:100%;">
-                  <thead>
-                    <tr>
-                      <th class="text-center" style="width: 25%;">CAMPO</th>
-                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>rut</strong></td>
-                      <td>RUT del cliente receptor de la BHE.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>razon</strong></td>
-                      <td>Razón social o nombre del cliente.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>giro</strong></td>
-                      <td>Giro del negocio del cliente.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>telefono</strong></td>
-                      <td>Teléfono de contacto del cliente.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>email</strong></td>
-                      <td>Correo electrónico del cliente.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>direccion</strong></td>
-                      <td>Dirección del cliente.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>comuna</strong></td>
-                      <td>Comuna del cliente.</td>
-                    </tr>
-                  </tbody>
-                </table>
-                
-                <h4>Campos de Totales:</h4>
-                <table class="table table-striped table-custom" style="width:100%;">
-                  <thead>
-                    <tr>
-                      <th class="text-center" style="width: 25%;">CAMPO</th>
-                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>honorarios</strong></td>
-                      <td>Monto bruto de los honorarios (antes de impuestos).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>impuesto</strong></td>
-                      <td>Monto del impuesto retenido.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>total</strong></td>
-                      <td>Monto total a pagar (honorarios - impuesto).</td>
-                    </tr>
-                  </tbody>
-                </table>
-                
-                <h4>Campos del Detalle:</h4>
-                <table class="table table-striped table-custom" style="width:100%;">
-                  <thead>
-                    <tr>
-                      <th class="text-center" style="width: 25%;">CAMPO</th>
-                      <th class="text-center" style="width: 75%;">DESCRIPCIÓN</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>codigo</strong></td>
-                      <td>Código del servicio o producto.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>descripcion</strong></td>
-                      <td>Descripción del servicio o producto.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>cantidad</strong></td>
-                      <td>Cantidad del servicio o producto.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>precio</strong></td>
-                      <td>Precio unitario.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>total</strong></td>
-                      <td>Total de la línea de detalle.</td>
+                      <td><strong>token</strong></td>
+                      <td>Token de seguridad obtenido mediante el endpoint de login. Debe incluirse en el header Authorization como Bearer token.</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               
+              <h3 class="section-title">Ejemplo Completo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API en Postman, utilice la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://sii.dtemite.cl/rcv</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con sistema, rut, clave y periodo</li>
+              </ul>
+              
               <h3 class="section-title">Notas Importantes</h3>
               <ul style="text-align: justify">
-                <li>Es obligatorio obtener el token mediante el endpoint de login antes de consumir cualquier endpoint de BHE.</li>
+                <li>Es obligatorio obtener el token mediante el endpoint de login antes de consumir el endpoint de consulta RCV.</li>
                 <li>El token debe incluirse en el header <code>Authorization</code> con el formato <code>Bearer {token}</code>.</li>
-                <li>La fecha de emisión debe estar en formato DD-MM-YYYY (día-mes-año).</li>
-                <li>Los montos deben enviarse como strings numéricos sin puntos ni comas.</li>
-                <li>Para anular una BHE, se requiere el folio del documento y una causa válida (1, 2 o 3).</li>
-                <li>Para consultar una BHE, el folio se incluye en la URL del endpoint.</li>
-                <li>La respuesta de emisión incluye una ruta al PDF del documento generado.</li>
+                <li>El periodo debe estar en formato "AAAA-MM" (año-mes), sin guiones. Ejemplo: "202501" para enero de 2025.</li>
+                <li>La clave del SII es diferente a la clave de integración del sistema.</li>
+                <li>La respuesta retornará los datos del Registro de Compras y Ventas del período especificado.</li>
               </ul>
             </div>
             
@@ -3439,6 +3608,371 @@ Content-Type: application/json</code></pre>
                 <li>Los campos de "Liquidación de Factura" aplican para documentos tipo Liquidación de Factura.</li>
                 <li>Los montos están expresados en valores numéricos enteros (sin decimales).</li>
                 <li>Las fechas están en formato de texto (Varchar) según la configuración del SII.</li>
+              </ul>
+            </div>
+            
+            <!-- DICCIONARIO API CTAS CTES -->
+            <div class="docs-section">
+              <div class="page-header">
+                <h1 class="docs-heading section-title" id="diccionario_ctas_ctes">Diccionario API Ctas Ctes</h1>
+              </div>
+              
+              <p style="text-align: justify">
+                Este diccionario detalla todos los campos y objetos relacionados con la API de Cuentas Corrientes (Ctas Ctes), incluyendo el Objeto de Pago, Opciones de Intención de Pago, Objeto Destinatario y Objeto Remitente.
+              </p>
+              
+              <h3 class="section-title">Objeto de Pago</h3>
+              
+              <p style="text-align: justify">
+                El objeto de pago representa una sesión de checkout y contiene toda la información relacionada con el pago.
+              </p>
+              
+              <div class="code-example">
+                <h4>Ejemplo JSON del Objeto de Pago:</h4>
+                <pre><code class="lang-json">{
+  "id": "cs_li5531onlFDi235",
+  "created_at": "2021-10-15T15:22:11.4747",
+  "object": "checkout_session",
+  "currency": "clp",
+  "amount": 1200,
+  "customer_email": "customer@example.com",
+  "expires_at": "2024-11-12T14:41:252",
+  "mode": "live",
+  "status": "finished",
+  "session_token": "cs_li5531onlFDi235_sec_a4xK32BanKWYn",
+  "country": "cl",
+  "metadata": {
+    "order_id": "#12513"
+  },
+  "payment_resource": {
+    "payment_intent": {
+      "id": "pi_B4kdYzSVREEMAPv0",
+      "mode": "live",
+      "amount": 1200,
+      "object": "payment_intent",
+      "status": "succeeded",
+      "currency": "CLP",
+      "metadata": {
+        "order_id": "#12513"
+      },
+      "created_at": "2024-11-12T14:41:29Z",
+      "error_reason": null,
+      "reference_id": "426686855",
+      "widget_token": null,
+      "customer_email": null,
+      "sender_account": {
+        "type": "checking_account",
+        "number": "227110011",
+        "holder_id": "123456789",
+        "institution_id": "cl_banco_estado"
+      },
+      "transaction_date": "2024-12-24T12:22:33Z",
+      "recipient_account": {
+        "type": "checking_account",
+        "number": "922358017",
+        "holder_id": "771433855",
+        "institution_id": "cl_banco_security"
+      }
+    }
+  }
+}</code></pre>
+              </div>
+              
+              <h3 class="section-title">Diccionario de Atributos del Objeto de Pago</h3>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">ATRIBUTO</th>
+                      <th class="text-center" style="width: 15%;">TIPO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>id</strong></td>
+                      <td>string</td>
+                      <td>Identificador único para la sesión de pago</td>
+                    </tr>
+                    <tr>
+                      <td><strong>created_at</strong></td>
+                      <td>string</td>
+                      <td>Checkout Session Fecha de creación de, según ISO 8601</td>
+                    </tr>
+                    <tr>
+                      <td><strong>object</strong></td>
+                      <td>string</td>
+                      <td>Identificador del tipo de objeto. Su valor siempre corresponderá a Checkout Session checkout_session</td>
+                    </tr>
+                    <tr>
+                      <td><strong>currency</strong></td>
+                      <td>string</td>
+                      <td>Código ISO de moneda. Por ahora, solo admitimos CLP y MXN.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>amount</strong></td>
+                      <td>integer</td>
+                      <td>Importe a pagar, representado como un número entero. Este valor debe ser siempre mayor que 0</td>
+                    </tr>
+                    <tr>
+                      <td><strong>customer_email</strong></td>
+                      <td>string</td>
+                      <td>Un correo electrónico de cliente vinculado a una Checkout Session. Se utiliza para notificar a un usuario en caso de un reembolso. Si planea utilizar el producto de reembolsos, debe incluir este campo en su solicitud. Si crea una sesión sin proporcionar un customer_email, este campo estará null en la respuesta y no se enviarán correos electrónicos para esa sesión de pago.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>expires_at</strong></td>
+                      <td>string</td>
+                      <td>Marca de tiempo UTC que indica cuándo expirará la sesión. El valor predeterminado es 24 horas después de la creación de la sesión de pago</td>
+                    </tr>
+                    <tr>
+                      <td><strong>mode</strong></td>
+                      <td>string</td>
+                      <td>Indica si la Checkout Session está en modo live o en modo test</td>
+                    </tr>
+                    <tr>
+                      <td><strong>status</strong></td>
+                      <td>string</td>
+                      <td>Estado de la sesión. Puede ser "created", "in_progress", "finished", o "expired"</td>
+                    </tr>
+                    <tr>
+                      <td><strong>session_token</strong></td>
+                      <td>string</td>
+                      <td>Token temporal para configurar el widget.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>country</strong></td>
+                      <td>string</td>
+                      <td>Código del país (ejemplo: "cl" para Chile, "mx" para México)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>metadata</strong></td>
+                      <td>hash</td>
+                      <td>Un conjunto de pares clave-valor que puede usar para almacenar información estructurada adicional sobre un objeto. Si crea un pago sin proporcionar metadata, aparecerá como null en las notificaciones de estado final.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>payment_resource</strong></td>
+                      <td>object</td>
+                      <td>El recurso de pago asociado con la sesión una vez que se finaliza el pago. Será null si la sesión no se ha finalizado o ha expirado.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>payment_method_options</strong></td>
+                      <td>hash</td>
+                      <td>Una matriz opcional de configuraciones para cada método de pago disponible.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>business_profile</strong></td>
+                      <td>hash</td>
+                      <td>Un objeto opcional para identificar comerciantes registrados para precios basados en categorías.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Opciones de Intención de Pago</h3>
+              
+              <p style="text-align: justify">
+                Utilice estas opciones para configurar el método de pago al crear una sesión de pago Payment Intent.
+              </p>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">ATRIBUTO</th>
+                      <th class="text-center" style="width: 15%;">TIPO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>recipient_account</strong></td>
+                      <td>string</td>
+                      <td>Un objeto que apunta a la cuenta del destinatario. Consulte la tabla del objeto "Cuenta del destinatario" para más información. Se recomienda omitir este objeto para una mayor estabilidad cuando se usa Fintoc Collects para pagos.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>sender_account</strong></td>
+                      <td>string</td>
+                      <td>Un objeto que apunta a la cuenta del remitente. Consulte la tabla del objeto "Cuenta del remitente" para más información.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <p style="text-align: justify">
+                <strong>Nota:</strong> Cuando reciba notificaciones de estado de pago final, sender_account puede ser nulo si el usuario abandonó el pago antes de especificar una cuenta de remitente.
+              </p>
+              
+              <h3 class="section-title">Objeto Destinatario</h3>
+              
+              <p style="text-align: justify">
+                El objeto destinatario representa la cuenta del receptor del pago.
+              </p>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">ATRIBUTO</th>
+                      <th class="text-center" style="width: 15%;">TIPO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>holder_id</strong></td>
+                      <td>string</td>
+                      <td>Identificador del titular de la cuenta. En Chile corresponde a un RUT, y en México a un RFC o CURP. El campo indica si el usuario puede cambiar el nombre de usuario preestablecido o no (valor editable).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>number</strong></td>
+                      <td>string</td>
+                      <td>El número de cuenta, que no incluye guiones ni ceros prefijados.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>type</strong></td>
+                      <td>string</td>
+                      <td>El tipo de cuenta, que puede ser "checking_account" (cuenta corriente) o "sight_account" (cuenta vista).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>institution_id</strong></td>
+                      <td>string</td>
+                      <td>La institución de la cuenta. Puede encontrar más información sobre las instituciones y sus identificadores aquí.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Objeto Remitente</h3>
+              
+              <p style="text-align: justify">
+                El objeto remitente representa la cuenta del emisor del pago.
+              </p>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">ATRIBUTO</th>
+                      <th class="text-center" style="width: 15%;">TIPO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>holder_id</strong></td>
+                      <td>object</td>
+                      <td>Identificador del titular de la cuenta. En Chile corresponde a un RUT, y en México al número de teléfono del usuario.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>number</strong></td>
+                      <td>string</td>
+                      <td>El número de cuenta, que no incluye guiones ni ceros prefijados.</td>
+                    </tr>
+                    <tr>
+                      <td><strong>type</strong></td>
+                      <td>string</td>
+                      <td>El tipo de cuenta, que puede ser "checking_account" (cuenta corriente) o "sight_account" (cuenta vista).</td>
+                    </tr>
+                    <tr>
+                      <td><strong>institution_id</strong></td>
+                      <td>string</td>
+                      <td>Solo para instituciones de la cuenta CL. Puede encontrar más información sobre las instituciones y sus identificadores aquí.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Atributos del Payment Intent</h3>
+              
+              <div style="text-align: justify">
+                <table class="table table-striped table-custom" style="width:100%;">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 25%;">ATRIBUTO</th>
+                      <th class="text-center" style="width: 15%;">TIPO</th>
+                      <th class="text-center" style="width: 60%;">DESCRIPCIÓN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>id</strong></td>
+                      <td>string</td>
+                      <td>Identificador único del payment intent</td>
+                    </tr>
+                    <tr>
+                      <td><strong>mode</strong></td>
+                      <td>string</td>
+                      <td>Indica si está en modo live o test</td>
+                    </tr>
+                    <tr>
+                      <td><strong>amount</strong></td>
+                      <td>integer</td>
+                      <td>Importe del pago en formato entero</td>
+                    </tr>
+                    <tr>
+                      <td><strong>object</strong></td>
+                      <td>string</td>
+                      <td>Tipo de objeto, siempre será "payment_intent"</td>
+                    </tr>
+                    <tr>
+                      <td><strong>status</strong></td>
+                      <td>string</td>
+                      <td>Estado del pago (ejemplo: "succeeded", "pending", "failed")</td>
+                    </tr>
+                    <tr>
+                      <td><strong>currency</strong></td>
+                      <td>string</td>
+                      <td>Código de moneda ISO (ejemplo: "CLP", "MXN")</td>
+                    </tr>
+                    <tr>
+                      <td><strong>metadata</strong></td>
+                      <td>object</td>
+                      <td>Metadatos adicionales asociados al pago</td>
+                    </tr>
+                    <tr>
+                      <td><strong>created_at</strong></td>
+                      <td>string</td>
+                      <td>Fecha de creación del payment intent según ISO 8601</td>
+                    </tr>
+                    <tr>
+                      <td><strong>error_reason</strong></td>
+                      <td>string/null</td>
+                      <td>Razón del error si el pago falló, null si fue exitoso</td>
+                    </tr>
+                    <tr>
+                      <td><strong>reference_id</strong></td>
+                      <td>string</td>
+                      <td>ID de referencia del pago</td>
+                    </tr>
+                    <tr>
+                      <td><strong>widget_token</strong></td>
+                      <td>string/null</td>
+                      <td>Token del widget, null si no aplica</td>
+                    </tr>
+                    <tr>
+                      <td><strong>customer_email</strong></td>
+                      <td>string/null</td>
+                      <td>Correo electrónico del cliente, null si no se proporcionó</td>
+                    </tr>
+                    <tr>
+                      <td><strong>transaction_date</strong></td>
+                      <td>string</td>
+                      <td>Fecha de la transacción según ISO 8601</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <h3 class="section-title">Notas Importantes</h3>
+              <ul style="text-align: justify">
+                <li>El objeto <code>payment_resource</code> solo estará presente cuando el pago se haya finalizado exitosamente.</li>
+                <li>El campo <code>sender_account</code> puede ser null si el usuario abandonó el pago antes de especificar una cuenta de remitente.</li>
+                <li>Los montos deben enviarse como números enteros (sin decimales).</li>
+                <li>Las fechas deben estar en formato ISO 8601 (YYYY-MM-DDTHH:mm:ssZ).</li>
+                <li>Los códigos de moneda soportados actualmente son CLP (Chile) y MXN (México).</li>
+                <li>El campo <code>holder_id</code> en el objeto remitente puede ser un objeto en lugar de un string, dependiendo del país.</li>
+                <li>El <code>institution_id</code> debe corresponder a una institución válida del país especificado.</li>
               </ul>
             </div>
             
