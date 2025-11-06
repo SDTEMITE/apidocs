@@ -3104,6 +3104,22 @@ Content-Type: application/json</code></pre>
                 <strong>Nota:</strong> Para utilizar esta API tenemos que previamente obtener un token de seguridad.
               </p>
               
+              <h3 class="section-title">Ejemplo Completo en Postman</h3>
+              <p style="text-align: justify">
+                Para probar la API en Postman, utilice la siguiente configuración:
+              </p>
+              <ul>
+                <li><strong>Método:</strong> POST</li>
+                <li><strong>URL:</strong> https://sii.dtemite.cl/rcv</li>
+                <li><strong>Headers:</strong> 
+                  <ul>
+                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
+                    <li>Content-Type: application/json</li>
+                  </ul>
+                </li>
+                <li><strong>Body:</strong> JSON con sistema, rut, clave y periodo</li>
+              </ul>
+              
               <h3 class="section-title">Endpoint Login - Obtener Token</h3>
               <p style="text-align: justify">
                 Antes de consumir la API de consulta RCV, es necesario autenticarse y obtener un token de seguridad.
@@ -3212,22 +3228,6 @@ Content-Type: application/json</code></pre>
                   </tbody>
                 </table>
               </div>
-              
-              <h3 class="section-title">Ejemplo Completo en Postman</h3>
-              <p style="text-align: justify">
-                Para probar la API en Postman, utilice la siguiente configuración:
-              </p>
-              <ul>
-                <li><strong>Método:</strong> POST</li>
-                <li><strong>URL:</strong> https://sii.dtemite.cl/rcv</li>
-                <li><strong>Headers:</strong> 
-                  <ul>
-                    <li>Authorization: Bearer {token_obtenido_del_login}</li>
-                    <li>Content-Type: application/json</li>
-                  </ul>
-                </li>
-                <li><strong>Body:</strong> JSON con sistema, rut, clave y periodo</li>
-              </ul>
               
               <h3 class="section-title">Notas Importantes</h3>
               <ul style="text-align: justify">
