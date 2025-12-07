@@ -2190,6 +2190,74 @@
             z-index: 10;
         }
         
+        /* Tabs para alternar entre JSON y XML */
+        .json-viewer-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #de007e;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .json-viewer-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .json-viewer-tab:hover {
+            background: rgba(222, 0, 126, 0.05);
+            color: #de007e;
+        }
+        
+        .json-viewer-tab.active {
+            background: rgba(222, 0, 126, 0.1);
+            color: #de007e;
+            border-bottom-color: #de007e;
+            font-weight: 600;
+        }
+        
+        .json-viewer-tab i {
+            font-size: 16px;
+        }
+        
+        /* Paneles de contenido */
+        .viewer-panel {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 20px;
+            background: #ffffff;
+        }
+        
+        .viewer-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .viewer-panel::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .viewer-panel::-webkit-scrollbar-thumb {
+            background: #de007e;
+            border-radius: 4px;
+        }
+        
+        .viewer-panel::-webkit-scrollbar-thumb:hover {
+            background: #97095a;
+        }
+        
         .json-viewer-title {
             margin: 0;
             font-size: 20px;
@@ -2227,27 +2295,10 @@
         
         .json-viewer-content {
             flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
             background: #ffffff;
-        }
-        
-        .json-viewer-content::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .json-viewer-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        
-        .json-viewer-content::-webkit-scrollbar-thumb {
-            background: #de007e;
-            border-radius: 4px;
-        }
-        
-        .json-viewer-content::-webkit-scrollbar-thumb:hover {
-            background: #97095a;
         }
         
         .json-viewer-pre {
@@ -2341,7 +2392,16 @@
                 font-size: 18px;
             }
             
-            .json-viewer-content {
+            .json-viewer-tabs {
+                padding: 0;
+            }
+            
+            .json-viewer-tab {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+            
+            .viewer-panel {
                 padding: 15px;
             }
             

@@ -1,10 +1,11 @@
 /**
- * JSON Viewer - Visor JSON con resaltado dinámico según sección del menú
+ * JSON/XML Viewer - Visor JSON y XML con resaltado dinámico según sección del menú
  * 
- * Este módulo encapsula toda la lógica del visor JSON, incluyendo:
- * - Mapeo entre secciones del menú y nodos del JSON
- * - Resaltado dinámico de la parte del JSON correspondiente
+ * Este módulo encapsula toda la lógica del visor JSON/XML, incluyendo:
+ * - Mapeo entre secciones del menú y nodos del JSON/XML
+ * - Resaltado dinámico de la parte del JSON/XML correspondiente
  * - Detección de navegación por scroll o click
+ * - Soporte para alternar entre JSON y XML
  */
 
 (function() {
@@ -24,15 +25,33 @@
   };
 
   /**
-   * Estado del visor JSON
+   * Mapeo entre secciones del menú (IDs) y etiquetas XML
+   * Define la relación entre los IDs de las secciones y las etiquetas XML correspondientes
+   */
+  const XML_SECTION_MAP = {
+    'encabezado': 'Encabezado',
+    'detalles': 'Detalle',
+    'descuento': 'DscRcgGlobal',
+    'referencia': 'Referencia',
+    'ejemplos': 'Referencia', // Ejemplo para Orden de Compra usa la misma lógica que Referencias
+    'campo_adicional': 'Adicional'
+  };
+
+  /**
+   * Estado del visor JSON/XML
    */
   let viewerState = {
     currentJson: null,
     formattedJson: null,
+    currentXml: null,
+    formattedXml: null,
+    currentFormat: 'json', // 'json' o 'xml'
     currentSection: null,
     modal: null,
-    content: null,
-    codeElement: null,
+    jsonContent: null,
+    xmlContent: null,
+    jsonCodeElement: null,
+    xmlCodeElement: null,
     isCleared: false // Flag para indicar que se debe mantener limpio
   };
 
@@ -144,6 +163,93 @@
       }
     };
   }
+
+  /**
+   * Genera un XML de ejemplo completo con todas las secciones del menú
+   * Incluye: Encabezado, Detalle, DscRcgGlobal, Referencia, Adicional
+   */
+  function getExampleXml() {
+    return `<Encabezado>
+  <IdDoc>
+    <TipoDTE>33</TipoDTE>
+    <Folio>0</Folio>
+    <MntBruto>2</MntBruto>
+    <FchEmis>2024-01-20</FchEmis>
+    <FchVenc>2024-01-26</FchVenc>
+  </IdDoc>
+  <Emisor>
+    <RUTEmisor>29282726-1</RUTEmisor>
+    <RznSoc>EMPRESA DE PRUEBA</RznSoc>
+    <GiroEmis>DESARROLLO DE SISTEMAS</GiroEmis>
+    <DirOrigen>Avenida del Software #11001101</DirOrigen>
+    <CmnaOrigen>PROVIDENCIA</CmnaOrigen>
+    <CiudadOrigen>SANTIAGO</CiudadOrigen>
+  </Emisor>
+  <Receptor>
+    <RUTRecep>76399744-8</RUTRecep>
+    <RznSocRecep>CLIENTE DE PRUEBA</RznSocRecep>
+    <CorreoRecep>prueba@dtemite.cl</CorreoRecep>
+    <DirRecep>CALLE A 50</DirRecep>
+    <CmnaRecep>SANTIAGO</CmnaRecep>
+    <CiudadRecep>SANTIAGO</CiudadRecep>
+  </Receptor>
+  <Totales>
+    <MntNeto>10000</MntNeto>
+    <MntExe>0</MntExe>
+    <TasaIVA>19</TasaIVA>
+    <IVA>1900</IVA>
+    <MntTotal>11900</MntTotal>
+  </Totales>
+</Encabezado>
+<Detalle>
+  <NroLinDet>1</NroLinDet>
+  <CdgItem>
+    <TpoCodigo>INT1</TpoCodigo>
+    <VlrCodigo>WWW</VlrCodigo>
+  </CdgItem>
+  <NmbItem>Descripción de producto WWW</NmbItem>
+  <DscItem>Serie ABC</DscItem>
+  <QtyItem>2</QtyItem>
+  <UnmdItem>M3</UnmdItem>
+  <PrcItem>45305</PrcItem>
+  <MontoItem>90610</MontoItem>
+</Detalle>
+<Detalle>
+  <NroLinDet>2</NroLinDet>
+  <CdgItem>
+    <TpoCodigo>INT1</TpoCodigo>
+    <VlrCodigo>XXX</VlrCodigo>
+  </CdgItem>
+  <NmbItem>Descripción de producto XXX</NmbItem>
+  <QtyItem>1</QtyItem>
+  <UnmdItem>M3</UnmdItem>
+  <PrcItem>4000</PrcItem>
+  <MontoItem>4000</MontoItem>
+</Detalle>
+<DscRcgGlobal>
+  <NroLinDR>1</NroLinDR>
+  <TpoMov>D</TpoMov>
+  <TpoValor>%</TpoValor>
+  <ValorDR>10</ValorDR>
+  <GlosaDR>Descuento por volumen</GlosaDR>
+</DscRcgGlobal>
+<Referencia>
+  <NroLinRef>1</NroLinRef>
+  <TpoDocRef>801</TpoDocRef>
+  <FolioRef>4505421654</FolioRef>
+  <FchRef>2024-01-15</FchRef>
+  <CodRef>0</CodRef>
+  <RazonRef>ORDEN DE COMPRA</RazonRef>
+</Referencia>
+<Adicional>
+  <NodosA>
+    <valor>Vendedor: Juan Pérez</valor>
+    <valor>Teléfono: +56 9 1234 5678</valor>
+    <valor>Condición de pago: 30 días</valor>
+  </NodosA>
+</Adicional>`;
+  }
+
 
   /**
    * Obtiene el valor de un objeto usando una ruta de puntos (ej: "Documento.Encabezado")
@@ -276,36 +382,134 @@
   }
 
   /**
-   * Limpia el resaltado y hace scroll al inicio del JSON
+   * Encuentra el rango de líneas en el XML formateado que corresponde a una etiqueta
+   */
+  function findXmlRange(formattedXml, xmlTag) {
+    if (!formattedXml || !xmlTag) {
+      return null;
+    }
+
+    const lines = formattedXml.split('\n');
+    const openingTag = '<' + xmlTag + '>';
+    const closingTag = '</' + xmlTag + '>';
+    const selfClosingTag = '<' + xmlTag + '/>';
+    
+    let startLine = -1;
+    let endLine = -1;
+    let depth = 0;
+    let inTarget = false;
+    
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmedLine = line.trim();
+      
+      // Buscar la primera etiqueta de apertura (no anidada)
+      if (startLine === -1) {
+        // Verificar si es la etiqueta de apertura principal
+        if (trimmedLine.includes(openingTag) && !trimmedLine.includes('</')) {
+          // Verificar que no esté dentro de otra etiqueta del mismo tipo
+          const lineIndent = line.length - line.trimStart().length;
+          // Si la indentación es mínima o es la primera ocurrencia, es la etiqueta principal
+          if (lineIndent <= 2) {
+            startLine = i;
+            inTarget = true;
+            depth = 1;
+            // Si es auto-cerrada, el final es la misma línea
+            if (trimmedLine.includes(selfClosingTag) || trimmedLine.includes('</' + xmlTag + '>')) {
+              endLine = i;
+              break;
+            }
+            continue;
+          }
+        }
+      }
+      
+      // Si encontramos el inicio, buscar el cierre
+      if (inTarget && startLine !== -1) {
+        // Contar etiquetas anidadas del mismo tipo
+        if (trimmedLine.includes(openingTag) && !trimmedLine.includes('</')) {
+          depth++;
+        }
+        if (trimmedLine.includes(closingTag)) {
+          depth--;
+          if (depth === 0) {
+            endLine = i;
+            break;
+          }
+        }
+      }
+    }
+    
+    // Si no encontramos el final, buscar hasta el final del documento o siguiente etiqueta principal
+    if (startLine !== -1 && endLine === -1) {
+      const startIndent = lines[startLine].length - lines[startLine].trimStart().length;
+      for (let i = startLine + 1; i < lines.length; i++) {
+        const line = lines[i];
+        const indent = line.length - line.trimStart().length;
+        const trimmedLine = line.trim();
+        
+        // Si encontramos una etiqueta al mismo nivel o menor, ese es el final
+        if (indent <= startIndent && trimmedLine && trimmedLine.startsWith('<') && !trimmedLine.startsWith('<!--')) {
+          endLine = i - 1;
+          break;
+        }
+      }
+      
+      // Si aún no encontramos el final, usar el final del documento
+      if (endLine === -1) {
+        endLine = lines.length - 1;
+      }
+    }
+    
+    return startLine !== -1 ? { start: startLine, end: endLine } : null;
+  }
+
+  /**
+   * Limpia el resaltado y hace scroll al inicio del contenido
    */
   function clearHighlight() {
     if (!viewerState.modal || !viewerState.modal.classList.contains('json-viewer-open')) {
       return; // Modal no está abierto
     }
 
-    const codeElement = viewerState.codeElement;
-    if (!codeElement) return;
-
     // Marcar como limpiado para prevenir resaltado automático
     viewerState.isCleared = true;
 
-    // Restaurar el JSON sin resaltados
-    codeElement.textContent = viewerState.formattedJson;
-    codeElement.className = 'lang-json';
-    
-    // Aplicar highlight.js sin resaltados
-    if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
-      try {
-        hljs.highlightBlock(codeElement);
-      } catch (error) {
-        console.warn('Error al aplicar resaltado de sintaxis:', error);
+    // Limpiar JSON
+    if (viewerState.jsonCodeElement) {
+      viewerState.jsonCodeElement.textContent = viewerState.formattedJson;
+      viewerState.jsonCodeElement.className = 'lang-json';
+      
+      if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
+        try {
+          hljs.highlightBlock(viewerState.jsonCodeElement);
+        } catch (error) {
+          console.warn('Error al aplicar resaltado de sintaxis JSON:', error);
+        }
       }
     }
 
-    // Scroll al inicio del JSON
-    const preElement = codeElement.parentElement;
-    if (preElement) {
-      preElement.scrollTop = 0;
+    // Limpiar XML
+    if (viewerState.xmlCodeElement) {
+      viewerState.xmlCodeElement.textContent = viewerState.formattedXml;
+      viewerState.xmlCodeElement.className = 'lang-xml';
+      
+      if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
+        try {
+          hljs.highlightBlock(viewerState.xmlCodeElement);
+        } catch (error) {
+          console.warn('Error al aplicar resaltado de sintaxis XML:', error);
+        }
+      }
+    }
+
+    // Scroll al inicio del contenido activo
+    const activePanel = viewerState.currentFormat === 'json' 
+      ? document.getElementById('jsonViewerPanel')
+      : document.getElementById('xmlViewerPanel');
+    
+    if (activePanel) {
+      activePanel.scrollTop = 0;
     }
 
     viewerState.currentSection = null;
@@ -338,7 +542,7 @@
     }
 
     // Remover resaltados anteriores
-    const codeElement = viewerState.codeElement;
+    const codeElement = viewerState.jsonCodeElement;
     if (!codeElement) return;
 
     // Primero aplicar highlight.js al JSON completo
@@ -388,6 +592,91 @@
   }
 
   /**
+   * Resalta una sección específica del XML en el modal
+   */
+  function highlightXmlSection(sectionId) {
+    if (!viewerState.modal || !viewerState.modal.classList.contains('json-viewer-open')) {
+      return; // Modal no está abierto
+    }
+
+    // Si está limpiado, resetear el flag para permitir resaltado
+    if (viewerState.isCleared) {
+      viewerState.isCleared = false;
+    }
+
+    const xmlTag = XML_SECTION_MAP[sectionId];
+    if (!xmlTag || !viewerState.formattedXml) {
+      return;
+    }
+
+    const range = findXmlRange(viewerState.formattedXml, xmlTag);
+    if (!range) {
+      console.warn('No se pudo encontrar el rango XML para:', xmlTag);
+      return;
+    }
+
+    // Remover resaltados anteriores
+    const codeElement = viewerState.xmlCodeElement;
+    if (!codeElement) return;
+
+    // Primero aplicar highlight.js al XML completo
+    codeElement.textContent = viewerState.formattedXml;
+    codeElement.className = 'lang-xml';
+    
+    if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
+      try {
+        hljs.highlightBlock(codeElement);
+      } catch (error) {
+        console.warn('Error al aplicar resaltado de sintaxis:', error);
+      }
+    }
+    
+    // Obtener el HTML procesado por highlight.js
+    let highlightedHtml = codeElement.innerHTML;
+    
+    // Dividir el HTML en líneas exactas (preservando el formato)
+    const lines = viewerState.formattedXml.split('\n');
+    const htmlLines = highlightedHtml.split('\n');
+    
+    // Crear nuevo HTML envolviendo solo las líneas que necesitan resaltado
+    const newHtmlLines = htmlLines.map((htmlLine, index) => {
+      const isHighlighted = index >= range.start && index <= range.end;
+      
+      if (isHighlighted && htmlLine.trim() !== '') {
+        // Envolver solo el contenido sin modificar espacios
+        return '<span class="json-highlighted-line">' + htmlLine + '</span>';
+      }
+      
+      return htmlLine;
+    });
+    
+    // Unir las líneas sin agregar espacios adicionales
+    codeElement.innerHTML = newHtmlLines.join('\n');
+
+    // Scroll a la sección resaltada
+    const preElement = codeElement.parentElement;
+    if (preElement) {
+      const highlightedLines = codeElement.querySelectorAll('.json-highlighted-line');
+      if (highlightedLines.length > 0) {
+        highlightedLines[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    viewerState.currentSection = sectionId;
+  }
+
+  /**
+   * Resalta una sección según el formato activo (JSON o XML)
+   */
+  function highlightSection(sectionId) {
+    if (viewerState.currentFormat === 'json') {
+      highlightJsonSection(sectionId);
+    } else {
+      highlightXmlSection(sectionId);
+    }
+  }
+
+  /**
    * Escapa HTML para prevenir XSS
    */
   function escapeHtml(text) {
@@ -397,17 +686,65 @@
   }
 
   /**
-   * Abre el modal del visor JSON
+   * Cambia entre formato JSON y XML en el visor
+   */
+  function switchViewerFormat(format) {
+    if (!viewerState.modal || !viewerState.modal.classList.contains('json-viewer-open')) {
+      return;
+    }
+
+    if (format !== 'json' && format !== 'xml') {
+      return;
+    }
+
+    viewerState.currentFormat = format;
+
+    // Actualizar tabs
+    const tabs = document.querySelectorAll('.json-viewer-tab');
+    tabs.forEach(tab => {
+      if (tab.getAttribute('data-format') === format) {
+        tab.classList.add('active');
+      } else {
+        tab.classList.remove('active');
+      }
+    });
+
+    // Mostrar/ocultar paneles
+    const jsonPanel = document.getElementById('jsonViewerPanel');
+    const xmlPanel = document.getElementById('xmlViewerPanel');
+    
+    if (format === 'json') {
+      if (jsonPanel) jsonPanel.style.display = 'block';
+      if (xmlPanel) xmlPanel.style.display = 'none';
+    } else {
+      if (jsonPanel) jsonPanel.style.display = 'none';
+      if (xmlPanel) xmlPanel.style.display = 'block';
+    }
+
+    // Si hay una sección activa, resaltarla en el nuevo formato
+    if (viewerState.currentSection) {
+      highlightSection(viewerState.currentSection);
+    } else if (!viewerState.isCleared) {
+      // Si no hay sección activa pero no está limpiado, detectar la sección actual
+      detectCurrentSection();
+    }
+  }
+
+  /**
+   * Abre el modal del visor JSON/XML
    */
   function openJsonModal(jsonText) {
-    console.log('🔍 Abriendo modal JSON...', jsonText);
+    console.log('🔍 Abriendo modal JSON/XML...', jsonText);
     
     // Inicializar referencias si no existen
     if (!viewerState.modal) {
       viewerState.modal = document.getElementById('jsonViewerModal');
     }
-    if (!viewerState.content) {
-      viewerState.content = document.getElementById('jsonViewerContent');
+    if (!viewerState.jsonContent) {
+      viewerState.jsonContent = document.getElementById('jsonViewerContent');
+    }
+    if (!viewerState.xmlContent) {
+      viewerState.xmlContent = document.getElementById('xmlViewerContent');
     }
     
     if (!viewerState.modal) {
@@ -415,13 +752,13 @@
       return;
     }
     
-    if (!viewerState.content) {
+    if (!viewerState.jsonContent || !viewerState.xmlContent) {
       console.error('❌ Contenido del modal no encontrado');
       return;
     }
     
     console.log('✅ Modal encontrado:', viewerState.modal);
-    console.log('✅ Contenido encontrado:', viewerState.content);
+    console.log('✅ Contenido encontrado');
     
     try {
       // Parsear y formatear el JSON
@@ -440,21 +777,41 @@
       viewerState.currentJson = jsonObject;
       viewerState.formattedJson = formattedJson;
       
+      // Generar XML de ejemplo
+      const exampleXml = getExampleXml();
+      viewerState.currentXml = exampleXml;
+      viewerState.formattedXml = exampleXml;
+      
       // Insertar el JSON formateado
-      viewerState.codeElement = viewerState.content.querySelector('code');
-      if (viewerState.codeElement) {
-        viewerState.codeElement.textContent = formattedJson;
+      viewerState.jsonCodeElement = viewerState.jsonContent.querySelector('code');
+      if (viewerState.jsonCodeElement) {
+        viewerState.jsonCodeElement.textContent = formattedJson;
         console.log('✅ JSON insertado en el código');
       } else {
-        console.error('❌ Elemento <code> no encontrado');
+        console.error('❌ Elemento <code> JSON no encontrado');
+        return;
+      }
+      
+      // Insertar el XML formateado
+      viewerState.xmlCodeElement = viewerState.xmlContent.querySelector('code');
+      if (viewerState.xmlCodeElement) {
+        viewerState.xmlCodeElement.textContent = exampleXml;
+        console.log('✅ XML insertado en el código');
+      } else {
+        console.error('❌ Elemento <code> XML no encontrado');
         return;
       }
       
       // Aplicar resaltado de sintaxis si está disponible
       if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
         try {
-          viewerState.codeElement.className = 'lang-json';
-          hljs.highlightBlock(viewerState.codeElement);
+          // Resaltar JSON
+          viewerState.jsonCodeElement.className = 'lang-json';
+          hljs.highlightBlock(viewerState.jsonCodeElement);
+          
+          // Resaltar XML
+          viewerState.xmlCodeElement.className = 'lang-xml';
+          hljs.highlightBlock(viewerState.xmlCodeElement);
         } catch (highlightError) {
           console.warn('No se pudo aplicar resaltado de sintaxis:', highlightError);
         }
@@ -462,6 +819,19 @@
       
       // Resetear el flag de limpieza al abrir el modal
       viewerState.isCleared = false;
+      viewerState.currentFormat = 'json'; // Por defecto mostrar JSON
+      
+      // Asegurar que el tab JSON esté activo
+      const jsonTab = document.querySelector('.json-viewer-tab[data-format="json"]');
+      const xmlTab = document.querySelector('.json-viewer-tab[data-format="xml"]');
+      if (jsonTab) jsonTab.classList.add('active');
+      if (xmlTab) xmlTab.classList.remove('active');
+      
+      // Mostrar panel JSON por defecto
+      const jsonPanel = document.getElementById('jsonViewerPanel');
+      const xmlPanel = document.getElementById('xmlViewerPanel');
+      if (jsonPanel) jsonPanel.style.display = 'block';
+      if (xmlPanel) xmlPanel.style.display = 'none';
       
       // Abrir el modal con animación
       viewerState.modal.classList.add('json-viewer-open');
@@ -484,8 +854,8 @@
       
     } catch (error) {
       console.error('❌ Error al formatear JSON:', error);
-      if (viewerState.codeElement) {
-        viewerState.codeElement.textContent = jsonText || 'Error: JSON inválido';
+      if (viewerState.jsonCodeElement) {
+        viewerState.jsonCodeElement.textContent = jsonText || 'Error: JSON inválido';
       }
     }
   }
@@ -520,10 +890,10 @@
         activeSectionId = href.substring(1);
         
         // Si la sección activa está mapeada, resaltarla
-        if (JSON_SECTION_MAP[activeSectionId]) {
+        if (JSON_SECTION_MAP[activeSectionId] || XML_SECTION_MAP[activeSectionId]) {
           // Asegurarse de que no esté limpiado antes de resaltar
           viewerState.isCleared = false;
-          highlightJsonSection(activeSectionId);
+          highlightSection(activeSectionId);
           foundSection = true;
           return;
         } else {
@@ -549,8 +919,8 @@
         const sectionTop = section.offsetTop - offset;
         const sectionId = section.getAttribute('id');
         
-        if (scrollTop >= sectionTop && JSON_SECTION_MAP[sectionId]) {
-          highlightJsonSection(sectionId);
+        if (scrollTop >= sectionTop && (JSON_SECTION_MAP[sectionId] || XML_SECTION_MAP[sectionId])) {
+          highlightSection(sectionId);
           foundSection = true;
           return;
         }
@@ -585,14 +955,14 @@
     // Función para manejar clicks en menús
     function handleMenuClick(sectionId) {
       if (viewerState.modal && viewerState.modal.classList.contains('json-viewer-open')) {
-        // Si la sección clickeada está mapeada, resaltarla
-        if (JSON_SECTION_MAP[sectionId]) {
-          viewerState.isCleared = false; // Permitir resaltado
-          // Pequeño delay para asegurar que el DOM esté actualizado
-          setTimeout(function() {
-            highlightJsonSection(sectionId);
-          }, 100);
-        } else {
+          // Si la sección clickeada está mapeada, resaltarla
+          if (JSON_SECTION_MAP[sectionId] || XML_SECTION_MAP[sectionId]) {
+            viewerState.isCleared = false; // Permitir resaltado
+            // Pequeño delay para asegurar que el DOM esté actualizado
+            setTimeout(function() {
+              highlightSection(sectionId);
+            }, 100);
+          } else {
           // Si NO está mapeada, limpiar y mantener limpio
           clearHighlight();
           setTimeout(function() {
@@ -668,7 +1038,11 @@
   window.openJsonModal = openJsonModal;
   window.closeJsonModal = closeJsonModal;
   window.getExampleJson = getExampleJson;
+  window.getExampleXml = getExampleXml;
   window.highlightJsonSection = highlightJsonSection;
+  window.highlightXmlSection = highlightXmlSection;
+  window.highlightSection = highlightSection;
+  window.switchViewerFormat = switchViewerFormat;
   window.clearHighlight = clearHighlight;
 
 })();

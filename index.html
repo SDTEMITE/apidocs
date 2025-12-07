@@ -4394,14 +4394,27 @@ Content-Type: application/json</code></pre>
       });
     </script>
 
-    <!-- Modal Lateral Derecho para Visor JSON -->
+    <!-- Modal Lateral Derecho para Visor JSON/XML -->
     <div id="jsonViewerModal" class="json-viewer-modal">
       <div class="json-viewer-header">
-        <h3 class="json-viewer-title">Visor JSON</h3>
-        <button class="json-viewer-close" onclick="closeJsonModal()" aria-label="Cerrar visor JSON">✕</button>
+        <h3 class="json-viewer-title">Visor JSON / XML</h3>
+        <button class="json-viewer-close" onclick="closeJsonModal()" aria-label="Cerrar visor">✕</button>
+      </div>
+      <div class="json-viewer-tabs">
+        <button class="json-viewer-tab active" data-format="json" onclick="switchViewerFormat('json')">
+          <i class="fas fa-code"></i> JSON
+        </button>
+        <button class="json-viewer-tab" data-format="xml" onclick="switchViewerFormat('xml')">
+          <i class="fas fa-file-code"></i> XML
+        </button>
       </div>
       <div class="json-viewer-content">
-        <pre id="jsonViewerContent" class="json-viewer-pre"><code class="json-viewer-code"></code></pre>
+        <div id="jsonViewerPanel" class="viewer-panel active">
+          <pre id="jsonViewerContent" class="json-viewer-pre"><code class="json-viewer-code"></code></pre>
+        </div>
+        <div id="xmlViewerPanel" class="viewer-panel" style="display: none;">
+          <pre id="xmlViewerContent" class="json-viewer-pre"><code class="json-viewer-code"></code></pre>
+        </div>
       </div>
     </div>
 
