@@ -4006,6 +4006,11 @@ Content-Type: application/json</code></pre>
     <button class="panel-envio-btn" id="panelEnvioBtn" title="Panel de Pruebas de Envío">
       ⚙️
     </button>
+    
+    <!-- Botón Visor JSON -->
+    <button class="json-viewer-btn" id="jsonViewerBtn" title="Visor JSON" onclick="openJsonModal({test: 'Este es un JSON de prueba', numero: 123, activo: true, datos: {nombre: 'Ejemplo', valores: [1, 2, 3]}})">
+      { }
+    </button>
 
     <!-- Modal Panel de Pruebas de Envío -->
     <div class="modal-overlay" id="modalOverlay">
@@ -4386,6 +4391,123 @@ Content-Type: application/json</code></pre>
           }
         }, 2000);
       });
+    </script>
+
+    <!-- Modal Lateral Derecho para Visor JSON -->
+    <div id="jsonViewerModal" class="json-viewer-modal">
+      <div class="json-viewer-header">
+        <h3 class="json-viewer-title">Visor JSON</h3>
+        <button class="json-viewer-close" onclick="closeJsonModal()" aria-label="Cerrar visor JSON">✕</button>
+      </div>
+      <div class="json-viewer-content">
+        <pre id="jsonViewerContent" class="json-viewer-pre"><code class="json-viewer-code"></code></pre>
+      </div>
+    </div>
+
+    <script>
+      /**
+       * Modal Lateral Derecho - Visor JSON
+       * 
+       * USO:
+       * Para abrir el modal desde cualquier sección, llama a:
+       * 
+       * openJsonModal(jsonObject)  // Pasa un objeto JavaScript
+       * openJsonModal(jsonString)  // Pasa una cadena JSON
+       * 
+       * Ejemplo:
+       * const miJson = { "campo": "valor", "numero": 123 };
+       * openJsonModal(miJson);
+       * 
+       * O desde un botón:
+       * <button onclick="openJsonModal({campo: 'valor'})">Ver JSON</button>
+       * 
+       * Para cerrar:
+       * closeJsonModal()
+       * 
+       * O presiona la tecla ESC
+       */
+      
+      // Funciones para el modal de visor JSON
+      function openJsonModal(jsonText) {
+        console.log('🔍 Abriendo modal JSON...', jsonText);
+        const modal = document.getElementById('jsonViewerModal');
+        const content = document.getElementById('jsonViewerContent');
+        
+        if (!modal) {
+          console.error('❌ Modal no encontrado en el DOM');
+          return;
+        }
+        
+        if (!content) {
+          console.error('❌ Contenido del modal no encontrado');
+          return;
+        }
+        
+        console.log('✅ Modal encontrado:', modal);
+        console.log('✅ Contenido encontrado:', content);
+        
+        try {
+          // Intentar parsear y formatear el JSON
+          let formattedJson;
+          if (typeof jsonText === 'string') {
+            const parsed = JSON.parse(jsonText);
+            formattedJson = JSON.stringify(parsed, null, 2);
+          } else {
+            formattedJson = JSON.stringify(jsonText, null, 2);
+          }
+          
+          // Insertar el JSON formateado
+          const codeElement = content.querySelector('code');
+          if (codeElement) {
+            codeElement.textContent = formattedJson;
+            console.log('✅ JSON insertado en el código');
+          } else {
+            console.error('❌ Elemento <code> no encontrado');
+          }
+          
+          // Aplicar resaltado de sintaxis si está disponible
+          if (typeof hljs !== 'undefined' && hljs.highlightBlock) {
+            try {
+              const codeElement = content.querySelector('code');
+              if (codeElement) {
+                // Agregar clase lang-json para el resaltado
+                codeElement.className = 'lang-json';
+                hljs.highlightBlock(codeElement);
+              }
+            } catch (highlightError) {
+              console.warn('No se pudo aplicar resaltado de sintaxis:', highlightError);
+            }
+          }
+          
+          // Abrir el modal con animación
+          modal.classList.add('json-viewer-open');
+          console.log('✅ Clase json-viewer-open agregada');
+          console.log('✅ Modal debería estar visible ahora');
+        } catch (error) {
+          console.error('❌ Error al formatear JSON:', error);
+          const codeElement = content.querySelector('code');
+          if (codeElement) {
+            codeElement.textContent = jsonText || 'Error: JSON inválido';
+          }
+        }
+      }
+      
+      function closeJsonModal() {
+        const modal = document.getElementById('jsonViewerModal');
+        if (modal) {
+          modal.classList.remove('json-viewer-open');
+        }
+      }
+      
+      // Cerrar modal con tecla ESC
+      document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+          closeJsonModal();
+        }
+      });
+      
+      // Cerrar modal al hacer clic fuera del modal (opcional, pero sin overlay)
+      // No implementado ya que no hay overlay según los requisitos
     </script>
   </body>
 </html>
