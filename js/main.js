@@ -7,6 +7,36 @@
  * - Popovers con mejor timing y efectos visuales
  * - Compatibilidad mantenida con el diseño base
  */
+
+// ============================================
+// CONFIGURACIÓN DE LOGS - Cambiar a false para deshabilitar
+// ============================================
+var ENABLE_LOGS = false; // true = habilitar logs, false = deshabilitar logs
+
+// Interceptar console.log, console.warn, console.error, console.info
+(function() {
+  if (!ENABLE_LOGS) {
+    var noop = function() {};
+    var originalLog = console.log;
+    var originalWarn = console.warn;
+    var originalError = console.error;
+    var originalInfo = console.info;
+    
+    console.log = noop;
+    console.warn = noop;
+    console.error = noop;
+    console.info = noop;
+    
+    // Guardar referencias originales por si se necesitan
+    console._original = {
+      log: originalLog,
+      warn: originalWarn,
+      error: originalError,
+      info: originalInfo
+    };
+  }
+})();
+
 $(function() {
 
   // Agregar función de easing personalizada para scroll más suave
