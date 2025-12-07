@@ -2293,6 +2293,35 @@
             color: #6c757d;
         }
         
+        /* Estilos para resaltado de líneas del JSON según sección activa */
+        .json-highlighted-line {
+            background: linear-gradient(90deg, rgba(222, 0, 126, 0.15) 0%, rgba(222, 0, 126, 0.05) 100%);
+            border-left: 3px solid #de007e;
+            padding-left: 0;
+            margin-left: 0;
+            display: inline;
+            position: relative;
+            animation: highlightPulse 0.5s ease-in-out;
+            white-space: pre;
+        }
+        
+        @keyframes highlightPulse {
+            0% {
+                background: rgba(222, 0, 126, 0.3);
+            }
+            100% {
+                background: linear-gradient(90deg, rgba(222, 0, 126, 0.15) 0%, rgba(222, 0, 126, 0.05) 100%);
+            }
+        }
+        
+        /* Asegurar que el resaltado funcione con highlight.js */
+        .json-viewer-code .json-highlighted-line .hljs-keyword,
+        .json-viewer-code .json-highlighted-line .hljs-string,
+        .json-viewer-code .json-highlighted-line .hljs-number {
+            position: relative;
+            z-index: 1;
+        }
+        
         /* Responsive para pantallas pequeñas */
         @media (max-width: 768px) {
             .json-viewer-modal {
