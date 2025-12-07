@@ -2346,9 +2346,10 @@
         
         /* Estilos para resaltado de líneas del JSON según sección activa */
         .json-highlighted-line {
-            background: linear-gradient(90deg, rgba(222, 0, 126, 0.15) 0%, rgba(222, 0, 126, 0.05) 100%);
+            background: rgba(222, 0, 126, 0.3);
             border-left: 3px solid #de007e;
             padding-left: 0;
+            font-weight: 600;
             margin-left: 0;
             display: inline;
             position: relative;
