@@ -15,6 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
     <link href="css/index.css" rel="stylesheet">
+    <link href="css/faq.module.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   </head>
   <body>
@@ -40,6 +41,7 @@
             <li><a href="#referencia">Referencias</a></li>
             <li><a href="#ejemplos">Ejemplos</a></li>
             <li><a href="#funcionalidades">Métodos</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 APIs <span class="caret"></span>
@@ -140,6 +142,9 @@
               </li>
               <li>
                 <a href="#diccionario_ctas_ctes">16. Diccionario API Ctas Ctes</a>
+              </li>
+              <li>
+                <a href="#faq">17. Preguntas Frecuentes</a>
               </li>
               <li style="display: none;">
                 <a href="#panel_pruebas">Panel de Pruebas</a>
@@ -3978,20 +3983,23 @@ Content-Type: application/json</code></pre>
               </ul>
             </div>
             
-            <!-- PANEL DE PRUEBAS DE INTEGRACIÓN -->
+            <!-- PREGUNTAS FRECUENTES (FAQ) -->
             <div class="docs-section">
               <div class="page-header">
-                <h1 class="docs-heading section-title" id="panel_pruebas">Panel de Pruebas de Integración</h1>
+                <h1 class="docs-heading section-title" id="faq">Preguntas Frecuentes (FAQ)</h1>
               </div>
               
-              <p style="text-align: justify">
-                Utiliza el <strong>Panel de Pruebas de Envío</strong> haciendo clic en el botón flotante ⚙️ para probar las APIs REST y SOAP de DTEmite directamente desde el navegador. 
-                Puedes enviar documentos de prueba, ver ejemplos de código en diferentes lenguajes de programación y ver las respuestas en tiempo real.
-              </p>
-            
+              <div id="faqTools">
+                <input id="faqSearch" type="text" placeholder="Buscar en preguntas frecuentes..." />
+                <select id="faqFilterCategoria"></select>
+              </div>
               
-             
+              <div id="faqContainer"></div>
+              
+              <div id="faqPagination"></div>
             </div>
+            
+          
           </div>
         </div>
       </div>
@@ -4258,8 +4266,16 @@ Content-Type: application/json</code></pre>
     <script src="js/panel-pruebas.js"></script>
     <script src="js/modal-panel-envio.js"></script>
     <script src="js/json-viewer.js"></script>
+    <script src="js/faq.module.js"></script>
     
     <script>
+      // Inicializar FAQ Module
+      document.addEventListener("DOMContentLoaded", function() {
+        if (typeof FaqModule !== 'undefined') {
+          FaqModule.init();
+        }
+      });
+      
       // Botón Volver al Principio
       $(document).ready(function() {
         // Mostrar/ocultar botón según scroll

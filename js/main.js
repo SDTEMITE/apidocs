@@ -49,15 +49,36 @@ $(function() {
     // Encontrar la sección actual basada en docs-heading
     var currentSection = null;
     var sections = $('.docs-heading.section-title');
+    var lastValidSection = null;
+    var minDistance = Infinity;
+    var closestSection = null;
     
     sections.each(function() {
       var section = $(this);
-      var sectionTop = section.offset().top - 100; // Offset para activación temprana
+      var sectionId = section.attr('id');
       
-      if (scrollTop >= sectionTop) {
-        currentSection = section.attr('id');
+      if (!sectionId) return; // Saltar si no tiene ID
+      
+      var sectionTop = section.offset().top;
+      var sectionBottom = sectionTop + section.outerHeight();
+      var distance = Math.abs(scrollTop + 100 - sectionTop); // 100 es el offset
+      
+      // Si estamos dentro de la sección o muy cerca
+      if (scrollTop + 100 >= sectionTop - 50 && scrollTop + 100 <= sectionBottom + 200) {
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestSection = sectionId;
+        }
+        lastValidSection = sectionId;
       }
     });
+    
+    // Usar la sección más cercana si existe, sino la última válida
+    if (closestSection) {
+      currentSection = closestSection;
+    } else if (lastValidSection) {
+      currentSection = lastValidSection;
+    }
     
     // Actualizar el menú activo en sidebar Y navbar
     if (currentSection) {

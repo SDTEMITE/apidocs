@@ -1,0 +1,80 @@
+{
+    "Sistema": {
+        "nombre": "webbasico",
+        "rut": "29282726-1",
+        "usuario": "integrado_webbasico",
+        "clave": "d2ViYmFzaWNvMjAyMQ=="
+    },
+    "Documento": {
+        "Encabezado": {
+            "IdDoc": {
+                "TipoDTE": "33",
+                "Folio": "0",
+                "FchEmis": "2025-11-19",
+                "FchVenc": "2025-12-19",
+                "SucursalId": "1"
+            },
+            "Emisor": {
+                "RUTEmisor": "29282726-1",
+                "RznSocEmisor": "EMPRESA DE PRUEBA",
+                "GiroEmisor": "DESARROLLO DE SISTEMAS",
+                "DirOrigen": "MONEDA 812",
+                "CmnaOrigen": "SANTIAGO",
+                "CiudadOrigen": "SANTIAGO",
+                "Observacion": "Prueba \nSegundo"
+            },
+            "Receptor": {
+                "RUTRecep": "78000000-7",
+                "RznSocRecep": "CLIENTE DE EJEMPLO",
+                "CorreoRecpt": "EJEMPLO@EJEMPLO.cl",
+                "DirRecep": "DIRECCIÓN DE EJEMPLO",
+                "CmnaRecep": "SANTIAGO",
+                "CiudadRecep": "SANTIAGO"
+            },
+            "Totales": {
+                "MntNeto": "60000",
+                "MntExe": "0",
+                "TasaIVA": "19",
+                "IVA": "11400",
+                "MntTotal": "71400"
+            }
+        },
+        "DscRcgGlobal": {
+            "NroLinDR": "1",
+            "TpoMov": "D",
+            "GlosaDR": "DESCUENTO GLOBAL",
+            "TpoValor": "$",
+            "ValorDR": "40000"
+        },
+        "Detalle": [
+            {
+                "NroLinDet": "1",
+                "CdgItem": {
+                    "TpoCodigo": "INT1",
+                    "VlrCodigo": "COD-100"
+                },
+                "DescuentoPct": "0.00",
+                "DescuentoMonto": "0",
+                "NmbItem": "PRODUCTO DE EJEMPLO",
+                "QtyItem": "1",
+                "PrcItem": "100000",
+                "MontoItem": "100000",
+                "CodBodega": "CENTRAL"
+            }
+        ],
+        "Referencia": [
+            {
+                "NroLinRef": "1",
+                "TpoDocRef": "801",
+                "FolioRef": "2398-A33",
+                "FchRef": "2025-11-16"
+            },
+            {
+                "NroLinRef": "2",
+                "TpoDocRef": "52",
+                "FolioRef": "786",
+                "FchRef": "2025-11-19"
+            }
+        ]
+    }
+}

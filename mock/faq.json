@@ -1,0 +1,126 @@
+{
+  "faqs": [
+    {
+      "id": 1,
+      "tipo": "Documentos",
+      "nombre": "¿Cómo emitir una factura electrónica?",
+      "descripcion": "Ejemplo de estructura del documento.",
+      "detalle": {
+        "explicacion": "Puedes enviar la estructura en JSON o XML.",
+        "json_ejemplo": "{\n  \"Documento\": {\n    \"Encabezado\": {\n      \"IdDoc\": {\n        \"TipoDTE\": 33,\n        \"Folio\": 100\n      }\n    }\n  }\n}",
+        "xml_ejemplo": "<Documento>\n  <Encabezado>\n    <IdDoc>\n      <TipoDTE>33</TipoDTE>\n      <Folio>100</Folio>\n    </IdDoc>\n  </Encabezado>\n</Documento>"
+      }
+    },
+    {
+      "id": 2,
+      "tipo": "Integración",
+      "nombre": "¿Cómo autenticar mi sistema?",
+      "descripcion": "Ejemplo del nodo Sistema.",
+      "detalle": {
+        "explicacion": "Incluye credenciales codificadas en Base64.",
+        "json_ejemplo": "{\n  \"Sistema\": {\n    \"nombre\": \"demo\",\n    \"rut\": \"11111111-1\",\n    \"usuario\": \"USUARIO\",\n    \"clave\": \"BASE64\"\n  }\n}",
+        "xml_ejemplo": "<Sistema>\n  <nombre>demo</nombre>\n  <rut>11111111-1</rut>\n  <usuario>USUARIO</usuario>\n  <clave>BASE64</clave>\n</Sistema>"
+      }
+    },
+    {
+      "id": 3,
+      "tipo": "Documentos",
+      "nombre": "¿Qué tipos de documentos puedo emitir?",
+      "descripcion": "Lista de tipos de documentos soportados.",
+      "detalle": {
+        "explicacion": "DTEmite soporta múltiples tipos de documentos tributarios electrónicos según la normativa SII.",
+        "json_ejemplo": "{\n  \"TiposDTE\": [\n    {\n      \"codigo\": 33,\n      \"nombre\": \"Factura Electrónica\"\n    },\n    {\n      \"codigo\": 61,\n      \"nombre\": \"Nota de Crédito\"\n    },\n    {\n      \"codigo\": 56,\n      \"nombre\": \"Nota de Débito\"\n    }\n  ]\n}",
+        "xml_ejemplo": "<TiposDTE>\n  <Tipo codigo=\"33\">Factura Electrónica</Tipo>\n  <Tipo codigo=\"61\">Nota de Crédito</Tipo>\n  <Tipo codigo=\"56\">Nota de Débito</Tipo>\n</TiposDTE>"
+      }
+    },
+    {
+      "id": 4,
+      "tipo": "Validaciones",
+      "nombre": "¿Qué validaciones se realizan?",
+      "descripcion": "Validaciones automáticas del sistema.",
+      "detalle": {
+        "explicacion": "El sistema valida automáticamente todos los campos según la normativa SII antes de emitir el documento.",
+        "json_ejemplo": "{\n  \"validaciones\": {\n    \"rut\": \"Formato chileno válido\",\n    \"fechas\": \"Formato YYYY-MM-DD\",\n    \"montos\": \"Números positivos\",\n    \"campos_requeridos\": \"Todos los campos obligatorios\"\n  }\n}",
+        "xml_ejemplo": "<Validaciones>\n  <RUT>Formato chileno válido</RUT>\n  <Fechas>Formato YYYY-MM-DD</Fechas>\n  <Montos>Números positivos</Montos>\n  <CamposRequeridos>Todos los campos obligatorios</CamposRequeridos>\n</Validaciones>"
+      }
+    },
+    {
+      "id": 5,
+      "tipo": "Integración",
+      "nombre": "¿Cómo obtener credenciales de integración?",
+      "descripcion": "Proceso para obtener credenciales.",
+      "detalle": {
+        "explicacion": "Las credenciales se proporcionan al momento de contratar el servicio. Contacta con soporte para obtenerlas.",
+        "json_ejemplo": "{\n  \"credenciales\": {\n    \"nombre\": \"nombre_sistema\",\n    \"rut\": \"12345678-9\",\n    \"usuario\": \"usuario_integracion\",\n    \"clave\": \"clave_base64\"\n  }\n}",
+        "xml_ejemplo": "<Credenciales>\n  <nombre>nombre_sistema</nombre>\n  <rut>12345678-9</rut>\n  <usuario>usuario_integracion</usuario>\n  <clave>clave_base64</clave>\n</Credenciales>"
+      }
+    },
+    {
+      "id": 6,
+      "tipo": "Documentos",
+      "nombre": "¿Cómo agregar líneas de detalle?",
+      "descripcion": "Estructura de detalle del documento.",
+      "detalle": {
+        "explicacion": "Las líneas de detalle se agregan como un array dentro del nodo Detalle.",
+        "json_ejemplo": "{\n  \"Documento\": {\n    \"Detalle\": [\n      {\n        \"NroLinDet\": 1,\n        \"NmbItem\": \"Producto 1\",\n        \"QtyItem\": 2,\n        \"PrcItem\": 10000,\n        \"MontoItem\": 20000\n      },\n      {\n        \"NroLinDet\": 2,\n        \"NmbItem\": \"Producto 2\",\n        \"QtyItem\": 1,\n        \"PrcItem\": 5000,\n        \"MontoItem\": 5000\n      }\n    ]\n  }\n}",
+        "xml_ejemplo": "<Documento>\n  <Detalle>\n    <NroLinDet>1</NroLinDet>\n    <NmbItem>Producto 1</NmbItem>\n    <QtyItem>2</QtyItem>\n    <PrcItem>10000</PrcItem>\n    <MontoItem>20000</MontoItem>\n  </Detalle>\n  <Detalle>\n    <NroLinDet>2</NroLinDet>\n    <NmbItem>Producto 2</NmbItem>\n    <QtyItem>1</QtyItem>\n    <PrcItem>5000</PrcItem>\n    <MontoItem>5000</MontoItem>\n  </Detalle>\n</Documento>"
+      }
+    },
+    {
+      "id": 7,
+      "tipo": "Validaciones",
+      "nombre": "¿Qué hacer si recibo un error de validación?",
+      "descripcion": "Solución de errores comunes.",
+      "detalle": {
+        "explicacion": "Revisa el mensaje de error que incluye el campo específico y el motivo. Corrige el valor y vuelve a intentar.",
+        "json_ejemplo": "{\n  \"error\": {\n    \"codigo\": \"VALIDACION_ERROR\",\n    \"mensaje\": \"Campo RUT inválido\",\n    \"campo\": \"RUTEmisor\",\n    \"valor_recibido\": \"12345678\",\n    \"formato_esperado\": \"12345678-9\"\n  }\n}",
+        "xml_ejemplo": "<Error>\n  <codigo>VALIDACION_ERROR</codigo>\n  <mensaje>Campo RUT inválido</mensaje>\n  <campo>RUTEmisor</campo>\n  <valor_recibido>12345678</valor_recibido>\n  <formato_esperado>12345678-9</formato_esperado>\n</Error>"
+      }
+    },
+    {
+      "id": 8,
+      "tipo": "Integración",
+      "nombre": "¿Cuál es el endpoint de la API?",
+      "descripcion": "URL del servicio de integración.",
+      "detalle": {
+        "explicacion": "El endpoint principal para emisión de documentos es el siguiente.",
+        "json_ejemplo": "{\n  \"endpoint\": \"https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento\",\n  \"metodo\": \"POST\",\n  \"content_type\": \"application/json\"\n}",
+        "xml_ejemplo": "<Endpoint>\n  <url>https://sistema.dtemite.cl/sistema/Backend/WsMaster/ApiIntegracionController.php/Api/Documento</url>\n  <metodo>POST</metodo>\n  <content_type>application/json</content_type>\n</Endpoint>"
+      }
+    },
+    {
+      "id": 9,
+      "tipo": "Ejemplos",
+      "nombre": "Factura con sucursal, observación, descuento global y referencias",
+      "descripcion": "Emitir una factura agregando la sucursal, observación, descuento global, referenciando una bodega del sistema para realizar movimientos de stock de productos inventariables y agregando una referencia de orden de compra y guía de despacho.",
+      "detalle": {
+        "explicacion": "Este ejemplo muestra una Factura Electrónica (tipo 33) con montos netos, identificador de sucursal, observación, descuento global por monto, código de bodega (si el producto es inventariable en portal web, realizará movimiento de stock), referencia tipo 801 (orden de compra) y referencia tipo 52 (guía de despacho).",
+        "json_ejemplo": "{\n    \"Sistema\": {\n        \"nombre\": \"webbasico\",\n        \"rut\": \"29282726-1\",\n        \"usuario\": \"integrado_webbasico\",\n        \"clave\": \"d2ViYmFzaWNvMjAyMQ==\"\n    },\n    \"Documento\": {\n        \"Encabezado\": {\n            \"IdDoc\": {\n                \"TipoDTE\": \"33\",\n                \"Folio\": \"0\",\n                \"FchEmis\": \"2025-11-19\",\n                \"FchVenc\": \"2025-12-19\",\n                \"SucursalId\": \"1\"\n            },\n            \"Emisor\": {\n                \"RUTEmisor\": \"29282726-1\",\n                \"RznSocEmisor\": \"EMPRESA DE PRUEBA\",\n                \"GiroEmisor\": \"DESARROLLO DE SISTEMAS\",\n                \"DirOrigen\": \"MONEDA 812\",\n                \"CmnaOrigen\": \"SANTIAGO\",\n                \"CiudadOrigen\": \"SANTIAGO\",\n                \"Observacion\": \"Prueba \\nSegundo\"\n            },\n            \"Receptor\": {\n                \"RUTRecep\": \"78000000-7\",\n                \"RznSocRecep\": \"CLIENTE DE EJEMPLO\",\n                \"CorreoRecpt\": \"EJEMPLO@EJEMPLO.cl\",\n                \"DirRecep\": \"DIRECCIÓN DE EJEMPLO\",\n                \"CmnaRecep\": \"SANTIAGO\",\n                \"CiudadRecep\": \"SANTIAGO\"\n            },\n            \"Totales\": {\n                \"MntNeto\": \"60000\",\n                \"MntExe\": \"0\",\n                \"TasaIVA\": \"19\",\n                \"IVA\": \"11400\",\n                \"MntTotal\": \"71400\"\n            }\n        },\n        \"DscRcgGlobal\": {\n            \"NroLinDR\": \"1\",\n            \"TpoMov\": \"D\",\n            \"GlosaDR\": \"DESCUENTO GLOBAL\",\n            \"TpoValor\": \"$\",\n            \"ValorDR\": \"40000\"\n        },\n        \"Detalle\": [\n            {\n                \"NroLinDet\": \"1\",\n                \"CdgItem\": {\n                    \"TpoCodigo\": \"INT1\",\n                    \"VlrCodigo\": \"COD-100\"\n                },\n                \"DescuentoPct\": \"0.00\",\n                \"DescuentoMonto\": \"0\",\n                \"NmbItem\": \"PRODUCTO DE EJEMPLO\",\n                \"QtyItem\": \"1\",\n                \"PrcItem\": \"100000\",\n                \"MontoItem\": \"100000\",\n                \"CodBodega\": \"CENTRAL\"\n            }\n        ],\n        \"Referencia\": [\n            {\n                \"NroLinRef\": \"1\",\n                \"TpoDocRef\": \"801\",\n                \"FolioRef\": \"2398-A33\",\n                \"FchRef\": \"2025-11-16\"\n            },\n            {\n                \"NroLinRef\": \"2\",\n                \"TpoDocRef\": \"52\",\n                \"FolioRef\": \"786\",\n                \"FchRef\": \"2025-11-19\"\n            }\n        ]\n    }\n}",
+        "xml_ejemplo": "<DTE>\n\t<Documento>\n\t\t<Encabezado>\n\t\t\t<IdDoc>\n\t\t\t\t<TipoDTE>33</TipoDTE>\n\t\t\t\t<Folio>0</Folio>\n\t\t\t\t<FchEmis>2025-11-19</FchEmis>\n\t\t\t\t<FchVenc>2025-12-19</FchVenc>\n\t\t\t\t<SucursalId>1</SucursalId>\n\t\t\t</IdDoc>\n\t\t\t<Emisor>\n\t\t\t\t<RUTEmisor>29282726-1</RUTEmisor>\n\t\t\t\t<RznSocEmisor>EMPRESA DE PRUEBA</RznSocEmisor>\n\t\t\t\t<GiroEmisor>DESARROLLO DE SISTEMAS</GiroEmisor>\n\t\t\t\t<DirOrigen>MONEDA 812</DirOrigen>\n\t\t\t\t<CmnaOrigen>SANTIAGO</CmnaOrigen>\n\t\t\t\t<CiudadOrigen>SANTIAGO</CiudadOrigen>\n\t\t\t\t<Observacion>Prueba observación</Observacion>\n\t\t\t</Emisor>\n\t\t\t<Receptor>\n\t\t\t\t<RUTRecep>78000000-7</RUTRecep>\n\t\t\t\t<RznSocRecep>CLIENTE DE EJEMPLO</RznSocRecep>\n\t\t\t\t<GiroRecep>GIRO DE EJEMPLO</GiroRecep>\n\t\t\t\t<DirRecep>DIRECCIÓN DE EJEMPLO</DirRecep>\n\t\t\t\t<CmnaRecep>SANTIAGO</CmnaRecep>\n\t\t\t\t<CiudadRecep>SANTIAGO</CiudadRecep>\n\t\t\t\t<CorreoRecep>EJEMPLO@EJEMPLO.cl</CorreoRecep>\n\t\t\t</Receptor>\n\t\t\t<Totales>\n\t\t\t\t<MntNeto>60000</MntNeto>\n\t\t\t\t<MntExe>0</MntExe>\n\t\t\t\t<IVA>11400</IVA>\n\t\t\t\t<TasaIVA>19</TasaIVA>\n\t\t\t\t<MntTotal>71400</MntTotal>\n\t\t\t</Totales>\n\t\t</Encabezado>\n\t\t<DscRcgGlobal>\n\t\t\t<NroLinDR>1</NroLinDR>\n\t\t\t<TpoMov>D</TpoMov>\n\t\t\t<TpoValor>$</TpoValor>\n\t\t\t<ValorDR>40000</ValorDR>\n\t\t</DscRcgGlobal>\n\t\t<Detalle>\n\t\t\t<NroLinDet>1</NroLinDet>\n\t\t\t<UnmItem>UNIDAD</UnmItem>\n\t\t\t<CdgItem>\n\t\t\t\t<TpoCodigo>INT1</TpoCodigo>\n\t\t\t\t<VlrCodigo>COD-100</VlrCodigo>\n\t\t\t</CdgItem>\n\t\t\t<NmbItem>PRODUCTO DE EJEMPLO</NmbItem>\n\t\t\t<QtyItem>1</QtyItem>\n\t\t\t<PrcItem>100000</PrcItem>\n\t\t\t<MontoItem>100000</MontoItem>\n\t\t</Detalle>\n\t\t<Referencia>\n\t\t\t<NroLinRef>1</NroLinRef>\n\t\t\t<TpoDocRef>801</TpoDocRef>\n\t\t\t<FolioRef>2398-A33</FolioRef>\n\t\t\t<FchRef>2025-11-16</FchRef>\n\t\t</Referencia>\n\t\t<Referencia>\n\t\t\t<NroLinRef>2</NroLinRef>\n\t\t\t<TpoDocRef>52</TpoDocRef>\n\t\t\t<FolioRef>786</FolioRef>\n\t\t\t<FchRef>2025-11-19</FchRef>\n\t\t</Referencia>\n\t</Documento>\n</DTE>"
+      }
+    },
+    {
+      "id": 10,
+      "tipo": "Ejemplos",
+      "nombre": "Factura con descuento a nivel de detalle y referencia a orden de compra",
+      "descripcion": "Emitir una factura que tenga descuento a nivel de detalle de productos, referenciando una orden de compra.",
+      "detalle": {
+        "explicacion": "Este ejemplo muestra una Factura Electrónica (tipo 33) con montos netos, descuento por detalle de productos y referencia tipo 801 (orden de compra).",
+        "json_ejemplo": "{\n    \"Sistema\": {\n        \"nombre\": \"webbasico\",\n        \"rut\": \"29282726-1\",\n        \"usuario\": \"integrado_webbasico\",\n        \"clave\": \"d2ViYmFzaWNvMjAyMQ==\"\n    },\n    \"Documento\": {\n        \"Encabezado\": {\n            \"IdDoc\": {\n                \"TipoDTE\": \"33\",\n                \"Folio\": \"0\",\n                \"FchEmis\": \"2025-11-19\",\n                \"FchVenc\": \"2025-12-19\",\n                \"SucursalId\": \"1\"\n            },\n            \"Emisor\": {\n                \"RUTEmisor\": \"29282726-1\",\n                \"RznSocEmisor\": \"EMPRESA DE PRUEBA\",\n                \"GiroEmisor\": \"DESARROLLO DE SISTEMAS\",\n                \"DirOrigen\": \"MONEDA 812\",\n                \"CmnaOrigen\": \"SANTIAGO\",\n                \"CiudadOrigen\": \"SANTIAGO\",\n                \"Observacion\": \"Prueba observación\"\n            },\n            \"Receptor\": {\n                \"RUTRecep\": \"78000000-7\",\n                \"RznSocRecep\": \"CLIENTE DE EJEMPLO\",\n                \"CorreoRecpt\": \"EJEMPLO@EJEMPLO.cl\",\n                \"DirRecep\": \"DIRECCIÓN DE EJEMPLO\",\n                \"CmnaRecep\": \"SANTIAGO\",\n                \"CiudadRecep\": \"SANTIAGO\"\n            },\n            \"Totales\": {\n                \"MntNeto\": \"90000\",\n                \"MntExe\": \"0\",\n                \"TasaIVA\": \"19\",\n                \"IVA\": \"17100\",\n                \"MntTotal\": \"107100\"\n            }\n        },\n        \"Detalle\": [\n            {\n                \"NroLinDet\": \"1\",\n                \"CdgItem\": {\n                    \"TpoCodigo\": \"INT1\",\n                    \"VlrCodigo\": \"COD-100\"\n                },\n                \"DescuentoPct\": \"10\",\n                \"DescuentoMonto\": \"10000\",\n                \"NmbItem\": \"PRODUCTO DE EJEMPLO\",\n                \"QtyItem\": \"1\",\n                \"PrcItem\": \"100000\",\n                \"MontoItem\": \"90000\"\n            }\n        ],\n        \"Referencia\": [\n            {\n                \"NroLinRef\": \"1\",\n                \"TpoDocRef\": \"801\",\n                \"FolioRef\": \"2398-B33\",\n                \"FchRef\": \"2025-11-16\"\n            }\n        ]\n    }\n}",
+        "xml_ejemplo": "<DTE>\n\t<Documento>\n\t\t<Encabezado>\n\t\t\t<IdDoc>\n\t\t\t\t<TipoDTE>33</TipoDTE>\n\t\t\t\t<Folio>0</Folio>\n\t\t\t\t<FchEmis>2025-11-19</FchEmis>\n\t\t\t\t<FchVenc>2025-12-19</FchVenc>\n\t\t\t\t<SucursalId>1</SucursalId>\n\t\t\t</IdDoc>\n\t\t\t<Emisor>\n\t\t\t\t<RUTEmisor>29282726-1</RUTEmisor>\n\t\t\t\t<RznSocEmisor>EMPRESA DE PRUEBA</RznSocEmisor>\n\t\t\t\t<GiroEmisor>DESARROLLO DE SISTEMAS</GiroEmisor>\n\t\t\t\t<DirOrigen>MONEDA 812</DirOrigen>\n\t\t\t\t<CmnaOrigen>SANTIAGO</CmnaOrigen>\n\t\t\t\t<CiudadOrigen>SANTIAGO</CiudadOrigen>\n\t\t\t\t<Observacion>Prueba observación</Observacion>\n\t\t\t</Emisor>\n\t\t\t<Receptor>\n\t\t\t\t<RUTRecep>78000000-7</RUTRecep>\n\t\t\t\t<RznSocRecep>CLIENTE DE EJEMPLO</RznSocRecep>\n\t\t\t\t<GiroRecep>GIRO DE EJEMPLO</GiroRecep>\n\t\t\t\t<DirRecep>DIRECCIÓN DE EJEMPLO</DirRecep>\n\t\t\t\t<CmnaRecep>SANTIAGO</CmnaRecep>\n\t\t\t\t<CiudadRecep>SANTIAGO</CiudadRecep>\n\t\t\t\t<CorreoRecep>EJEMPLO@EJEMPLO.cl</CorreoRecep>\n\t\t\t</Receptor>\n\t\t\t<Totales>\n\t\t\t\t<MntNeto>90000</MntNeto>\n\t\t\t\t<MntExe>0</MntExe>\n\t\t\t\t<IVA>17100</IVA>\n\t\t\t\t<TasaIVA>19</TasaIVA>\n\t\t\t\t<MntTotal>107100</MntTotal>\n\t\t\t</Totales>\n\t\t</Encabezado>\n\t\t<Detalle>\n\t\t\t<NroLinDet>1</NroLinDet>\n\t\t\t<UnmItem>UNIDAD</UnmItem>\n\t\t\t<CdgItem>\n\t\t\t\t<TpoCodigo>INT1</TpoCodigo>\n\t\t\t\t<VlrCodigo>COD-100</VlrCodigo>\n\t\t\t</CdgItem>\n\t\t\t<DescuentoPct>10</DescuentoPct>\n\t\t\t<DescuentoMonto>10000</DescuentoMonto>\n\t\t\t<NmbItem>PRODUCTO DE EJEMPLO</NmbItem>\n\t\t\t<QtyItem>1</QtyItem>\n\t\t\t<PrcItem>100000</PrcItem>\n\t\t\t<MontoItem>90000</MontoItem>\n\t\t</Detalle>\n\t\t<Referencia>\n\t\t\t<NroLinRef>1</NroLinRef>\n\t\t\t<TpoDocRef>801</TpoDocRef>\n\t\t\t<FolioRef>2398-B33</FolioRef>\n\t\t\t<FchRef>2025-11-16</FchRef>\n\t\t</Referencia>\n\t</Documento>\n</DTE>"
+      }
+    },
+    {
+      "id": 11,
+      "tipo": "Ejemplos",
+      "nombre": "Nota de crédito para corregir monto del documento referenciado",
+      "descripcion": "Emitir una nota de crédito para corregir el monto del documento que referencia.",
+      "detalle": {
+        "explicacion": "Este ejemplo muestra una Nota de Crédito (tipo 61) con montos netos que corrige el monto del documento de referencia.",
+        "json_ejemplo": "{\n    \"Sistema\": {\n        \"nombre\": \"webbasico\",\n        \"rut\": \"29282726-1\",\n        \"usuario\": \"integrado_webbasico\",\n        \"clave\": \"d2ViYmFzaWNvMjAyMQ==\"\n    },\n    \"Documento\": {\n        \"Encabezado\": {\n            \"IdDoc\": {\n                \"TipoDTE\": \"61\",\n                \"Folio\": \"0\",\n                \"FchEmis\": \"2025-11-19\",\n                \"FchVenc\": \"2025-11-19\"\n            },\n            \"Emisor\": {\n                \"RUTEmisor\": \"29282726-1\",\n                \"RznSocEmisor\": \"EMPRESA DE PRUEBA\",\n                \"GiroEmisor\": \"DESARROLLO DE SISTEMAS\",\n                \"DirOrigen\": \"MONEDA 812\",\n                \"CmnaOrigen\": \"SANTIAGO\",\n                \"CiudadOrigen\": \"SANTIAGO\",\n                \"Observacion\": \"Prueba observación\"\n            },\n            \"Receptor\": {\n                \"RUTRecep\": \"78000000-7\",\n                \"RznSocRecep\": \"CLIENTE DE EJEMPLO\",\n                \"CorreoRecpt\": \"EJEMPLO@EJEMPLO.cl\",\n                \"DirRecep\": \"DIRECCIÓN DE EJEMPLO\",\n                \"CmnaRecep\": \"SANTIAGO\",\n                \"CiudadRecep\": \"SANTIAGO\"\n            },\n            \"Totales\": {\n                \"MntNeto\": \"10000\",\n                \"MntExe\": \"0\",\n                \"TasaIVA\": \"19\",\n                \"IVA\": \"1900\",\n                \"MntTotal\": \"11900\"\n            }\n        },\n        \"Detalle\": [\n            {\n                \"NroLinDet\": \"1\",\n                \"CdgItem\": {\n                    \"TpoCodigo\": \"INT1\",\n                    \"VlrCodigo\": \"COD-100\"\n                },\n                \"NmbItem\": \"PRODUCTO DE EJEMPLO\",\n                \"QtyItem\": \"1\",\n                \"PrcItem\": \"10000\",\n                \"MontoItem\": \"10000\"\n            }\n        ],\n        \"Referencia\": [\n            {\n                \"NroLinRef\": \"1\",\n                \"TpoDocRef\": \"33\",\n                \"FolioRef\": \"1714\",\n                \"FchRef\": \"2025-11-19\",\n                \"CodRef\": \"3\",\n                \"RazonRef\": \"Corrige Montos\"\n            }\n        ]\n    }\n}",
+        "xml_ejemplo": "<DTE>\n\t<Documento>\n\t\t<Encabezado>\n\t\t\t<IdDoc>\n\t\t\t\t<TipoDTE>61</TipoDTE>\n\t\t\t\t<Folio>0</Folio>\n\t\t\t\t<FchEmis>2025-11-19</FchEmis>\n\t\t\t\t<FchVenc>2025-11-19</FchVenc>\n\t\t\t</IdDoc>\n\t\t\t<Emisor>\n\t\t\t\t<RUTEmisor>29282726-1</RUTEmisor>\n\t\t\t\t<RznSocEmisor>EMPRESA DE PRUEBA</RznSocEmisor>\n\t\t\t\t<GiroEmisor>DESARROLLO DE SISTEMAS</GiroEmisor>\n\t\t\t\t<DirOrigen>MONEDA 812</DirOrigen>\n\t\t\t\t<CmnaOrigen>SANTIAGO</CmnaOrigen>\n\t\t\t\t<CiudadOrigen>SANTIAGO</CiudadOrigen>\n\t\t\t\t<Observacion>Prueba observación</Observacion>\n\t\t\t</Emisor>\n\t\t\t<Receptor>\n\t\t\t\t<RUTRecep>78000000-7</RUTRecep>\n\t\t\t\t<RznSocRecep>CLIENTE DE EJEMPLO</RznSocRecep>\n\t\t\t\t<GiroRecep>GIRO DE EJEMPLO</GiroRecep>\n\t\t\t\t<DirRecep>DIRECCIÓN DE EJEMPLO</DirRecep>\n\t\t\t\t<CmnaRecep>SANTIAGO</CmnaRecep>\n\t\t\t\t<CiudadRecep>SANTIAGO</CiudadRecep>\n\t\t\t\t<CorreoRecep>EJEMPLO@EJEMPLO.cl</CorreoRecep>\n\t\t\t</Receptor>\n\t\t\t<Totales>\n\t\t\t\t<MntNeto>10000</MntNeto>\n\t\t\t\t<MntExe>0</MntExe>\n\t\t\t\t<IVA>1900</IVA>\n\t\t\t\t<TasaIVA>19</TasaIVA>\n\t\t\t\t<MntTotal>11900</MntTotal>\n\t\t\t</Totales>\n\t\t</Encabezado>\n\t\t<Detalle>\n\t\t\t<NroLinDet>1</NroLinDet>\n\t\t\t<UnmItem>UNIDAD</UnmItem>\n\t\t\t<CdgItem>\n\t\t\t\t<TpoCodigo>INT1</TpoCodigo>\n\t\t\t\t<VlrCodigo>COD-100</VlrCodigo>\n\t\t\t</CdgItem>\n\t\t\t<NmbItem>PRODUCTO DE EJEMPLO</NmbItem>\n\t\t\t<QtyItem>1</QtyItem>\n\t\t\t<PrcItem>10000</PrcItem>\n\t\t\t<MontoItem>10000</MontoItem>\n\t\t</Detalle>\n\t\t<Referencia>\n\t\t\t<NroLinRef>1</NroLinRef>\n\t\t\t<TpoDocRef>33</TpoDocRef>\n\t\t\t<FolioRef>1714</FolioRef>\n\t\t\t<FchRef>2025-11-19</FchRef>\n\t\t\t<CodRef>3</CodRef>\n\t\t\t<RazonRef>Corrige Montos</RazonRef>\n\t\t</Referencia>\n\t</Documento>\n</DTE>"
+      }
+    }
+  ]
+}
+
