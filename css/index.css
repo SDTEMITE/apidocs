@@ -2357,15 +2357,7 @@
             white-space: pre;
         }
         
-        @keyframes highlightPulse {
-            0% {
-                background: rgba(222, 0, 126, 0.3);
-            }
-            100% {
-                background: linear-gradient(90deg, rgba(222, 0, 126, 0.15) 0%, rgba(222, 0, 126, 0.05) 100%);
-            }
-        }
-        
+      
         /* Asegurar que el resaltado funcione con highlight.js */
         .json-viewer-code .json-highlighted-line .hljs-keyword,
         .json-viewer-code .json-highlighted-line .hljs-string,
