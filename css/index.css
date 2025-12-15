@@ -354,7 +354,7 @@
             font-size: 24px;
             cursor: pointer;
             display: none;
-            z-index: 1000;
+            z-index: 10000;
             box-shadow: 0 6px 24px rgba(222, 0, 126, 0.4);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             font-weight: 600;
@@ -1023,7 +1023,7 @@
             border-radius: 50%;
             font-size: 24px;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 10000;
             box-shadow: 0 8px 25px rgba(222, 0, 126, 0.3);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
@@ -1054,7 +1054,7 @@
             border-radius: 50%;
             font-size: 24px;
             cursor: pointer;
-            z-index: 1000;
+            z-index: 10000;
             box-shadow: 0 8px 25px rgba(222, 0, 126, 0.3);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;

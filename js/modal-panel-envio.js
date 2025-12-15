@@ -2188,6 +2188,10 @@ function initializeShippingModal() {
   if (panelEnvioBtn) {
     panelEnvioBtn.addEventListener('click', function() {
       console.log('📦 Abriendo modal de panel de envío');
+      // Cerrar el panel visor JSON/XML si está abierto
+      if (typeof window.closeJsonModal === 'function') {
+        window.closeJsonModal();
+      }
       modalOverlay.classList.add('show');
       document.body.style.overflow = 'hidden';
       
