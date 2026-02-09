@@ -2808,7 +2808,8 @@ function updateSoapXml() {
     const selectedTemplate = modalDocumentTemplate.value;
     if (templates[selectedTemplate] && templates[selectedTemplate].type === 'soap') {
       const templateData = templates[selectedTemplate];
-      
+      const method = modalSoapMethod ? modalSoapMethod.value : templateData.method;
+
       // Actualizar las credenciales en los datos de la plantilla
       if (templateData.data.Sistema) {
         templateData.data.Sistema.nombre = document.getElementById('modalSistema').value;
@@ -2816,15 +2817,15 @@ function updateSoapXml() {
         templateData.data.Sistema.usuario = document.getElementById('modalUsuario').value;
         templateData.data.Sistema.clave = document.getElementById('modalClave').value;
       }
+      if (templateData.data.Documento && templateData.data.Documento.Encabezado && templateData.data.Documento.Encabezado.Emisor) {
+        templateData.data.Documento.Encabezado.Emisor.RUTEmisor = document.getElementById('modalRut').value;
+      }
+
+      // Regenerar XML: para Emision mostrar DTE (formato documentación), resto igual
+      const xmlContent = method === 'Emision'
+        ? (typeof convertJsonToDteXml === 'function' ? convertJsonToDteXml(templateData.data) : createSoapEnvelopeByMethod(templateData.data, method, templateData.data.Parametros || {}))
+        : createSoapEnvelopeByMethod(templateData.data, method, templateData.data.Parametros || {});
       
-      // Regenerar el XML con las credenciales actualizadas
-      const xmlContent = createSoapEnvelopeByMethod(
-        templateData.data, 
-        modalSoapMethod ? modalSoapMethod.value : templateData.method, 
-        templateData.data.Parametros || {}
-      );
-      
-      // Actualizar el textarea con el XML modificado
       modalJsonData.value = xmlContent;
     }
     
@@ -2988,8 +2989,10 @@ function loadModalTemplate(template = null) {
     updateModalTextareaTitle(templateData.type);
     
     if (templateData.type === 'soap') {
-      // Para SOAP, mostrar el XML que se enviará
-      const xmlContent = createSoapEnvelopeByMethod(templateData.data, templateData.method, templateData.data.Parametros || {});
+      // Para SOAP Emision: mostrar XML DTE en formato documentación (Visor); otros métodos: payload completo
+      const xmlContent = templateData.method === 'Emision'
+        ? convertJsonToDteXml(templateData.data)
+        : createSoapEnvelopeByMethod(templateData.data, templateData.method, templateData.data.Parametros || {});
       document.getElementById('modalJsonData').value = xmlContent;
       
       // Actualizar el método SOAP seleccionado
@@ -3079,8 +3082,18 @@ async function sendModalRequest() {
       const finalJsonData = JSON.stringify(jsonData);
       response = await sendRestRequest(modalEndpoint, finalJsonData);
     } else {
-      // Para SOAP, usar el XML directamente
-      response = await sendSoapRequest(modalEndpoint, modalDataString, modalSoapMethod, {});
+      // Para SOAP: si el visor tiene XML DTE (Emision), envolver con credenciales del modal
+      let soapBody = modalDataString;
+      if (modalSoapMethod === 'Emision' && modalDataString.trim().startsWith('<DTE>')) {
+        const sistema = document.getElementById('modalSistema') ? document.getElementById('modalSistema').value : '';
+        const rut = document.getElementById('modalRut') ? document.getElementById('modalRut').value : '';
+        const usuario = document.getElementById('modalUsuario') ? document.getElementById('modalUsuario').value : '';
+        const clave = document.getElementById('modalClave') ? document.getElementById('modalClave').value : '';
+        soapBody = typeof buildSoapEmisionBodyFromDteXml === 'function'
+          ? buildSoapEmisionBodyFromDteXml(modalDataString, sistema, rut, usuario, clave)
+          : modalDataString;
+      }
+      response = await sendSoapRequest(modalEndpoint, soapBody, modalSoapMethod, {});
     }
     
     const responseText = await response.text();

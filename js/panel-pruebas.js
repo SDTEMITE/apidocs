@@ -44,16 +44,16 @@ const templates = {
             "CdgIntRecep": "1000215-220",
             "RznSocRecep": "CLIENTE DE PRUEBA",
             "CorreoRecep": "prueba@dtemite.cl",
-            "Contacto": "correo@prueba.cl",
             "DirRecep": "CALLE A 50",
             "CmnaRecep": "SANTIAGO",
             "CiudadRecep": "SANTIAGO"
           },
           "Totales": {
-            "MntNeto": "10000",
+            "MntNeto": "71553",
             "MntExe": "0",
-            "IVA": "1900",
-            "MntTotal": "11900"
+            "TasaIVA": "19",
+            "IVA": "13595",
+            "MntTotal": "85148"
           }
         },
         "Detalle": [
@@ -64,10 +64,50 @@ const templates = {
               "VlrCodigo": "WWW"
             },
             "NmbItem": "Descripción de producto WWW",
+            "DscItem": "Serie ABC",
+            "QtyItem": "2",
+            "UnmdItem": "M3",
+            "PrcItem": "45305",
+            "MontoItem": "90610"
+          },
+          {
+            "NroLinDet": "2",
+            "CdgItem": {
+              "TpoCodigo": "INT1",
+              "VlrCodigo": "XXX"
+            },
+            "NmbItem": "Descripción de producto XXX",
             "QtyItem": "1",
-            "PrcItem": "11900",
-            "MontoItem": "11900"
+            "UnmdItem": "M3",
+            "PrcItem": "4000",
+            "MontoItem": "4000"
           }
+        ],
+        "DscRcgGlobal": [
+          {
+            "NroLinDR": "1",
+            "TpoMov": "D",
+            "TpoValor": "%",
+            "ValorDR": "10",
+            "GlosaDR": "Descuento por volumen"
+          }
+        ],
+        "Referencia": [
+          {
+            "NroLinRef": "1",
+            "TpoDocRef": "801",
+            "FolioRef": "4505421654",
+            "FchRef": "2024-01-15",
+            "CodRef": "0",
+            "RazonRef": "ORDEN DE COMPRA"
+          }
+        ]
+      },
+      "Adicional": {
+        "NodosA": [
+          { "valor": "Vendedor: Juan Pérez" },
+          { "valor": "Teléfono: +56 9 1234 5678" },
+          { "valor": "Condición de pago: 30 días" }
         ]
       }
     }
@@ -87,6 +127,7 @@ const templates = {
           "IdDoc": {
             "TipoDTE": "61",
             "Folio": "0",
+            "MntBruto": "2",
             "FchEmis": "2024-01-20",
             "FchVenc": "2024-01-20"
           },
@@ -102,17 +143,17 @@ const templates = {
             "RUTRecep": "76399744-8",
             "CdgIntRecep": "1000215-220",
             "RznSocRecep": "CLIENTE DE PRUEBA",
-            "CorreoRecpt": "prueba@dtemite.cl",
-            "Contacto": "correo@prueba.cl",
+            "CorreoRecep": "prueba@dtemite.cl",
             "DirRecep": "CALLE A 50",
             "CmnaRecep": "SANTIAGO",
             "CiudadRecep": "SANTIAGO"
           },
           "Totales": {
-            "MntNeto": "10034",
+            "MntNeto": "71553",
             "MntExe": "0",
-            "IVA": "1906",
-            "MntTotal": "11940"
+            "TasaIVA": "19",
+            "IVA": "13595",
+            "MntTotal": "85148"
           }
         },
         "Detalle": [
@@ -123,20 +164,29 @@ const templates = {
               "VlrCodigo": "WWW"
             },
             "NmbItem": "Descripción de producto WWW",
-            "QtyItem": "1",
-            "PrcItem": "10034",
-            "MontoItem": "10034"
+            "DscItem": "Serie ABC",
+            "QtyItem": "2",
+            "UnmdItem": "M3",
+            "PrcItem": "45305",
+            "MontoItem": "90610"
           }
         ],
+        "DscRcgGlobal": [],
         "Referencia": [
           {
             "NroLinRef": "1",
-            "TpoDocRef": "30",
+            "TpoDocRef": "33",
             "FolioRef": "41139",
-            "FchRef": "2007-06-29",
+            "FchRef": "2024-01-15",
             "CodRef": "1",
             "RazonRef": "Anula Documento Ref"
           }
+        ]
+      },
+      "Adicional": {
+        "NodosA": [
+          { "valor": "Vendedor: Juan Pérez" },
+          { "valor": "Condición de pago: 30 días" }
         ]
       }
     }
@@ -156,6 +206,7 @@ const templates = {
           "IdDoc": {
             "TipoDTE": "39",
             "Folio": "0",
+            "MntBruto": "2",
             "FchEmis": "2024-01-20",
             "FchVenc": "2024-01-26"
           },
@@ -172,16 +223,16 @@ const templates = {
             "CdgIntRecep": "1000215-220",
             "RznSocRecep": "CLIENTE DE PRUEBA",
             "CorreoRecep": "prueba@dtemite.cl",
-            "Contacto": "correo@prueba.cl",
             "DirRecep": "CALLE A 50",
             "CmnaRecep": "SANTIAGO",
             "CiudadRecep": "SANTIAGO"
           },
           "Totales": {
-            "MntNeto": "10000",
+            "MntNeto": "71553",
             "MntExe": "0",
-            "IVA": "1900",
-            "MntTotal": "11900"
+            "TasaIVA": "19",
+            "IVA": "13595",
+            "MntTotal": "85148"
           }
         },
         "Detalle": [
@@ -192,10 +243,28 @@ const templates = {
               "VlrCodigo": "WWW"
             },
             "NmbItem": "Descripción de producto WWW",
-            "QtyItem": "1",
-            "PrcItem": "11900",
-            "MontoItem": "11900"
+            "DscItem": "Serie ABC",
+            "QtyItem": "2",
+            "UnmdItem": "M3",
+            "PrcItem": "45305",
+            "MontoItem": "90610"
           }
+        ],
+        "DscRcgGlobal": [
+          {
+            "NroLinDR": "1",
+            "TpoMov": "D",
+            "TpoValor": "%",
+            "ValorDR": "10",
+            "GlosaDR": "Descuento por volumen"
+          }
+        ],
+        "Referencia": []
+      },
+      "Adicional": {
+        "NodosA": [
+          { "valor": "Vendedor: Juan Pérez" },
+          { "valor": "Condición de pago: 30 días" }
         ]
       }
     }
@@ -235,16 +304,16 @@ const templates = {
             "CdgIntRecep": "1000215-220",
             "RznSocRecep": "CLIENTE DE PRUEBA",
             "CorreoRecep": "prueba@dtemite.cl",
-            "Contacto": "correo@prueba.cl",
             "DirRecep": "CALLE A 50",
             "CmnaRecep": "SANTIAGO",
             "CiudadRecep": "SANTIAGO"
           },
           "Totales": {
-            "MntNeto": "10000",
+            "MntNeto": "71553",
             "MntExe": "0",
-            "IVA": "1900",
-            "MntTotal": "11900"
+            "TasaIVA": "19",
+            "IVA": "13595",
+            "MntTotal": "85148"
           }
         },
         "Detalle": [
@@ -255,11 +324,15 @@ const templates = {
               "VlrCodigo": "WWW"
             },
             "NmbItem": "Descripción de producto WWW",
-            "QtyItem": "1",
-            "PrcItem": "11900",
-            "MontoItem": "11900"
+            "DscItem": "Serie ABC",
+            "QtyItem": "2",
+            "UnmdItem": "M3",
+            "PrcItem": "45305",
+            "MontoItem": "90610"
           }
-        ]
+        ],
+        "DscRcgGlobal": [],
+        "Referencia": []
       }
     }
   },
@@ -366,8 +439,10 @@ function loadTemplate(template = null) {
     updateTextareaTitle(templateData.type);
     
     if (templateData.type === 'soap') {
-      // Para SOAP, mostrar el XML que se enviará
-      const xmlContent = createSoapEnvelopeByMethod(templateData.data, templateData.method, templateData.data.Parametros || {});
+      // Para SOAP Emision: mostrar XML DTE en formato documentación (Visor); otros métodos: payload completo
+      const xmlContent = templateData.method === 'Emision'
+        ? convertJsonToDteXml(templateData.data)
+        : createSoapEnvelopeByMethod(templateData.data, templateData.method, templateData.data.Parametros || {});
       document.getElementById('jsonData').value = xmlContent;
       
       // Actualizar el método SOAP seleccionado
@@ -645,6 +720,117 @@ function createSoapEnvelope(jsonData) {
 }
 
 /**
+ * Convierte el JSON del documento al formato XML DTE (estructura según documentación)
+ * @param {Object} jsonData - Objeto con Documento y Adicional
+ * @returns {string} - XML DTE formateado (raíz DTE, Documento, Adicional)
+ */
+function convertJsonToDteXml(jsonData) {
+  const doc = jsonData.Documento || {};
+  const enc = doc.Encabezado || {};
+  const idDoc = enc.IdDoc || {};
+  const emisor = enc.Emisor || {};
+  const receptor = enc.Receptor || {};
+  const totales = enc.Totales || {};
+  const detalleList = Array.isArray(doc.Detalle) ? doc.Detalle : [];
+  const dscRcgList = Array.isArray(doc.DscRcgGlobal) ? doc.DscRcgGlobal : [];
+  const refList = Array.isArray(doc.Referencia) ? doc.Referencia : [];
+  const adicional = jsonData.Adicional || {};
+  const nodosA = Array.isArray(adicional.NodosA) ? adicional.NodosA : [];
+  const t = '\t';
+  const esc = (v) => (v == null || v === '') ? '' : String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+
+  let out = '<DTE>\n';
+  out += t + '<Documento>\n';
+  out += t + t + '<Encabezado>\n';
+  out += t + t + t + '<IdDoc>\n';
+  out += t + t + t + t + '<TipoDTE>' + esc(idDoc.TipoDTE) + '</TipoDTE>\n';
+  out += t + t + t + t + '<Folio>' + esc(idDoc.Folio) + '</Folio>\n';
+  if (idDoc.MntBruto != null && idDoc.MntBruto !== '') out += t + t + t + t + '<MntBruto>' + esc(idDoc.MntBruto) + '</MntBruto>\n';
+  out += t + t + t + t + '<FchEmis>' + esc(idDoc.FchEmis) + '</FchEmis>\n';
+  out += t + t + t + t + '<FchVenc>' + esc(idDoc.FchVenc) + '</FchVenc>\n';
+  if (idDoc.SucursalId != null && idDoc.SucursalId !== '') out += t + t + t + t + '<SucursalId>' + esc(idDoc.SucursalId) + '</SucursalId>\n';
+  out += t + t + t + '</IdDoc>\n';
+  out += t + t + t + '<Emisor>\n';
+  out += t + t + t + t + '<RUTEmisor>' + esc(emisor.RUTEmisor) + '</RUTEmisor>\n';
+  out += t + t + t + t + '<RznSocEmisor>' + esc(emisor.RznSocEmisor) + '</RznSocEmisor>\n';
+  out += t + t + t + t + '<GiroEmisor>' + esc(emisor.GiroEmisor) + '</GiroEmisor>\n';
+  out += t + t + t + t + '<DirOrigen>' + esc(emisor.DirOrigen) + '</DirOrigen>\n';
+  out += t + t + t + t + '<CmnaOrigen>' + esc(emisor.CmnaOrigen) + '</CmnaOrigen>\n';
+  out += t + t + t + t + '<CiudadOrigen>' + esc(emisor.CiudadOrigen) + '</CiudadOrigen>\n';
+  if (emisor.Observacion != null && emisor.Observacion !== '') out += t + t + t + t + '<Observacion>' + esc(emisor.Observacion) + '</Observacion>\n';
+  out += t + t + t + '</Emisor>\n';
+  out += t + t + t + '<Receptor>\n';
+  out += t + t + t + t + '<RUTRecep>' + esc(receptor.RUTRecep) + '</RUTRecep>\n';
+  out += t + t + t + t + '<RznSocRecep>' + esc(receptor.RznSocRecep) + '</RznSocRecep>\n';
+  if (receptor.GiroRecep != null && receptor.GiroRecep !== '') out += t + t + t + t + '<GiroRecep>' + esc(receptor.GiroRecep) + '</GiroRecep>\n';
+  out += t + t + t + t + '<DirRecep>' + esc(receptor.DirRecep) + '</DirRecep>\n';
+  out += t + t + t + t + '<CmnaRecep>' + esc(receptor.CmnaRecep) + '</CmnaRecep>\n';
+  out += t + t + t + t + '<CiudadRecep>' + esc(receptor.CiudadRecep) + '</CiudadRecep>\n';
+  out += t + t + t + t + '<CorreoRecep>' + esc(receptor.CorreoRecep) + '</CorreoRecep>\n';
+  out += t + t + t + '</Receptor>\n';
+  out += t + t + t + '<Totales>\n';
+  out += t + t + t + t + '<MntNeto>' + esc(totales.MntNeto) + '</MntNeto>\n';
+  out += t + t + t + t + '<MntExe>' + esc(totales.MntExe) + '</MntExe>\n';
+  out += t + t + t + t + '<IVA>' + esc(totales.IVA) + '</IVA>\n';
+  if (totales.TasaIVA != null && totales.TasaIVA !== '') out += t + t + t + t + '<TasaIVA>' + esc(totales.TasaIVA) + '</TasaIVA>\n';
+  out += t + t + t + t + '<MntTotal>' + esc(totales.MntTotal) + '</MntTotal>\n';
+  out += t + t + t + '</Totales>\n';
+  out += t + t + '</Encabezado>\n';
+
+  dscRcgList.forEach((dr) => {
+    out += t + t + '<DscRcgGlobal>\n';
+    out += t + t + t + '<NroLinDR>' + esc(dr.NroLinDR) + '</NroLinDR>\n';
+    out += t + t + t + '<TpoMov>' + esc(dr.TpoMov) + '</TpoMov>\n';
+    out += t + t + t + '<TpoValor>' + esc(dr.TpoValor) + '</TpoValor>\n';
+    out += t + t + t + '<ValorDR>' + esc(dr.ValorDR) + '</ValorDR>\n';
+    if (dr.GlosaDR != null && dr.GlosaDR !== '') out += t + t + t + '<GlosaDR>' + esc(dr.GlosaDR) + '</GlosaDR>\n';
+    out += t + t + '</DscRcgGlobal>\n';
+  });
+
+  detalleList.forEach((d) => {
+    out += t + t + '<Detalle>\n';
+    out += t + t + t + '<NroLinDet>' + esc(d.NroLinDet) + '</NroLinDet>\n';
+    if (d.UnmdItem != null && d.UnmdItem !== '') out += t + t + t + '<UnmItem>' + esc(d.UnmdItem) + '</UnmItem>\n';
+    if (d.CdgItem && (d.CdgItem.TpoCodigo || d.CdgItem.VlrCodigo)) {
+      out += t + t + t + '<CdgItem>\n';
+      out += t + t + t + t + '<TpoCodigo>' + esc(d.CdgItem.TpoCodigo) + '</TpoCodigo>\n';
+      out += t + t + t + t + '<VlrCodigo>' + esc(d.CdgItem.VlrCodigo) + '</VlrCodigo>\n';
+      out += t + t + t + '</CdgItem>\n';
+    }
+    out += t + t + t + '<NmbItem>' + esc(d.NmbItem) + '</NmbItem>\n';
+    if (d.DscItem != null && d.DscItem !== '') out += t + t + t + '<DscItem>' + esc(d.DscItem) + '</DscItem>\n';
+    out += t + t + t + '<QtyItem>' + esc(d.QtyItem) + '</QtyItem>\n';
+    out += t + t + t + '<PrcItem>' + esc(d.PrcItem) + '</PrcItem>\n';
+    out += t + t + t + '<MontoItem>' + esc(d.MontoItem) + '</MontoItem>\n';
+    out += t + t + '</Detalle>\n';
+  });
+
+  refList.forEach((r) => {
+    out += t + t + '<Referencia>\n';
+    out += t + t + t + '<NroLinRef>' + esc(r.NroLinRef) + '</NroLinRef>\n';
+    out += t + t + t + '<TpoDocRef>' + esc(r.TpoDocRef) + '</TpoDocRef>\n';
+    out += t + t + t + '<FolioRef>' + esc(r.FolioRef) + '</FolioRef>\n';
+    out += t + t + t + '<FchRef>' + esc(r.FchRef) + '</FchRef>\n';
+    if (r.CodRef != null && r.CodRef !== '') out += t + t + t + '<CodRef>' + esc(r.CodRef) + '</CodRef>\n';
+    if (r.RazonRef != null && r.RazonRef !== '') out += t + t + t + '<RazonRef>' + esc(r.RazonRef) + '</RazonRef>\n';
+    out += t + t + '</Referencia>\n';
+  });
+
+  out += t + '</Documento>\n';
+  out += t + '<Adicional>\n';
+  out += t + t + '<NodosA>\n';
+  nodosA.forEach((n, i) => {
+    const val = (n && n.valor != null) ? n.valor : (typeof n === 'string' ? n : '');
+    const tag = 'A' + (i + 1);
+    out += t + t + t + '<' + tag + '>' + esc(val) + '</' + tag + '>\n';
+  });
+  out += t + t + '</NodosA>\n';
+  out += t + '</Adicional>\n';
+  out += '</DTE>';
+  return out;
+}
+
+/**
  * Convierte un objeto JSON a XML recursivamente
  * @param {Object} obj - Objeto JSON a convertir
  * @param {string} rootName - Nombre del elemento raíz
@@ -878,14 +1064,13 @@ function createSoapEnvelopeByMethod(jsonData, method, extraParams) {
   
   switch (method) {
     case 'Emision':
-      // Para Emision: Sistema, rut, usuario, clave, xml
-      const documento = jsonData.Documento || {};
-      const documentoXml = convertJsonToXml(documento);
+      // Para Emision: Sistema, rut, usuario, clave, xml (contenido en formato DTE según documentación)
+      const dteXml = convertJsonToDteXml(jsonData);
       xmlContent = `<sistema>${escapeXml(sistema.nombre)}</sistema>
 <rut>${escapeXml(sistema.rut)}</rut>
 <usuario>${escapeXml(sistema.usuario)}</usuario>
 <clave>${escapeXml(sistema.clave)}</clave>
-<xml>${escapeXml(documentoXml)}</xml>`;
+<xml>${escapeXml(dteXml)}</xml>`;
       break;
       
     case 'ObtenerPDF':
@@ -919,17 +1104,33 @@ function createSoapEnvelopeByMethod(jsonData, method, extraParams) {
       break;
       
     default:
-      // Método por defecto (Emision)
-      const defaultDocumento = jsonData.Documento || {};
-      const defaultDocumentoXml = convertJsonToXml(defaultDocumento);
+      // Método por defecto (Emision) - formato DTE
+      const defaultDteXml = convertJsonToDteXml(jsonData);
       xmlContent = `<sistema>${escapeXml(sistema.nombre)}</sistema>
 <rut>${escapeXml(sistema.rut)}</rut>
 <usuario>${escapeXml(sistema.usuario)}</usuario>
 <clave>${escapeXml(sistema.clave)}</clave>
-<xml>${escapeXml(defaultDocumentoXml)}</xml>`;
+<xml>${escapeXml(defaultDteXml)}</xml>`;
   }
   
   return xmlContent;
+}
+
+/**
+ * Construye el body SOAP para Emisión cuando el visor tiene XML DTE (formato documentación)
+ * @param {string} dteXml - XML DTE completo (raíz DTE)
+ * @param {string} sistema - Nombre sistema
+ * @param {string} rut - RUT
+ * @param {string} usuario - Usuario
+ * @param {string} clave - Clave
+ * @returns {string} - Body con sistema, rut, usuario, clave, xml (DTE escapado)
+ */
+function buildSoapEmisionBodyFromDteXml(dteXml, sistema, rut, usuario, clave) {
+  return `<sistema>${escapeXml(sistema || '')}</sistema>
+<rut>${escapeXml(rut || '')}</rut>
+<usuario>${escapeXml(usuario || '')}</usuario>
+<clave>${escapeXml(clave || '')}</clave>
+<xml>${escapeXml(dteXml)}</xml>`;
 }
 
 /**
@@ -1027,8 +1228,16 @@ async function sendRequest() {
       const finalJsonData = JSON.stringify(jsonData);
       response = await sendRestRequest(endpoint, finalJsonData);
     } else {
-      // Para SOAP, usar el XML directamente
-      response = await sendSoapRequest(endpoint, dataString, soapMethod, {});
+      // Para SOAP: si el visor tiene XML DTE (Emision), envolver con credenciales del formulario
+      let soapBody = dataString;
+      if (soapMethod === 'Emision' && dataString.trim().startsWith('<DTE>')) {
+        const sistema = document.getElementById('sistema') ? document.getElementById('sistema').value : '';
+        const rut = document.getElementById('rut') ? document.getElementById('rut').value : '';
+        const usuario = document.getElementById('usuario') ? document.getElementById('usuario').value : '';
+        const clave = document.getElementById('clave') ? document.getElementById('clave').value : '';
+        soapBody = buildSoapEmisionBodyFromDteXml(dataString, sistema, rut, usuario, clave);
+      }
+      response = await sendSoapRequest(endpoint, soapBody, soapMethod, {});
     }
     
     const responseText = await response.text();

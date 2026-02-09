@@ -1,0 +1,76 @@
+<DTE>
+	<Documento>
+		<Encabezado>
+			<IdDoc>
+				<TipoDTE>33</TipoDTE>
+				<Folio>0</Folio>
+				<FchEmis>2026-01-29</FchEmis>
+				<FchVenc>2026-01-29</FchVenc>
+				<SucursalId>1</SucursalId>
+			</IdDoc>
+			<Emisor>
+				<RUTEmisor>29282726-1</RUTEmisor>
+				<RznSocEmisor>EMPRESA DE PRUEBA</RznSocEmisor>
+				<GiroEmisor>DESARROLLO DE SISTEMAS</GiroEmisor>
+				<DirOrigen>MONEDA 812</DirOrigen>
+				<CmnaOrigen>SANTIAGO</CmnaOrigen>
+				<CiudadOrigen>SANTIAGO</CiudadOrigen>
+				<Observacion>Prueba observación</Observacion>
+			</Emisor>
+			<Receptor>
+				<RUTRecep>78000000-7</RUTRecep>
+				<RznSocRecep>CLIENTE DE EJEMPLO</RznSocRecep>
+				<GiroRecep>GIRO DE EJEMPLO</GiroRecep>
+				<DirRecep>DIRECCIÓN DE EJEMPLO</DirRecep>
+				<CmnaRecep>SANTIAGO</CmnaRecep>
+				<CiudadRecep>SANTIAGO</CiudadRecep>
+				<CorreoRecep>EJEMPLO@EJEMPLO.cl</CorreoRecep>
+			</Receptor>
+			<Totales>
+				<MntNeto>60000</MntNeto>
+				<MntExe>0</MntExe>
+				<IVA>11400</IVA>
+				<TasaIVA>19</TasaIVA>
+				<MntTotal>71400</MntTotal>
+			</Totales>
+		</Encabezado>
+		<DscRcgGlobal>
+			<NroLinDR>1</NroLinDR>
+			<TpoMov>D</TpoMov>
+			<TpoValor>$</TpoValor>
+			<ValorDR>40000</ValorDR>
+		</DscRcgGlobal>
+		<Detalle>
+			<NroLinDet>1</NroLinDet>
+			<UnmItem>UNIDAD</UnmItem>
+			<CdgItem>
+				<TpoCodigo>INT1</TpoCodigo>
+				<VlrCodigo>COD-100</VlrCodigo>
+			</CdgItem>
+			<NmbItem>PRODUCTO DE EJEMPLO</NmbItem>
+			<QtyItem>1</QtyItem>
+			<PrcItem>100000</PrcItem>
+			<MontoItem>100000</MontoItem>
+		</Detalle>
+		<Referencia>
+			<NroLinRef>1</NroLinRef>
+			<TpoDocRef>801</TpoDocRef>
+			<FolioRef>2398-A33</FolioRef>
+			<FchRef>2025-11-16</FchRef>
+		</Referencia>
+		<Referencia>
+			<NroLinRef>2</NroLinRef>
+			<TpoDocRef>52</TpoDocRef>
+			<FolioRef>786</FolioRef>
+			<FchRef>2025-11-19</FchRef>
+		</Referencia>
+	</Documento>
+	<Adicional>
+		<NodosA>
+			<A1>ejemplo 1</A1>
+			<A2>ejemplo 2</A2>
+			<A3>ejemplo 3</A3>
+			<A4>ejemplo 4</A4>
+		</NodosA>
+	</Adicional>
+</DTE>
